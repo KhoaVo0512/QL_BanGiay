@@ -1,7 +1,7 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
-@model IEnumerable<QL_BanGiay.Data.NhapHang>
+@model IEnumerable<QL_BanGiay.Data.Giay>
 @{
-    ViewData["Title"] = "Quản lí nhập hàng";
+    ViewData["Title"] = "Quản lí sản phẩm";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
     PagerModel pager = ViewBag.Pager;
     int stt = 0;
@@ -14,8 +14,8 @@
                 <h1 class="m-0">@ViewData["Title"]</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
-                <a onclick="showInPopup('@Url.Action("create","purchaseorder",null,Context.Request.Scheme)','Thêm hóa đơn mới')" class="breadcrumb float-sm-right">
-                    <p class="btn btn-success">Thêm hóa đơn mới</p>
+                <a onclick="showInPopup('@Url.Action("create","shoe",null,Context.Request.Scheme)','Thêm sản phẩm mới')" class="breadcrumb float-sm-right">
+                    <p class="btn btn-success">Thêm sản phẩm mới mới</p>
                 </a>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -37,22 +37,25 @@
                                 STT
                             </th>
                             <th>
-                                Mã nhập hàng
-                            </th>
-                            <th>
-                                <i class="@sortModel.GetColumn("SuppliersId").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("SuppliersId").SortExpression">
-                                    Mã đơn vị nhập
+                                <i class="@sortModel.GetColumn("MaGiay").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("MaGiay").SortExpression">
+                                    Mã giày
                                 </a>
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("OrderId").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("OrderId").SortExpression">
-                                    Số hóa đơn
+                                <i class="@sortModel.GetColumn("NameShoe").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("NameShoe").SortExpression">
+                                    Tên giày
                                 </a>
                             </th>
                             <th>
-                                Ngày nhập
+                                <i class="@sortModel.GetColumn("Price").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("Price").SortExpression">
+                                   Giá bán
+                                </a>
+                            </th>
+                            <th>
+                                Ngày cập nhật
                             </th>
                             <th>
                                 Chức năng
@@ -68,25 +71,25 @@
                                     @stt
                                 </td>
                                 <td>
-                                     @Html.DisplayFor(modelItem => item.MaNhapHang)
+                                    @Html.DisplayFor(modelItem => item.MaGiay)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MaDonViNhap)
+                                    @Html.DisplayFor(modelItem => item.TenGiay)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.SoHoaDon)
+                                    @Html.DisplayFor(modelItem => item.GiaBan)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NgayNhap)
+                                    @Html.DisplayFor(modelItem => item.NgayCn)
                                 </td>
                                 <td>
-                                    <a onclick="showInPopup('@Url.Action("edit", "purchaseorder",new {id = item.MaNhapHang},Context.Request.Scheme)','Chỉnh sửa bộ sưu tập')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>
-                                    <a onclick="showInPopup('@Url.Action("Details", "purchaseorder",new {id = item.MaNhapHang},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
+                                    <a onclick="showInPopup('@Url.Action("edit", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Chỉnh sửa bộ sưu tập')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>
+                                    <a onclick="showInPopup('@Url.Action("Details", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
                                     @if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
                                     {
-                                        <a onclick="showInPopup('@Url.Action("delete", "purchaseorder",new {id = item.MaNhapHang},Context.Request.Scheme)','Xóa bộ sưu tập')" class="btn btn-danger text-white"><i class="fa-regular fa-trash-can"></i></a>
+                                        <a onclick="showInPopup('@Url.Action("delete", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Xóa bộ sưu tập')" class="btn btn-danger text-white"><i class="fa-regular fa-trash-can"></i></a>
                                     }
-                                   
+
                                 </td>
                             </tr>
                         }

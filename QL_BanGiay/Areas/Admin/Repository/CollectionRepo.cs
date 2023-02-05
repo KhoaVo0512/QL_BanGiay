@@ -1,4 +1,5 @@
-﻿using QL_BanGiay.Areas.Admin.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 using QL_BanGiay.Models;
@@ -13,65 +14,46 @@ namespace QL_BanGiay.Areas.Admin.Repository
         {
             _context = context;
         }
-        private List<CollectionModel> DoSort(List<CollectionModel> items, string SortProperty, SortOrder sortOrder)
+        private List<DongSanPham> DoSort(List<DongSanPham> items, string SortProperty, SortOrder sortOrder)
         {
 
             if (SortProperty.ToLower() == "namecollection")
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderBy(n => n.DongSanPham.TenDongSanPham).ToList();
+                    items = items.OrderBy(n => n.TenDongSanPham).ToList();
                 else
-                    items = items.OrderByDescending(n => n.DongSanPham.TenDongSanPham).ToList();
+                    items = items.OrderByDescending(n => n.TenDongSanPham).ToList();
             }
             else if (SortProperty.ToLower() == "namebrand")
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderBy(n => n.nhanHieu.TenNhanHieu).ToList();
+                    items = items.OrderBy(n => n.MaNhanHieuNavigation.TenNhanHieu).ToList();
                 else
-                    items = items.OrderByDescending(n => n.nhanHieu.TenNhanHieu).ToList();
+                    items = items.OrderByDescending(n => n.MaNhanHieuNavigation.TenNhanHieu).ToList();
             }
             else
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderByDescending(d => d.DongSanPham.MaDongSanPham).ToList();
+                    items = items.OrderByDescending(d => d.MaDongSanPham).ToList();
                 else
-                    items = items.OrderBy(d => d.DongSanPham.MaDongSanPham).ToList();
+                    items = items.OrderBy(d => d.MaDongSanPham).ToList();
             }
 
             return items;
         }
-        public PaginatedList<CollectionModel> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5)
+        public PaginatedList<DongSanPham> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5)
         {
-            List<NhanHieu> nhanHieus = _context.NhanHieus.ToList();
-            List<DongSanPham> dongSanPhams = _context.DongSanPhams.ToList();
-            List<CollectionModel> collectionModels;
+            List<DongSanPham> items;
             if (SearchText != null && SearchText != "")
             {
-                dongSanPhams = _context.DongSanPhams.Where(s => s.TenDongSanPham.Contains(SearchText)).ToList();
-                collectionModels = (from g in dongSanPhams
-                                    join b in nhanHieus on g.MaNhanHieu equals b.MaNhanHieu into table1
-                                    from t in table1.DefaultIfEmpty()
-                                    select new CollectionModel
-                                    {
-                                        DongSanPham = g,
-                                        nhanHieu = t
-
-                                    }).ToList();
+                items = _context.DongSanPhams.Where(ut => ut.TenDongSanPham.Contains(SearchText)).Include(s=>s.MaNhanHieuNavigation).ToList();
             }
             else
             {
-                collectionModels = (from g in dongSanPhams
-                                    join b in nhanHieus on g.MaNhanHieu equals b.MaNhanHieu into table1
-                                    from t in table1.DefaultIfEmpty()
-                                    select new CollectionModel
-                                    {
-                                        DongSanPham = g,
-                                        nhanHieu = t
-
-                                    }).ToList();
+                items = _context.DongSanPhams.Include(s => s.MaNhanHieuNavigation).ToList();
             }
-            collectionModels = DoSort(collectionModels, SortProperty, sortOrder);
-            PaginatedList<CollectionModel> retItems = new PaginatedList<CollectionModel>(collectionModels, pageIndex, pageSize);
+            items = DoSort(items, SortProperty, sortOrder);
+            PaginatedList<DongSanPham> retItems = new PaginatedList<DongSanPham>(items, pageIndex, pageSize);
             return retItems;
         }
 

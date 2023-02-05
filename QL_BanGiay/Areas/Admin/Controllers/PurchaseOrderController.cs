@@ -9,6 +9,7 @@ using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
 using QL_BanGiay.Models;
 using System.Data;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -49,6 +50,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("purchaseorder/create")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Create()
         {
             NhapHang item = new NhapHang();
@@ -91,6 +93,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("purchaseorder/details")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Details(int id)
         {
             NhapHang item = _PurchaseOrderRepo.GetItem(id);
@@ -101,6 +104,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("purchaseorder/delete")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Delete(int id)
         {
             if (id == null)
@@ -147,6 +151,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("purchaseorder/edit")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Edit(int id)
         {
             NhapHang item = _PurchaseOrderRepo.GetItem(id);
@@ -197,7 +202,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 Value = ut.MaSize.ToString(),
                 Text = ut.TenSize
             }).ToList();
-
             var defItem = new SelectListItem()
             {
                 Value = "",

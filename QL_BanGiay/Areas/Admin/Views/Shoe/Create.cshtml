@@ -1,0 +1,111 @@
+﻿@model QL_BanGiay.Areas.Admin.Models.ShoeContext
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Mã giày</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">#</div>
+                            </div>
+                            <input asp-for="MaGiay" class="form-control" />
+                        </div>
+                        <span asp-validation-for="MaGiay" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Tên giày</label>
+                        <div class="input-group">
+                            <input asp-for="TenGiay" class="form-control" />
+                        </div>
+                        <span asp-validation-for="TenGiay" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Nhãn hiệu</label>
+                        <div class="form-input">
+                            <select asp-for="MaNhanHieu" class="form-select" asp-items="ViewBag.BrandList"></select>
+                            <span asp-validation-for="MaNhanHieu" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Dòng sản phẩm</label>
+                        <div class="form-input">
+                            <select asp-for="MaDongSanPham" asp-items="ViewBag.CollectionList" class="form-select">
+                            </select>
+                            <span asp-validation-for="MaDongSanPham" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="single-form form-default form-border">
+                <label>Nơi sản xuất</label>
+                <div class="form-input">
+                    <select asp-for="MaNhaSanXuat" class="form-select" asp-items="ViewBag.ProduceList"></select>
+                    <span asp-validation-for="MaNhaSanXuat" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Màu sắc</label>
+                        <div class="input-group">
+                            <input asp-for="MauSac" class="form-control" />
+                        </div>
+                        <span asp-validation-for="MauSac" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Chất liệu</label>
+                        <input asp-for="ChatLieu" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ChatLieu" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Chọn ảnh đại diện</label>
+                        <div class="custom-file">
+                            <input asp-for="MaAnhNen" onchange="preview_image();" class="form-control" id="imageBrowes" />
+
+                            <div id="imgPreview" style="display: flex;">
+                            </div>
+                        </div>
+                        <span asp-validation-for="MaAnhNen" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Chọn ảnh cho chi tiết</label>
+                        <div class="custom-file">
+                            <input asp-for="AnhDetail" onchange="preview_images();" class="form-control" id="imagesBrowes" />
+                        </div>
+                        <div id="image_preview" style="display: flex;"></div>
+                        <span asp-validation-for="AnhDetail" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3 mt-4">
+                    <input type="submit" value="Lưu" class="btn btn-primary btn-block px-5" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

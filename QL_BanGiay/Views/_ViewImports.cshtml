@@ -1,4 +1,6 @@
-﻿@using QL_BanGiay
+﻿@using Microsoft.AspNetCore.Authorization;
+@using QL_BanGiay
 @using QL_BanGiay.Models
+@inject IAuthorizationService AuthorizationService
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, QL_BanGiay

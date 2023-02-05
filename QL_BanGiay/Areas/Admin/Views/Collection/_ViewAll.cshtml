@@ -1,5 +1,5 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
-@model IEnumerable<QL_BanGiay.Areas.Admin.Models.CollectionModel>
+@model IEnumerable<QL_BanGiay.Data.DongSanPham>
 @{
     ViewData["Title"] = "Quản lí dòng sản phẩm";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
@@ -61,14 +61,18 @@
                                     @stt
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DongSanPham.TenDongSanPham)
+                                    @Html.DisplayFor(modelItem => item.TenDongSanPham)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.nhanHieu.TenNhanHieu)
+                                    @Html.DisplayFor(modelItem => item.MaNhanHieuNavigation.TenNhanHieu)
                                 </td>
                                 <td>
-                                    <a onclick="showInPopup('@Url.Action("edit", "collection",new {id = item.DongSanPham.MaDongSanPham},Context.Request.Scheme)','Chỉnh sửa dòng sản phẩm')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>
-                                    <a onclick="showInPopup('@Url.Action("delete", "collection",new {id = item.DongSanPham.MaDongSanPham},Context.Request.Scheme)','Xóa dòng sản phẩm')" class="btn btn-danger text-white"><i class="fa-regular fa-trash-can"></i></a>
+                                    <a onclick="showInPopup('@Url.Action("edit", "collection",new {id = item.MaDongSanPham},Context.Request.Scheme)','Chỉnh sửa dòng sản phẩm')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>
+                                    @if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
+                                    {
+                                        <a onclick="showInPopup('@Url.Action("delete", "collection",new {id = item.MaDongSanPham},Context.Request.Scheme)','Xóa dòng sản phẩm')" class="btn btn-danger text-white"><i class="fa-regular fa-trash-can"></i></a>
+                                    }
+                                    
                                 </td>
                             </tr>
                         }

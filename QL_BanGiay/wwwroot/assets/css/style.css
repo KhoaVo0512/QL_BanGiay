@@ -1168,6 +1168,10 @@ p {
   .dropdown .dropdown-menu li a {
     font-size: 14px;
   }
+  .products.one .row{
+      flex: 0 0 50%;
+      width: 50%;
+  }
 }
 
 @media (max-width: 767px) {

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -28,6 +29,12 @@ namespace QL_BanGiay.Areas.Admin.Repository
                     items = items.OrderBy(n => n.MaGiay).ToList();
                 else
                     items = items.OrderByDescending(n => n.MaGiay).ToList();
+            }else if (SortProperty.ToLower() == "price")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.GiaBan).ToList();
+                else
+                    items = items.OrderByDescending(n => n.GiaBan).ToList();
             }
             else
             {
@@ -44,10 +51,16 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<Giay> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.Giays.ToList();
+                items = _context.Giays.Where(ut=>ut.TenGiay.Contains(SearchText))
+                    .Include(s=>s.MaDongSanPhamNavigation)
+                    .Include(s=>s.MaNhaSanXuatNavigation)
+                    .ToList();
             }
             else
-                items = _context.Giays.ToList();
+                items = _context.Giays
+                    .Include(s => s.MaDongSanPhamNavigation)
+                    .Include(s => s.MaNhaSanXuatNavigation)
+                    .ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
             PaginatedList<Giay> retItems = new PaginatedList<Giay>(items, pageIndex, pageSize);

@@ -1,6 +1,6 @@
-﻿
-@model IEnumerable<QL_BanGiay.Data.DongSanPham>
+﻿@model IEnumerable<QL_BanGiay.Data.Giay>
 @{
+    ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <div id="view-all">
@@ -22,6 +22,6 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        
+
     }
 }

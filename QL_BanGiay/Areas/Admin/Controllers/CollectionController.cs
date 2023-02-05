@@ -6,6 +6,7 @@ using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
 using System.Drawing.Printing;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -34,7 +35,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             ViewData["sortModel"] = sortModel;
 
             ViewBag.SearchText = SearchText;
-            PaginatedList<CollectionModel> items = _Icollection.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
+            PaginatedList<DongSanPham> items = _Icollection.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
             var pager = new PagerModel(items.TotalRecords, pg, pageSize);
             pager.SortExpression = sortExpression;
             this.ViewBag.Pager = pager;
@@ -43,6 +44,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("collection/create")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Create()
         {
             DongSanPham dongsanpham = new DongSanPham();
@@ -78,6 +80,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("collection/delete")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Delete (int? id)
         {
             if (id == null)
@@ -112,6 +115,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("collection/edit")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Edit(int id)
         {
             DongSanPham item = _Icollection.GetItem(id);

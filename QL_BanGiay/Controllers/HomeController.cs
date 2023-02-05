@@ -13,11 +13,21 @@ namespace QL_BanGiay.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string magiay)
         {
+            if (magiay != null)
+            {
+                return View(magiay);
+            }
             return View();
         }
 
+        [Route("{url}")]
+        [HttpGet]
+        public IActionResult Details(string url)
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -37,13 +47,5 @@ namespace QL_BanGiay.Controllers
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        //public IActionResult Error(int statuscode)
-        //{
-        //    if (statuscode == 404)
-        //    {
-        //        return View("NotFound");
-        //    }else
-        //        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
     }
 }

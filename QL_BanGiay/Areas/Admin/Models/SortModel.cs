@@ -7,16 +7,16 @@
         private string UpIcon = "fa fa-arrow-up";
         private string DownIcon = "fa fa-arrow-down";
 
-        public string SortedProperty { get; set; }
+        public string? SortedProperty { get; set; }
         public SortOrder SortedOrder { get; set; }
 
-        public string SortedExpression { get; private set; }
+        public string? SortedExpression { get; private set; }
 
         private List<SortableColumn> sortableColumns = new List<SortableColumn>();
 
         public void AddColumn(string colname, bool IsDefaultColumn = false)
         {
-            SortableColumn tmp = this.sortableColumns.Where(c => c.ColumnName.ToLower() == colname.ToLower()).SingleOrDefault();
+            SortableColumn? tmp = this.sortableColumns.Where(c => c.ColumnName.ToLower() == colname.ToLower()).SingleOrDefault();
             if (tmp == null)
                 sortableColumns.Add(new SortableColumn() { ColumnName = colname });
 
@@ -29,7 +29,7 @@
         }
         public SortableColumn GetColumn(string colname)
         {
-            SortableColumn tmp = this.sortableColumns.Where(c => c.ColumnName.ToLower() == colname.ToLower()).SingleOrDefault();
+            SortableColumn? tmp = this.sortableColumns.Where(c => c.ColumnName.ToLower() == colname.ToLower()).SingleOrDefault();
             if (tmp == null)
                 sortableColumns.Add(new SortableColumn() { ColumnName = colname });
             return tmp;
@@ -37,7 +37,7 @@
 
 
 
-        public void ApplySort(string sortExpression)
+        public void ApplySort(string? sortExpression)
         {
 
             if (sortExpression == null)

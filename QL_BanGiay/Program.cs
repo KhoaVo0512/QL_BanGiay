@@ -26,6 +26,7 @@ builder.Services.AddScoped<IPurchaseOrder, PurchaseOrderRepo>();
 builder.Services.AddScoped<IShoe, ShoeRepo>();
 builder.Services.AddScoped<ISize, SizeRepo>();
 builder.Services.AddScoped<ISupplier, SupplierRepo>();
+builder.Services.AddScoped<IProduce, ProduceRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<QlyBanGiayContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
@@ -37,7 +38,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.SlidingExpiration = true;
     
 });
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin",
+         policy => policy.RequireRole("Admin"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

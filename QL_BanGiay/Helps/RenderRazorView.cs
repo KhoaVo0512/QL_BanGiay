@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using QL_BanGiay.Data;
 using QL_BanGiay.Areas.Admin.Models;
 using System.Drawing.Printing;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace QL_BanGiay.Helps
 {
@@ -35,6 +36,17 @@ namespace QL_BanGiay.Helps
                 );
                 viewResult.View.RenderAsync(viewContext);
                 return sw.GetStringBuilder().ToString();
+            }
+        }
+        [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+        public class NoDirectAccessAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                if (filterContext.HttpContext.Request.GetTypedHeaders().Referer == null || filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString() != filterContext.HttpContext.Request.GetTypedHeaders().Referer.Host.ToString())
+                {
+                    filterContext.HttpContext.Response.Redirect("/Admin");
+                }
             }
         }
     }

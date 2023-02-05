@@ -17,97 +17,39 @@ showInPopup = (url, title) => {
         }
     })
 }
-//$(document).ready(function () {
-//    getNhanHieu();
-//    getNoiSanXuat();
-//    $("#imgPreview").hide();
-
-//    let id = $('#NhanHieu').val();
-//    if (id == "")
-//        $('#MaBoSuuTap').attr('disabled', true);
-//    else
-//        $('#MaBoSuuTap').attr('disabled', false);
-//    let id_bst = $('#MaBoSuuTap').val();
-//    $.ajax({
-//        url: '/Admin/Giay/BoSuuTap1?id=' + id + '&&key=' + id_bst,
-//        success: function (result) {
-//            $.each(result, function (i, data) {
-//                $('#MaBoSuuTap').append('<option value=' + data['maBoSuuTap'] + '>' + data['tenBoSuuTap'] + '</option>');
-//            });
-//        }
-//    });
-//    $("#NhanHieu").change(function () {
-//        var id = $(this).val();
-//        $('#MaBoSuuTap').attr('disabled', false);
-//        $('#MaBoSuuTap').empty();
-//        $('#MaBoSuuTap').append('<option hidden value="">----Chọn----</option>');
-//        $.ajax({
-//            url: '/Admin/Giay/BoSuuTap?id=' + id,
-//            success: function (result) {
-//                $.each(result, function (i, data) {
-//                    $('#MaBoSuuTap').append('<option value=' + data['maBoSuuTap'] + '>' + data['tenBoSuuTap'] + '</option>');
-//                });
-//            }
-//        });
-//    });
-//    //Preview Images
-//    $("#imageBrowes").change(function () {
-
-//        var File = this.files;
-
-//        if (File && File[0]) {
-//            ReadImage(File[0]);
-//        }
-
-//    });
-//});
-//preview images
-var ReadImage = function (file) {
-
-    var reader = new FileReader;
-    var image = new Image;
-
-    reader.readAsDataURL(file);
-    reader.onload = function (_file) {
-
-        image.src = _file.target.result;
-        image.onload = function () {
-            $("#targetImg").attr('src', _file.target.result);
-            $("#imgPreview").show();
+//Load Image Preview for shoe create 
+function preview_image() {
+    var ii = document.querySelectorAll("#imgPreview > img");
+    if (ii.length == 0) {
+        var total_file = document.getElementById("imageBrowes").files.length;
+        for (var i = 0; i < total_file; i++) {
+            $('#imgPreview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
         }
-
+    } else {
+        var hh = document.querySelectorAll("#imgPreview > img");
+        hh.forEach(e => e.remove());
+        var total_file = document.getElementById("imageBrowes").files.length;
+        for (var i = 0; i < total_file; i++) {
+            $('#imgPreview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
+        }
     }
-
 }
 //Preview images array
-function preview_image() {
-    var total_file = document.getElementById("imagesBrowes").files.length;
-    for (var i = 0; i < total_file; i++) {
-        $('#image_preview').append("<img style='width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
+function preview_images() {
+    var ii = document.querySelectorAll("#image_preview > img");
+    if (ii.length == 0) {
+        var total_file = document.getElementById("imagesBrowes").files.length;
+        for (var i = 0; i < total_file; i++) {
+            $('#image_preview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
+        }
+    } else {
+        var hh = document.querySelectorAll("#image_preview > img");
+        hh.forEach(e => e.remove());
+        var total_file = document.getElementById("imagesBrowes").files.length;
+        for (var i = 0; i < total_file; i++) {
+            $('#image_preview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
+        }
     }
-}
-
-function getNhanHieu() {
-    let id = $('#NhanHieu').val();
-    $.ajax({
-        url: '/Admin/Giay/NhanHieu?id=' + id,
-        success: function (result) {
-            $.each(result, function (i, data) {
-                $('#NhanHieu').append('<option value=' + data['maNhanHieu'] + '>' + data['tenNhanHieu'] + '</option>');
-            });
-        }
-    });
-}
-function getNoiSanXuat() {
-    let id = $('#MaNhaSanXuat').val();
-    $.ajax({
-        url: '/Admin/Giay/NoiSanXuat?id=' + id,
-        success: function (result) {
-            $.each(result, function (i, data) {
-                $('#MaNhaSanXuat').append('<option value=' + data['maNhaSanXuat'] + '>' + data['tenNhaSanXuat'] + '</option>');
-            });
-        }
-    })
 }
 jQueryAjaxPost = form => {
     try {
@@ -228,7 +170,7 @@ function DeleteItem(btn) {
 
     var idOfIsDeleted = btnIdx + "__IsDeleted";
     var txtIsDeleted = document.querySelector("[id$='" + idOfIsDeleted + "']");
-    txtIsDeleted.value = "true";
+    txtIsDeleted.value = "false";
     $(btn).closest('tr').hide();
 
     CalcTotals();
@@ -251,19 +193,18 @@ function CalcTotals() {
         var idofTotal = i + "__Total";
 
         var hidIsDelId = document.querySelector("[id$='" + idofIsDeleted + "']").id;
-
         var priceTxtId = document.querySelector("[id$='" + idofPrice + "']").id;
-
+        console.log(priceTxtId);
         var totalTxtId = document.querySelector("[id$='" + idofTotal + "']").id;
-
+        console.log(totalTxtId);
         if (document.getElementById(hidIsDelId).value != "true") {
             totalQty = totalQty + eval(x[i].value);
-
+            console.log(eval(x[i].value));
             var txttotal = document.getElementById(totalTxtId);
             var txtprice = document.getElementById(priceTxtId);
 
             txttotal.value = eval(x[i].value) * txtprice.value;
-
+            console.log(txttotal.value);
             totalAmount = eval(totalAmount) + eval(txttotal.value);
         }
     }

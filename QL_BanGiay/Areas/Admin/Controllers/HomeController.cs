@@ -4,15 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
-    //[Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
+    //[Authorize(Policy = "Admin")]
+    [Route("admin")]
     public class HomeController : Controller
     {
 
         public IActionResult Index()
         {
-            var location = new Uri($"{Request.Scheme}://{Request.Host}");
-            ViewData["location"] = location;
             return View();
         }
     }

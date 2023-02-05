@@ -1,4 +1,5 @@
-﻿using QL_BanGiay.Areas.Admin.Interface;
+﻿using NuGet.Common;
+using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 
@@ -21,13 +22,6 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.TenDonViNhap).ToList();
             }
-            //else if (SortProperty.ToLower() == "magiay")
-            //{
-            //    if (sortOrder == SortOrder.Ascending)
-            //        items = items.OrderBy(n => n.MaGiay).ToList();
-            //    else
-            //        items = items.OrderByDescending(n => n.MaGiay).ToList();
-            //}
             else
             {
                 if (sortOrder == SortOrder.Ascending)
@@ -43,7 +37,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<DonViNhapHang> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.DonViNhapHangs.ToList();
+                items = _context.DonViNhapHangs.Where(ut=>ut.TenDonViNhap.Contains(SearchText)).ToList();
             }
             else
                 items = _context.DonViNhapHangs.ToList();
