@@ -1,0 +1,236 @@
+﻿@model QL_BanGiay.Models.RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4"> Đăng ký tài khoản</h1>
+                                </div>
+                                <form asp-action="Register">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="single-form form-default form-border">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Họ</label>
+                                                <div class="form-input">
+                                                    <input type="text" placeholder="Họ" asp-for="HoNguoiDung">
+                                                    <i class="mdi mdi-account"></i>
+                                                </div>
+                                                <span asp-validation-for="HoNguoiDung" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Tên</label>
+                                                <div class="form-input">
+                                                    <input type="text" asp-for="TenNguoiDung" placeholder="Tên">
+                                                    <i class="mdi mdi-account"></i>
+                                                </div>
+                                                <span asp-validation-for="TenNguoiDung" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-default form-border">
+                                        <label style="margin-bottom: 10px;font-size: 14px;margin-left: 18px;font-weight: bold;text-align: left !important;">
+                                            Giới tính:
+                                            </label>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="1" checked>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                                Nam
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="2">
+                                            <label class="form-check-label" for="exampleRadios2">
+                                                Nữ
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="3">
+                                            <label class="form-check-label" for="exampleRadios3">
+                                                Giới tính khác
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="single-form form-default form-border ">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Email</label>
+                                                <div class="form-input">
+                                                    <input asp-for="Email" type="email" placeholder="user@email.com">
+                                                    <i class="mdi mdi-email"></i>
+                                                </div>
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Số điện thoại</label>
+                                                <div class="form-input">
+                                                    <input asp-for="Sdt">
+                                                    <i class="mdi mdi-phone"></i>
+                                                    <span asp-validation-for="Sdt" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="single-form form-default form-border ">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Mật khẩu</label>
+                                                <div class="form-input">
+                                                    <input asp-for="Password" id="pswrd" type="password" placeholder="Password">
+                                                    <i class="mdi mdi-lock"></i>
+                                                    <span id="toggleBtn" toggle="#password-5" class="mdi mdi-eye-outline toggle-password"></span>
+                                                </div>
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Nhập lại mật khẩu</label>
+                                                <div class="form-input">
+                                                    <input asp-for="PasswordConfirm" type="password" id="pwcf">
+                                                    <i class="mdi mdi-lock"></i>
+                                                    <span id="toggleBtnCf" toggle="#password-5" class="mdi mdi-eye-outline toggle-password"></span>
+                                                </div>
+                                                <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="single-form form-default form-border">
+                                        <label>Địa chỉ</label>
+                                        <div class="form-input">
+                                            <input asp-for="DiaChi">
+                                            <i class="mdi mdi-map-marker"></i>
+                                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                                        </div>
+                                       
+                                    </div>
+                                 
+                                    <div class="single-form form-default form-border">
+                                        <div class="row">                             
+                                            <div class="form-input col-sm-4">
+                                                <label>Tỉnh</label>
+                                                <select asp-for="MaTinh" class="form-select" id="Tinh" required>
+                                                    <option value="" label="----Chọn----"></option>
+                                                </select>
+                                                <span asp-validation-for="MaTinh" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-input col-sm-4">
+                                                <label>Huyện</label>
+                                                <select asp-for="MaHuyen" required class="form-select" id="Huyen">
+                                                    <option value="">----Chọn----</option>
+                                                </select>
+                                                <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                                            </div> 
+                                            <div class="form-input col-sm-4">
+                                                <label>Xã</label>
+                                                <select asp-for="MaXa" class="form-select" id="Xa">
+                                                    <option value="">----Chọn----</option>
+                                                </select>
+                                                <span asp-validation-for="MaXa" class="text-danger"></span>
+                                            </div>
+                                        </div>                           
+                                    </div>                                  
+                                    <div class="single-form text-center">
+                                        <button type="submit" class="main-btn primary-btn">Đăng ký</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function (){
+
+        getTinh();
+        let toggleBtn = document.getElementById('toggleBtn');
+        toggleBtn.onclick = function () {
+            if (pswrd.type == 'password') {
+                pswrd.setAttribute('type', 'text');
+                toggleBtn.classList.add('hide');
+            } else {
+                pswrd.setAttribute('type', 'password');
+                toggleBtn.classList.remove('hide');
+            }
+
+        }
+        let toggleBtnCf = document.getElementById('toggleBtnCf');
+        toggleBtnCf.onclick = function () {
+            if (pwcf.type == 'password') {
+                pwcf.setAttribute('type', 'text');
+                toggleBtnCf.classList.add('hide');
+            } else {
+                pwcf.setAttribute('type', 'password');
+                toggleBtnCf.classList.remove('hide');
+            }
+        }
+        $("#validation").hide();
+        $('#Huyen').attr('disabled',true);
+        $('#Xa').attr('disabled', true);
+        $("#Tinh").change(function (){
+            var id = $(this).val();
+            $('#Huyen').attr('disabled', false);
+            $('#Huyen').empty();
+            $('#Huyen').append('<option value="">----Chọn----</option>');
+            $('#Xa').attr('disabled', true);
+            $('#Xa').empty();
+            $('#Xa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Huyen?id=' +id,
+                success: function (result){
+                    $.each(result, function(i, data){
+                        $('#Huyen').append('<option value=' + data['maHuyen'] + '>' + data['tenHuyen'] + '</option>');
+                    });
+                }
+            });
+        });
+        $("#Huyen").change(function () {
+            $('#Xa').attr('disabled', false);
+            var id = $(this).val();
+            $('#Xa').empty();
+            $('#Xa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Xa?id=' + id,
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#Xa').append('<option value=' + data['maXa'] + '>' + data['tenXa'] + '</option>');
+                    });
+                }
+            });
+        });
+    });
+    function getTinh(){
+        $.ajax({
+            url: '/account/Tinh',
+            success: function (result){
+                $.each(result, function (i, data){
+                    $('#Tinh').append('<option value='+data['maTinh']+'>' + data['tenTinh'] + '</option>');
+                });
+            }
+        });
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

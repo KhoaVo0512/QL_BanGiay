@@ -1,0 +1,184 @@
+﻿@model QL_BanGiay.Data.NhapHang
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+
+}
+
+<div class="card">
+    <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
+        <h6>Chi tiết hóa đơn mới </h6>
+    </div>
+
+    <form id="CodeSbyAnizForm" asp-action="edit" onsubmit="return jQueryAjaxPost(this);">
+
+        <div class="row col-12">
+
+            <div class="row col-11 ml-5">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group col-2 ">
+                    <label class="control-label">Mã nhập hàng:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="MaNhapHang" class="form-control" readonly />
+                    <span asp-validation-for="MaNhapHang" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-2">
+                </div>
+
+                <div class="form-group col-2">
+                    <label class="control-label">Đơn vị nhập hàng:</label>
+                </div>
+                <div class="form-group col-3">
+                    <select disabled asp-for="MaDonViNhap" class="form-control" asp-items="ViewBag.SupplierList"></select>
+                    <span asp-validation-for="MaDonViNhap" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Số hóa đơn:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input readonly asp-for="SoHoaDon" class="form-control" />
+                    <span asp-validation-for="SoHoaDon" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2">
+                </div>
+
+                <div class="form-group col-2">
+                    <label class="control-label">Ngày nhập:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input readonly asp-for="NgayNhap" class="form-control" />
+                    <span asp-validation-for="NgayNhap" class="text-danger"></span>
+                </div>
+
+
+                <div class="col-12">
+
+                    <table id="CodesTable" class="table table-borderless table-sm mb-0 pb-0 border CodesTable">
+                        <thead>
+                            <tr>
+                                <th>Mã giày</th>
+                                <th>Tên giày</th>
+                                <th>Size giày</th>
+                                <th>Số lượng (Đôi)</th>
+                                <th>Giá (VND)</th>
+                                <th>Tổng cộng (VND)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="CsDiv">
+                            @for (int i = 0; i < Model.NhapHangCts.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input readonly asp-for="@Model.NhapHangCts[i].MaGiay" class="form-control" />
+                                        <span asp-validation-for="@Model.NhapHangCts[i].MaGiay" class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <input asp-for="@Model.NhapHangCts[i].Description" class="form-control form-control-plaintext" readonly />
+                                        <span asp-validation-for="@Model.NhapHangCts[i].Description" class="text-danger"></span>
+                                    </td>
+                                    <th>
+                                        <select disabled asp-for="@Model.NhapHangCts[i].MaSize" class="form-control" asp-items="ViewBag.SizeList"></select>
+                                        <span asp-validation-for="@Model.NhapHangCts[i].MaSize" class="text-danger" style="font-weight: initial;"></span>
+                                    </th>
+                                    <td>
+                                        <input readonly type="text" asp-for="@Model.NhapHangCts[i].SoLuong" class="form-control QtyTotal" />
+                                        <span asp-validation-for="@Model.NhapHangCts[i].SoLuong" class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <input readonly type="text" asp-for="@Model.NhapHangCts[i].GiaMua" class="form-control form-control PriceTotal" />
+                                        <span asp-validation-for="@Model.NhapHangCts[i].GiaMua" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.NhapHangCts[i].Total" class="form-control form-control-plaintext AmountTotal" readonly />
+                                        <input type="hidden" asp-for="@Model.NhapHangCts[i].IsDeleted" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <table class="table table-sm mb-0 pb-0 border">
+                        <thead>
+                            <tr>
+                                <th style="width:13%;">
+                                    Tổng cộng
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                    <input type="text" id="txtQtyTotal" class="form-control form-control-plaintext" value="" readonly />
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                    <input type="text" id="txtAmountTotal" class="form-control form-control-plaintext" value="" />
+                                </th>
+
+                                <th style="width:9%;">
+                                </th>
+                            </tr>
+
+                        </thead>
+                    </table>
+
+
+                </div>
+
+                <div class="form-group col-12">
+                </div>
+
+                <div class="form-group col-12">
+                </div>
+            </div>
+            <div class="form-group btn-group col-1">
+                <div class="form-group invisible">
+                    <select id="mySelect" class="form-control" size="5"
+                            style="visibility: hidden;" asp-items="ViewBag.ProductList">
+                    </select>
+                    <input id="txtValue" class="form-control col-2 invisible" />
+                </div>
+
+                <div ID="HiddenDiv" style="visibility: hidden;">
+                </div>
+
+            </div>
+
+            <div class="form-group btn-group col-11">
+                <div class="col-5">
+                    <a class="btn btn-dark btn-block" onclick="showInPopup('@Url.Action("edit", "purchaseorder",new {id = Model.MaNhapHang},Context.Request.Scheme)','Chỉnh sửa bộ sưu tập')" >Chỉnh sửa</a>
+                </div>
+                <div class="col-5">
+                    <a class="btn btn-secondary btn-block" asp-action="index"
+                       asp-route-pg="@TempData.Peek("CurrentPage")">Trở về</a>
+                </div>
+                <div class="col-1"></div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    CalcTotals();
+</script>

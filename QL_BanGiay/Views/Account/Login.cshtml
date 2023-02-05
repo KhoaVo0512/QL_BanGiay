@@ -1,0 +1,100 @@
+﻿@model QL_BanGiay.Models.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    ViewData["google"] = "assets/images/google-logo.svg";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<div class="container">
+
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="login-registration-style-3 mt-50">
+                @Html.ValidationMessage("Error", new {@class = "text-danger"})
+                <h4 class="heading-4 font-weight-500 title">
+                    Đăng nhập với tài khoản
+                </h4>
+                <div class="row">
+                    <div class="col-md-7">
+                        <form action="/account/login?returnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="single-form form-default">
+                                <label>Email</label>
+                                <div class="form-input">
+                                    <input asp-for="Email" type="email" placeholder="user@email.com">
+                                    <i class="mdi mdi-email"></i>
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="single-form form-default">
+                                <label>Mật khẩu</label>
+                                <div class="form-input">
+                                    <input asp-for="Password" type="password" placeholder="Password">
+                                    <i class="mdi mdi-lock"></i>
+                                    <span id="toggleBtn" class="mdi mdi-eye-outline toggle-password"></span>
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="d-sm-flex justify-content-between align-items-center ">
+                                <div class="single-checkbox checkbox-style-3">
+                                    <input type="checkbox" id="login-7" asp-for="Remember">
+                                    <label for="login-7"><span></span> </label>
+                                    <p>Nhớ đăng nhập</p>
+                                </div>
+                                <a class="forget" href="#0">Quên mật khẩu?</a>
+                            </div>
+                            <div class="single-form">
+                                <button type="submit" class="main-btn primary-btn">Đăng nhập</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="account">Đăng nhập với tài khoản xã hội</p>
+                        <ul>
+                            <li>
+                                <a asp-action="SigninFacebook" asp-controller="Home" class="facebook-login-registration">
+                                    <i class="lni lni-facebook-original"></i>
+                                    <span>Đăng nhập với Facebook</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Signin" asp-controller="Home" class="google-login-registration">
+                                    <img src="~/assets/images/google-logo.svg" alt="">
+                                    <span>Đăng nhập với Google</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="login">
+                            Chưa có tài khoản? <a asp-action="Register">Đăng ký</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        let toggleBtn = document.getElementById('toggleBtn');
+        toggleBtn.onclick = function () {
+            if (Password.type == 'password') {
+                Password.setAttribute('type', 'text');
+                toggleBtn.classList.add('hide');
+            } else {
+                Password.setAttribute('type', 'password');
+                toggleBtn.classList.remove('hide');
+            }
+
+        }
+    });
+</script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
