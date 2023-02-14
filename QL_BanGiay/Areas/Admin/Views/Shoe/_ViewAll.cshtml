@@ -57,6 +57,7 @@
                             <th>
                                 Ngày cập nhật
                             </th>
+                            <th>Ảnh đại diện</th>
                             <th>
                                 Chức năng
                             </th>
@@ -81,6 +82,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NgayCn)
+                                </td>
+                                <td>
+                                    <img src="@Url.Content(item.AnhDD)" style="width:45px; height:45px" />
                                 </td>
                                 <td>
                                     <a onclick="showInPopup('@Url.Action("edit", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Chỉnh sửa bộ sưu tập')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>

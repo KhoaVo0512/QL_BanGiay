@@ -72,9 +72,12 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="control-label">Chất liệu</label>
-                        <input asp-for="ChatLieu" class="form-control" />
+                        <div class="input-group">
+                            <input asp-for="ChatLieu" class="form-control" />
+                        </div>
+                        <span asp-validation-for="ChatLieu" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="ChatLieu" class="text-danger"></span>
+                   
                 </div>
             </div>
             <div class="row">
@@ -109,3 +112,22 @@
         </form>
     </div>
 </div>
+<script>
+    $('#MaDongSanPham').attr('disabled', true);
+    $('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
+    $("#MaNhanHieu").change(function () {
+        var id = $(this).val();
+        $('#MaDongSanPham').attr('disabled', false);
+        $('#MaDongSanPham').empty();
+        $('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
+        $.ajax({
+            url: '/admin/shoe/GetCollections?id=' + id,
+            success: function (result) {
+                $.each(result, function (i, data) {
+                    $('#MaDongSanPham').append('<option value=' + data['maDongSanPham'] + '>' + data['tenDongSanPham'] + '</option>');
+                });
+
+            }
+        });
+    });
+</script>

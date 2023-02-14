@@ -178,6 +178,7 @@ public partial class QlyBanGiayContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ChatLieu).HasMaxLength(50);
             entity.Property(e => e.MauSac).HasMaxLength(50);
+            entity.Property(e => e.AnhDD).HasMaxLength(50);
             entity.Property(e => e.NgayCn)
                 .HasColumnType("datetime")
                 .HasColumnName("NgayCN");

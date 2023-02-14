@@ -16,6 +16,7 @@ public partial class Giay
     public string? ChatLieu { get; set; }
 
     public string? MauSac { get; set; }
+    public string? AnhDD { get; set; }
 
     public int? GiaBan { get; set; }
 
@@ -23,7 +24,7 @@ public partial class Giay
 
     public bool? TrangThai { get; set; }
 
-    public virtual ICollection<AnhGiay> AnhGiays { get; } = new List<AnhGiay>();
+    public virtual ICollection<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
 
     public virtual ICollection<DonDatCt> DonDatCts { get; } = new List<DonDatCt>();
 

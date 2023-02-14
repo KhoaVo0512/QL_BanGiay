@@ -17,14 +17,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
     [Route("admin")]
     public class PurchaseOrderController : Controller
     {
-        private readonly NToastNotifyOption _toastNotifyOption;
+        private readonly IToastNotification _toastNotification;
         private readonly IPurchaseOrder _PurchaseOrderRepo;
         private readonly IShoe _ShoeRepo;
         private readonly ISize _SizeRepo;
         private readonly ISupplier _SupplierRepo;
-        public PurchaseOrderController(NToastNotifyOption nToastNotify, IShoe shoeRepo, IPurchaseOrder purchase, ISize sizeRepo, ISupplier supplierRepo)
+        public PurchaseOrderController(IToastNotification nToastNotify, IShoe shoeRepo, IPurchaseOrder purchase, ISize sizeRepo, ISupplier supplierRepo)
         {
-            _toastNotifyOption = nToastNotify;
+            _toastNotification = nToastNotify;
             _ShoeRepo = shoeRepo;
             _PurchaseOrderRepo = purchase;
             _SizeRepo = sizeRepo;
@@ -70,7 +70,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             nhaphang.MaNhapHang = 0;
             if (ModelState.IsValid)
             {
-               
                 try
                 {
                     nhaphang = await _PurchaseOrderRepo.Create(nhaphang);
@@ -84,11 +83,13 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
                 TempData["CurrentPage"] = 1;
+                _toastNotification.AddSuccessToastMessage("Dòng sản phẩm được thêm thành công");
                 return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
             ViewBag.SupplierList = GetSuppliers();
             ViewBag.ProductList = GetProducts();
             ViewBag.SizeList = GetSizes();
+            _toastNotification.AddErrorToastMessage("Lỗi nhập hóa đơn nhập hàng");
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", nhaphang, null, "") });
         }
         [Route("purchaseorder/details")]
@@ -147,6 +148,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;
             TempData["CurrentPage"] = 1;
+            _toastNotification.AddSuccessToastMessage("Hóa đơn nhập hàng đã xóa thành công");
             return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
         }
         [Route("purchaseorder/edit")]
@@ -184,11 +186,13 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
                 TempData["CurrentPage"] = 1;
+                _toastNotification.AddSuccessToastMessage("Hóa đơn nhập hàng được sửa thành công");
                 return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
             ViewBag.SupplierList = GetSuppliers();
             ViewBag.ProductList = GetProducts();
             ViewBag.SizeList = GetSizes();
+            _toastNotification.AddErrorToastMessage("Lỗi sửa hóa đơn nhập hàng");
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
         }
         private List<SelectListItem> GetSizes()

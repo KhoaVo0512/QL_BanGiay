@@ -86,5 +86,11 @@ namespace QL_BanGiay.Areas.Admin.Repository
              await _context.SaveChangesAsync();
             return collection.MaDongSanPham;
         }
+
+        public List<DongSanPham> GetCollections(int id)
+        {
+            var lstCollection = _context.DongSanPhams.OrderBy(e=>e.TenDongSanPham).Where(e=>e.MaNhanHieu == id).ToList();
+            return lstCollection;
+        }
     }
 }

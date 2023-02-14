@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Areas.Admin.Repository;
 using QL_BanGiay.Data;
+using QL_BanGiay.Helps;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -16,8 +20,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private readonly IBrand _BrandRepo;
         private readonly ISupplier _SupplierRepo;
         private readonly IProduce _ProduceRepo;
-        public ShoeController (IShoe shoe, ICollection collection, IBrand brandRepo, ISupplier supplier, IProduce produce)
+        private readonly IToastNotification _toastNotification;
+        public ShoeController (IShoe shoe, ICollection collection, IBrand brandRepo, ISupplier supplier, IProduce produce, IToastNotification toastNotification)
         {
+            _toastNotification = toastNotification;
             _ProduceRepo = produce;
             _SupplierRepo = supplier;
             _CollectionRepo = collection;
@@ -45,29 +51,53 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("shoe/create")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Create()
         {
             ViewBag.BrandList = GetBrands();
             ViewBag.ProduceList = GetProduce();
-            ViewBag.CollectionList = GetCollections();
             return View(new ShoeContext());
         }
-        private List<SelectListItem> GetCollections()
+        [Route("shoe/create")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> CreateAsync(ShoeContext item)
         {
-            var lstCollection = new List<SelectListItem>();
-            PaginatedList<DongSanPham> collections = _CollectionRepo.GetItems("NameCollection", SortOrder.Ascending, "",1, 1000);
-            lstCollection = collections.Select(ut => new SelectListItem()
+            bool CheckMaGiay = false;
+            if (ModelState.IsValid)
             {
-                Value = ut.MaDongSanPham.ToString(),
-                Text = ut.TenDongSanPham
-            }).ToList();
-            var defItem = new SelectListItem()
-            {
-                Value = "",
-                Text = "----Chọn dòng sản phẩm----"
-            };
-            lstCollection.Insert(0, defItem);
-            return lstCollection;
+                CheckMaGiay = _ShoeRepo.IsShoeNoExists(item.MaGiay);
+                if (CheckMaGiay)
+                {
+                    ModelState.AddModelError("MaGiay", "Mã giày này đã có rồi");
+                    _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
+                }
+                try
+                {
+                    item = await _ShoeRepo.Create(item);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(String.Empty, ex.ToString());
+                }
+                Sort();
+                var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                var pager = new PagerModel(items.TotalRecords, 1, 5);
+                pager.SortExpression = "";
+                this.ViewBag.Pager = pager;
+                TempData["CurrentPage"] = 1;
+                _toastNotification.AddSuccessToastMessage("Sản phẩm đã được thêm thành công");
+                return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+            }
+            _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+            return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
+        }
+        [Route("shoe/GetCollections")]
+        public JsonResult GetCollections(int id)
+        {
+            var lstCollection = _CollectionRepo.GetCollections(id);
+            return new JsonResult(lstCollection);
         }
         private List<SelectListItem> GetBrands() 
         {
@@ -81,7 +111,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var defItem = new SelectListItem()
             {
                 Value = "",
-                Text = "----Chọn nhãn hiệu----"
+                Text = "----Chọn nhãn hiệu----",
             };
             lstBrand.Insert(0, defItem);
             return lstBrand;
@@ -103,6 +133,16 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             lstProduce.Insert(0, defItem);
             return lstProduce;
         }
-        
+        private void Sort()
+        {
+            SortModel sortModel = new SortModel();
+            sortModel.AddColumn("MaGiay");
+            sortModel.AddColumn("NameShoe");
+            sortModel.AddColumn("Price");
+            sortModel.ApplySort("");
+            ViewData["sortModel"] = sortModel;
+            ViewBag.SearchText = "";
+        }
+
     }
 }

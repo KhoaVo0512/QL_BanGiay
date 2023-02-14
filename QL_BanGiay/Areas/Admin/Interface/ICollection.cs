@@ -11,5 +11,6 @@ namespace QL_BanGiay.Areas.Admin.Interface
         Task<int> Delete(int id);
         DongSanPham GetItem(int? id);
         Task<DongSanPham> Edit(DongSanPham dongsanpham);
+        List<DongSanPham> GetCollections(int id);
     }
 }
