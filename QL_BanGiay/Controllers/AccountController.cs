@@ -15,31 +15,36 @@ namespace QL_BanGiay.Controllers
     public class AccountController : Controller
     {
         private readonly IToastNotification _toastNotification;
-        private readonly QlyBanGiayContext _context;
         private readonly IAccount _accountRepository;
+        private readonly IProvince _ProviceRepo;
+        private readonly IDistrict _DistrictRepo;
+        private readonly ICommune _CommuneRepo;
 
-        public AccountController(QlyBanGiayContext context, IToastNotification toastNotification, IAccount accountRepository)
+        public AccountController(IToastNotification toastNotification, IAccount accountRepository
+            , IProvince proviceRepo, IDistrict district, ICommune commune)
         {
+            _DistrictRepo = district;
+            _CommuneRepo = commune;
             _toastNotification = toastNotification;
-            _context = context;
             _accountRepository = accountRepository;
+            _ProviceRepo = proviceRepo;
         }
         [Route("Tinh")]
-        public JsonResult Tinh()
+        public async Task<JsonResult> Tinh()
         {
-            var cnt = _context.Tinhs.OrderBy(s => s.TenTinh).ToList();
+            var cnt = await _ProviceRepo.GetProvinces();
             return new JsonResult(cnt);
         }
         [Route("Huyen")]
-        public JsonResult Huyen(string id)
+        public async Task<JsonResult> Huyen(string id)
         {
-            var huyen = _context.Huyens.Where(e => e.MaTinh == id).OrderBy(s => s.TenHuyen).ToList();
+            var huyen = await _DistrictRepo.GetDistricts(id);
             return new JsonResult(huyen);
         }
         [Route("Xa")]
-        public JsonResult Xa(string id)
+        public async Task<JsonResult> Xa(string id)
         {
-            var xa = _context.Xas.Where(e => e.MaHuyen == id).OrderBy(s => s.TenXa).ToList();
+            var xa = await _CommuneRepo.GetCommunes(id);
             return new JsonResult(xa);
         }
         // GET: Account/Register
@@ -58,10 +63,11 @@ namespace QL_BanGiay.Controllers
         {
             if (ModelState.IsValid)
             {
-                var checkmail = _context.NguoiDungs.Where(s => s.Email == register.Email).FirstOrDefault();
-                if (checkmail != null)
+                bool checkmail = _accountRepository.IsAccountNoExists(register);
+                if (checkmail)
                 {
                     ModelState.AddModelError(String.Empty, "Địa chỉ email này đã có rồi");
+                    _toastNotification.AddErrorToastMessage("Tài khoản đăng ký không thành công");
                     return View(register);
                 }
                 else
@@ -71,8 +77,7 @@ namespace QL_BanGiay.Controllers
                     return Redirect("login");
                 }
             }
-            //Ham so loi bat trong model
-            //var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            _toastNotification.AddErrorToastMessage("Tài khoản đăng ký không thành công");
             return View(register);
         }
         //GET: account/login
@@ -94,32 +99,23 @@ namespace QL_BanGiay.Controllers
 
             if (ModelState.IsValid)
             {
-                var check_tk = _context.NguoiDungs.Where(s => s.Email == loginModel.Email).FirstOrDefault();
-                if (check_tk == null)
+                bool check_tk = _accountRepository.IsEmailNoExists(loginModel);
+                var account = _accountRepository.GetAccount(loginModel.Email);
+                if (check_tk)
                 {
-
                     ModelState.AddModelError("Error", "Tài khoản hoặc mật khẩu không chính xác");
+                    _toastNotification.AddErrorToastMessage("Đăng nhập không thành công");
                     return View(loginModel);
                 }
                 if (returnUrl != "/")
                 {
-                    var check_pw = EncodeManager.VerifyHashedPassword(check_tk.Password, loginModel.Password);
+                    var check_pw = EncodeManager.VerifyHashedPassword(account.Password, loginModel.Password);
                     if (check_pw == PasswordVerificationResult.Success)
                     {
-                        var check_quyen = (from n in _context.NguoiDungs
-                                           join q in _context.QuyenCts
-                                           on n.MaNguoiDung equals q.MaNguoiDung into table1
-                                           from t in table1.DefaultIfEmpty()
-                                           join d in _context.Quyens
-                                           on t.MaQuyen equals d.MaQuyen
-                                           where n.MaNguoiDung == check_tk.MaNguoiDung
-                                           select new Quyen
-                                           {
-                                               TenQuyen = d.TenQuyen
-                                           }).ToList();
+                        var getRole = _accountRepository.GetRoles(account.MaNguoiDung);
                         var claims = new List<Claim>();
-                        claims.Add(new Claim(ClaimTypes.Name, check_tk.HoNguoiDung + " " + check_tk.TenNguoiDung));
-                        foreach (var t in check_quyen)
+                        claims.Add(new Claim(ClaimTypes.Name, account.HoNguoiDung + " " + account.TenNguoiDung));
+                        foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
                                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
@@ -131,7 +127,7 @@ namespace QL_BanGiay.Controllers
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                         await HttpContext.SignInAsync(claimsPrincipal);
-                        foreach (var t in check_quyen)
+                        foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
                                 return Redirect("/admin");
@@ -146,23 +142,13 @@ namespace QL_BanGiay.Controllers
                 }
                 else
                 {
-                    var check_pw = EncodeManager.VerifyHashedPassword(check_tk.Password, loginModel.Password);
+                    var check_pw = EncodeManager.VerifyHashedPassword(account.Password, loginModel.Password);
                     if (check_pw == PasswordVerificationResult.Success)
                     {
-                        var check_quyen = (from n in _context.NguoiDungs
-                                           join q in _context.QuyenCts
-                                           on n.MaNguoiDung equals q.MaNguoiDung into table1
-                                           from t in table1.DefaultIfEmpty()
-                                           join d in _context.Quyens
-                                           on t.MaQuyen equals d.MaQuyen
-                                           where n.MaNguoiDung == check_tk.MaNguoiDung
-                                           select new Quyen
-                                           {
-                                               TenQuyen = d.TenQuyen
-                                           }).ToList();
+                        var getRole = _accountRepository.GetRoles(account.MaNguoiDung);
                         var claims = new List<Claim>();
-                        claims.Add(new Claim(ClaimTypes.Name, check_tk.HoNguoiDung + " " + check_tk.TenNguoiDung));
-                        foreach (var t in check_quyen)
+                        claims.Add(new Claim(ClaimTypes.Name, account.HoNguoiDung + " " + account.TenNguoiDung));
+                        foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
                                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
@@ -174,7 +160,7 @@ namespace QL_BanGiay.Controllers
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                         await HttpContext.SignInAsync(claimsPrincipal);
-                        foreach (var t in check_quyen)
+                        foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
                                 return Redirect("/admin");
@@ -189,11 +175,13 @@ namespace QL_BanGiay.Controllers
                     else
                     {
                         ModelState.AddModelError(String.Empty, "Tài khoản hoặc mật khẩu không chính xác");
+                        _toastNotification.AddErrorToastMessage("Đăng nhập không thành công");
                         return View(loginModel);
                     }
                 }
             }
-            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+            ModelState.AddModelError(String.Empty, "Tài khoản hoặc mật khẩu không chính xác");
+            _toastNotification.AddErrorToastMessage("Đăng nhập không thành công");
             return View(loginModel);
         }
         [Authorize]

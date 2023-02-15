@@ -27,6 +27,9 @@ builder.Services.AddScoped<IShoe, ShoeRepo>();
 builder.Services.AddScoped<ISize, SizeRepo>();
 builder.Services.AddScoped<ISupplier, SupplierRepo>();
 builder.Services.AddScoped<IProduce, ProduceRepo>();
+builder.Services.AddScoped<IProvince, ProvinceRepo>();
+builder.Services.AddScoped<IDistrict, DistrictRepo>();
+builder.Services.AddScoped<ICommune, CommuneRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<QlyBanGiayContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));

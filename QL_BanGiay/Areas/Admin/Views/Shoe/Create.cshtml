@@ -113,11 +113,9 @@
     </div>
 </div>
 <script>
-    $('#MaDongSanPham').attr('disabled', true);
     $('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
     $("#MaNhanHieu").change(function () {
         var id = $(this).val();
-        $('#MaDongSanPham').attr('disabled', false);
         $('#MaDongSanPham').empty();
         $('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
         $.ajax({

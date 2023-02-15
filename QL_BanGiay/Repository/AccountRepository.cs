@@ -1,4 +1,5 @@
-﻿using QL_BanGiay.Data;
+﻿using Microsoft.Win32;
+using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
 using QL_BanGiay.Interface;
 using QL_BanGiay.Models;
@@ -11,6 +12,46 @@ namespace QL_BanGiay.Repository
         public AccountRepository(QlyBanGiayContext context)
         {
             _context = context;
+        }
+
+        public NguoiDung GetAccount(string email)
+        {
+            var account = _context.NguoiDungs.Where(s => s.Email == email).FirstOrDefault();
+            return account;
+        }
+
+        public List<Quyen> GetRoles(string Id)
+        {
+            var getRole = (from n in _context.NguoiDungs
+                               join q in _context.QuyenCts
+                               on n.MaNguoiDung equals q.MaNguoiDung into table1
+                               from t in table1.DefaultIfEmpty()
+                               join d in _context.Quyens
+                               on t.MaQuyen equals d.MaQuyen
+                               where n.MaNguoiDung == Id
+                               select new Quyen
+                               {
+                                   TenQuyen = d.TenQuyen
+                               }).ToList();
+            return getRole;
+        }
+
+        public bool IsAccountNoExists(RegisterModel account)
+        {
+            var checkEmail = _context.NguoiDungs.Where(s => s.Email == account.Email).FirstOrDefault();
+            if (checkEmail != null)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsEmailNoExists(LoginModel account)
+        {
+            var email = _context.NguoiDungs.Where(s => s.Email == account.Email).FirstOrDefault();
+            if (email != null)
+                return true;
+            else
+                return false;
         }
 
         public async Task Login(LoginModel login)

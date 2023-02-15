@@ -28,7 +28,7 @@ namespace QL_BanGiay.Helps
             Buffer.BlockCopy(subkey, 0, outputBytes, 1 + SaltSize, Pbkdf2SubkeyLength);
             return outputBytes;
         }
-        public static PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
+        public static PasswordVerificationResult VerifyHashedPassword(string? hashedPassword, string? providedPassword)
         {
             byte[] decodedHashedPassword = Convert.FromBase64String(hashedPassword);
             if (VerifyHashedPasswordV2(decodedHashedPassword, providedPassword))

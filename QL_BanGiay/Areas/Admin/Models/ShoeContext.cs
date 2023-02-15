@@ -18,11 +18,11 @@ namespace QL_BanGiay.Areas.Admin.Models
         public string? ChatLieu { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập màu sắc giày")]
         public string? MauSac { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập màu sắc giày")]
+        [Required(ErrorMessage = "Vui lòng chọn hình ảnh cho sản phẩm")]
         public IFormFile? MaAnhNen { get; set; }
         
         public string? anhNenUrl { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập màu sắc giày")]
+        [Required(ErrorMessage = "Vui lòng chọn hình ảnh chi tiết cho sản phẩm")]
         public IFormFileCollection? AnhDetail { get; set; }
         public List<ShoeImageContext>? Images { get; set; }
     }

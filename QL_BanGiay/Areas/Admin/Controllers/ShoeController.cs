@@ -71,6 +71,8 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError("MaGiay", "Mã giày này đã có rồi");
                     _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+                    ViewBag.BrandList = GetBrands();
+                    ViewBag.ProduceList = GetProduce();
                     return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
                 }
                 try
@@ -91,8 +93,21 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
             _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+            ViewBag.BrandList = GetBrands();
+            ViewBag.ProduceList = GetProduce();
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
         }
+        [Route("shoe/edit")]
+        [HttpGet]
+        [NoDirectAccess]
+        public IActionResult Edit()
+        {
+
+            ViewBag.BrandList = GetBrands();
+            ViewBag.ProduceList = GetProduce();
+            return View();
+        }
+
         [Route("shoe/GetCollections")]
         public JsonResult GetCollections(int id)
         {
