@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Frameworks;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -110,6 +111,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 AnhDD = item.anhNenUrl,
                 TrangThai = true,
                 NgayCn = DateTime.Now,
+                MaNhaSanXuat = item.MaNhaSanXuat
             };
             newShoe.AnhGiays = new List<AnhGiay>();
             foreach(var file in item.Images)
@@ -145,6 +147,96 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 await file.CopyToAsync(iNeedToLearnAboutDispose);
             }
             return "/" + folderPath;
+        }
+
+        public ShoeContext GetItem(string id)
+        {
+            var getShoe = _context.Giays.Where(s => s.MaGiay == id).Include(e => e.AnhGiays).FirstOrDefault();
+            var getBrand = _context.DongSanPhams.Where(s => s.MaDongSanPham == getShoe.MaDongSanPham).Select(s => s.MaNhanHieu).SingleOrDefault();
+
+            ShoeContext item = new ShoeContext
+            {
+                MaGiay = getShoe.MaGiay,
+                TenGiay = getShoe.TenGiay,
+                MaDongSanPham = (int)getShoe.MaDongSanPham,
+                ChatLieu = getShoe.ChatLieu,
+                MauSac = getShoe.MauSac,
+                MaNhaSanXuat = (int)getShoe.MaNhaSanXuat,
+                MaNhanHieu = (int)getBrand,
+            };
+            return item;
+        }
+
+        public async Task<ShoeContext> Edit(ShoeContext item)
+        {
+            var getShoe = _context.Giays.Where(s => s.MaGiay == item.MaGiay).FirstOrDefault();
+            string serverFolder = _webHostEnvironment + getShoe.AnhDD.ToString();
+            FileInfo fi = new FileInfo(serverFolder);
+            if (fi != null)
+                File.Delete(serverFolder);
+            string folder;
+            if (item.MaAnhNen != null)
+            {
+                folder = "assets/images/anhdaidien/";
+                item.anhNenUrl = await UploadImage(folder, item.MaAnhNen);
+            }
+            if (item.AnhDetail != null)
+            {
+                if (item.MaNhanHieu == 1)
+                    folder = "assets/images/converse/";
+                else if (item.MaNhanHieu == 2)
+                    folder = "assets/images/vans/";
+                else if (item.MaNhanHieu == 3)
+                    folder = "assets/images/adidas/";
+                else folder = "assets/images/nike/";
+                item.Images = new List<ShoeImageContext>();
+                foreach (var file in item.AnhDetail)
+                {
+                    var shoeImage = new ShoeImageContext()
+                    {
+                        Name = file.FileName,
+                        URL = await UploadImage(folder, file)
+                    };
+                    item.Images.Add(shoeImage);
+                }
+            }
+            getShoe.TenGiay = item.TenGiay;
+            getShoe.NgayCn = DateTime.Now;
+            getShoe.ChatLieu = item.ChatLieu;
+            getShoe.MauSac = item.MauSac;
+            getShoe.MaNhaSanXuat = item.MaNhaSanXuat;
+            getShoe.MaDongSanPham = item.MaDongSanPham;
+            getShoe.AnhDD = item.anhNenUrl;
+            var getImageShoe = _context.AnhGiays.Where(s => s.MaGiay == item.MaGiay).ToList();
+            var id = item.Images.ToArray();
+            int i = 0;
+            var path = "";
+            foreach (var items in getImageShoe)
+            {
+                path = _webHostEnvironment.WebRootPath + items.Url.ToString();
+                FileInfo fa = new FileInfo(path);
+                if (fa!= null)
+                {
+                    File.Delete(path);
+                    fa.Delete();
+                }
+                items.TenAnh = id[i].Name;
+                items.Url = id[i].URL;
+                i++;
+                _context.AnhGiays.Update(items);
+            }
+            _context.Update(getShoe);
+            await _context.SaveChangesAsync();
+            return item;
+        }
+
+        public bool Delete(string id)
+        {
+            var getShoe = _context.Giays.Where(s => s.MaGiay == id).FirstOrDefault();
+            getShoe.TrangThai = false;
+            _context.Update(getShoe);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

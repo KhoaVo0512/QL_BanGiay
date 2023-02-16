@@ -2,6 +2,21 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
+$("#MaNhanHieu").change(function () {
+    var id = $(this).val();
+    $('#MaDongSanPham').empty();
+    $('#MaDongSanPham').append('<option hidden value="">----Chọn dòng sản phẩm----</option>');
+    $.ajax({
+        url: '/admin/shoe/GetCollections?id=' + id,
+        success: function (result) {
+            $.each(result, function (i, data) {
+                $('#MaDongSanPham').append('<option value=' + data['maDongSanPham'] + '>' + data['tenDongSanPham'] + '</option>');
+            });
+
+        }
+    });
+});
 showInPopup = (url, title) => {
     $.ajax({
         type: "GET",

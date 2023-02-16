@@ -77,9 +77,6 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public bool Edit(NhapHang nhapHang)
         {
             bool retVal = false;
-            //var getNhapHang = _context.NhapHangs.Where(s => s.MaNhapHang == nhapHang.MaNhapHang).FirstOrDefault();
-            //getNhapHang.MaDonViNhap = nhapHang.MaDonViNhap;
-            //getNhapHang.SoHoaDon = nhpa
             List<NhapHangCt> nhapHangCts = _context.NhapHangCts.Where(s => s.MaNhapHang == nhapHang.MaNhapHang).ToList();
             _context.NhapHangCts.RemoveRange(nhapHangCts);
             _context.SaveChanges();
@@ -94,7 +91,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
         public NhapHang GetItem(int id)
         {
-            NhapHang item = _context.NhapHangs.Where(i => i.MaNhapHang == id)
+            NhapHang? item = _context.NhapHangs.Where(i => i.MaNhapHang == id)
                 .Include(d => d.NhapHangCts)
                 .ThenInclude(i => i.MaGiayNavigation)
                 .FirstOrDefault();

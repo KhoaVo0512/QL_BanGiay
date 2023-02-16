@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="single-form form-default form-border">
                         <label>Nhãn hiệu</label>
                         <div class="form-input">
@@ -41,7 +41,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="single-form form-default form-border">
                         <label>Dòng sản phẩm</label>
                         <div class="form-input">
@@ -51,12 +51,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="single-form form-default form-border">
-                <label>Nơi sản xuất</label>
-                <div class="form-input">
-                    <select asp-for="MaNhaSanXuat" class="form-select" asp-items="ViewBag.ProduceList"></select>
-                    <span asp-validation-for="MaNhaSanXuat" class="text-danger"></span>
+                <div class="col-md-4">
+                    <div class="single-form form-default form-border">
+                        <label>Nơi sản xuất</label>
+                        <div class="form-input">
+                            <select asp-for="MaNhaSanXuat" class="form-select" asp-items="ViewBag.ProduceList"></select>
+                            <span asp-validation-for="MaNhaSanXuat" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">

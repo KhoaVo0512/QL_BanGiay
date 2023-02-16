@@ -97,15 +97,78 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             ViewBag.ProduceList = GetProduce();
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
         }
+        [Route("shoe/delete")]
+        [HttpGet]
+        [NoDirectAccess]
+        public IActionResult Delete(string id)
+        {
+            if (id == null)
+                return NotFound();
+            var shoe = _ShoeRepo.GetItem(id);
+            if (shoe == null)
+            {
+                return NotFound();
+            }
+            return View(shoe);
+        }
+        [Route("shoe/delete")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComfirm(string id)
+        {
+            var shoe = _ShoeRepo.Delete(id);
+            Sort();
+            var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+            var pager = new PagerModel(items.TotalRecords, 1, 5);
+            pager.SortExpression = "";
+            this.ViewBag.Pager = pager;
+            TempData["CurrentPage"] = 1;
+            _toastNotification.AddSuccessToastMessage("Sản phẩm đã xóa thành công");
+            return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+        }
         [Route("shoe/edit")]
         [HttpGet]
         [NoDirectAccess]
-        public IActionResult Edit()
+        public IActionResult Edit(string id)
         {
-
+            ShoeContext item = _ShoeRepo.GetItem(id);
+            var collection = _CollectionRepo.GetItem(item.MaDongSanPham);
+            ViewBag.NameCollection = collection.TenDongSanPham;
+            ViewBag.IdCollection = collection.MaDongSanPham;
             ViewBag.BrandList = GetBrands();
             ViewBag.ProduceList = GetProduce();
-            return View();
+            return View(item);
+        }
+        [Route("shoe/edit")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Edit(ShoeContext item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var getShoe = await _ShoeRepo.Edit(item);
+                }catch (Exception ex)
+                {
+                    ModelState.AddModelError(String.Empty, ex.ToString());
+                    ViewBag.BrandList = GetBrands();
+                    ViewBag.ProduceList = GetProduce();
+                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
+                }
+                Sort();
+                var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                var pager = new PagerModel(items.TotalRecords, 1, 5);
+                pager.SortExpression = "";
+                this.ViewBag.Pager = pager;
+                TempData["CurrentPage"] = 1;
+                _toastNotification.AddSuccessToastMessage("Sản phẩm được sửa thành công");
+                return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+            }
+            _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+            ViewBag.BrandList = GetBrands();
+            ViewBag.ProduceList = GetProduce();
+            return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
         }
 
         [Route("shoe/GetCollections")]

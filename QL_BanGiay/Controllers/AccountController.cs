@@ -101,7 +101,7 @@ namespace QL_BanGiay.Controllers
             {
                 bool check_tk = _accountRepository.IsEmailNoExists(loginModel);
                 var account = _accountRepository.GetAccount(loginModel.Email);
-                if (check_tk)
+                if (!check_tk)
                 {
                     ModelState.AddModelError("Error", "Tài khoản hoặc mật khẩu không chính xác");
                     _toastNotification.AddErrorToastMessage("Đăng nhập không thành công");
