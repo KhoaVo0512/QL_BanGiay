@@ -10,6 +10,10 @@ namespace QL_BanGiay.Areas.Admin.Interface
         Task<ShoeContext> Edit(ShoeContext item);
         bool Delete(string id);
         ShoeContext GetItem(string id);
+        List<Giay> GetItemsVans();
+        List<Giay> GetItemsConverse();
+        List<Giay> GetItemsNike();
+        List<Giay> GetItemsAdidas();
         bool IsShoeNoExists(string magiay);
         PaginatedList<Giay> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5);
     }

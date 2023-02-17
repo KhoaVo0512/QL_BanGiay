@@ -9,9 +9,7 @@
     <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
         <h6>Thêm hóa đơn nhập hàng mới </h6>
     </div>
-
     <form id="CodeSbyAnizForm" asp-action="create" onsubmit="return jQueryAjaxPost(this);">
-
         <div class="row col-12">
 
             <div class="row col-11 ml-5">
@@ -35,11 +33,11 @@
                     <select asp-for="MaDonViNhap" class="form-control" asp-items="ViewBag.SupplierList"></select>
                     <span asp-validation-for="MaDonViNhap" class="text-danger"></span>
                 </div>
-                 <div class="form-group col-2">
+                <div class="form-group col-2">
                     <label class="control-label">Số hóa đơn:</label>
                 </div>
                 <div class="form-group col-3">
-                    <input asp-for="SoHoaDon" class="form-control"/>
+                    <input asp-for="SoHoaDon" class="form-control" />
                     <span asp-validation-for="SoHoaDon" class="text-danger"></span>
                 </div>
                 <div class="form-group col-2">

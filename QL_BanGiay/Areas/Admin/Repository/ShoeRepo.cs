@@ -238,5 +238,45 @@ namespace QL_BanGiay.Areas.Admin.Repository
             _context.SaveChanges();
             return true;
         }
+
+        public List<Giay> GetItemsVans()
+        {
+            var items = (from g in _context.Giays
+                         join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
+                         where b.MaNhanHieu == 2
+                         where g.TrangThai == true
+                         select g).ToList();
+            return items;
+        }
+
+        public List<Giay> GetItemsConverse()
+        {
+            var items = (from g in _context.Giays
+                         join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
+                         where b.MaNhanHieu == 1
+                         where g.TrangThai == true
+                         select g).ToList();
+            return items;
+        }
+
+        public List<Giay> GetItemsNike()
+        {
+            var items = (from g in _context.Giays
+                         join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
+                         where b.MaNhanHieu == 4
+                         where g.TrangThai == true
+                         select g).ToList();
+            return items;
+        }
+
+        public List<Giay> GetItemsAdidas()
+        {
+            var items = (from g in _context.Giays
+                         join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
+                         where b.MaNhanHieu == 3
+                         where g.TrangThai == true
+                         select g).ToList();
+            return items;
+        }
     }
 }

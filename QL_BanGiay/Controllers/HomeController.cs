@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Models;
 using System.Diagnostics;
 
@@ -7,18 +8,20 @@ namespace QL_BanGiay.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IShoe _ShoeRepo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IShoe shoe)
         {
             _logger = logger;
+            _ShoeRepo = shoe;
         }
 
-        public IActionResult Index(string magiay)
+        public IActionResult Index()
         {
-            if (magiay != null)
-            {
-                return View(magiay);
-            }
+            ViewBag.ItemsVans = _ShoeRepo.GetItemsVans();
+            ViewBag.ItemsConverse = _ShoeRepo.GetItemsConverse();
+            ViewBag.ItemsAdidas = _ShoeRepo.GetItemsAdidas();
+            ViewBag.ItemsNike = _ShoeRepo.GetItemsNike();
             return View();
         }
 
