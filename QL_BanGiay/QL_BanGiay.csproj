@@ -23,4 +23,12 @@
     <PackageReference Include="NToastNotify" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\assets\images\adidas\" />
+    <Folder Include="wwwroot\assets\images\anhdaidien\" />
+    <Folder Include="wwwroot\assets\images\converse\" />
+    <Folder Include="wwwroot\assets\images\nike\" />
+    <Folder Include="wwwroot\assets\images\vans\" />
+  </ItemGroup>
+
 </Project>
