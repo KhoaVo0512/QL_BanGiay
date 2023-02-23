@@ -17,7 +17,7 @@ public partial class NhapHangCt
     [Required(ErrorMessage = "Vui lòng nhập số lượng")]
     [Range(1, 1000, ErrorMessage = "Số lượng phải từ 1 đến 1000")]
     public int? SoLuong { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Vui lòng nhập giá mua")]
     [Range(1, 10000000, ErrorMessage = "Giá mua phải lớn hơn 0")]
     public int? GiaMua { get; set; }
 

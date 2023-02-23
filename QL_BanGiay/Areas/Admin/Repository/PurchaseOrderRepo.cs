@@ -118,9 +118,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
         public int GetNewPONumber()
         {
-            int number;
-            var LastNumber = _context.NhapHangs.Max(cd => cd.MaNhapHang);
-            if (LastNumber == null)
+            int number = 0;
+            var LastNumber = _context.NhapHangs.OrderByDescending(s=>s.MaNhapHang).Select(s=>s.MaNhapHang).SingleOrDefault();
+            if (LastNumber == 0)
             {
                 number = 1;
             }else

@@ -73,7 +73,8 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public async Task<DongSanPham> Edit(DongSanPham dongsanpham)
         {
 
-            var item = _context.DongSanPhams.Where(s=>s.MaNhanHieu == dongsanpham.MaNhanHieu).FirstOrDefault();
+            var item = _context.DongSanPhams.Where(s=>s.MaDongSanPham == dongsanpham.MaDongSanPham).FirstOrDefault();
+            item.MaNhanHieu = dongsanpham.MaNhanHieu;
             item.TenDongSanPham = dongsanpham.TenDongSanPham;
             await _context.SaveChangesAsync();
             return dongsanpham;

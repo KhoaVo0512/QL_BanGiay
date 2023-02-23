@@ -11,10 +11,8 @@
     </div>
     <form id="CodeSbyAnizForm" asp-action="create" onsubmit="return jQueryAjaxPost(this);">
         <div class="row col-12">
-
             <div class="row col-11 ml-5">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                 <div class="form-group col-2 ">
                     <label class="control-label">Mã nhập hàng:</label>
                 </div>
@@ -22,15 +20,13 @@
                     <input asp-for="MaNhapHang" class="form-control" readonly />
                     <span asp-validation-for="MaNhapHang" class="text-danger"></span>
                 </div>
-
                 <div class="form-group col-2">
                 </div>
-
                 <div class="form-group col-2">
                     <label class="control-label">Đơn vị nhập hàng:</label>
                 </div>
                 <div class="form-group col-3">
-                    <select asp-for="MaDonViNhap" class="form-control" asp-items="ViewBag.SupplierList"></select>
+                    <select asp-for="MaDonViNhap" class="form-select" asp-items="ViewBag.SupplierList"></select>
                     <span asp-validation-for="MaDonViNhap" class="text-danger"></span>
                 </div>
                 <div class="form-group col-2">
@@ -50,7 +46,6 @@
                     <input asp-for="NgayNhap" class="form-control" />
                     <span asp-validation-for="NgayNhap" class="text-danger"></span>
                 </div>
-
 
                 <div class="col-12">
 
@@ -86,7 +81,7 @@
                                         <span asp-validation-for="@Model.NhapHangCts[i].Description" class="text-danger"></span>
                                     </td>
                                     <th>
-                                        <select asp-for="@Model.NhapHangCts[i].MaSize" class="form-control" asp-items="ViewBag.SizeList"></select>
+                                        <select asp-for="@Model.NhapHangCts[i].MaSize" class="form-select" asp-items="ViewBag.SizeList"></select>
                                         <span asp-validation-for="@Model.NhapHangCts[i].MaSize" class="text-danger" style="font-weight: initial;"></span>
                                     </th>
                                     <td>
@@ -122,7 +117,7 @@
                                 </th>
 
                                 <th style="width:13%;">
-                                    <input type="text" id="txtQtyTotal" class="form-control form-control-plaintext" value="" />
+                                    <input type="text" id="txtQtyTotal" class="form-control form-control-plaintext" value="@ViewBag.SoLuong" />
                                 </th>
 
                                 <th style="width:13%;">
@@ -183,8 +178,79 @@
     </form>
 
 </div>
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<script>
+    jQueryAjaxPost = form => {
+        try {
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: new FormData(form),
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    if (res.isValid) {
+                        console.log(res['html']);
+                        $('#view-all').html(res.html);
+                        $('#form-modal .modal-body').html('');
+                        $('#form-modal .modal-title').html('');
+                        $("#form-modal .close").click();
+                    }
+                    else {
+
+                        $('#form-modal .modal-body').html(res.html);
+                        CalcTotals();
+                    }
+
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+            //to prevent default form submit event
+            return false;
+        } catch (ex) {
+            console.log(ex)
+        }
     }
-}
+    function CalcTotals() {
+        var x = document.getElementsByClassName('QtyTotal');
+        var totalQty = 0;
+        var Amount = 0;
+        var totalAmount = 0;
+        var i;
+        for (i = 0; i < x.length; i++) {
+
+            var idofIsDeleted = i + "__IsDeleted";
+            var idofPrice = i + "__GiaMua";
+
+            var idofTotal = i + "__Total";
+
+            var hidIsDelId = document.querySelector("[id$='" + idofIsDeleted + "']").id;
+            var priceTxtId = document.querySelector("[id$='" + idofPrice + "']").id;
+            var totalTxtId = document.querySelector("[id$='" + idofTotal + "']").id;
+            if (document.getElementById(hidIsDelId).value != "true") {
+                if (eval(x[i].value) === undefined)
+                    x[i].value = 0;
+                totalQty = totalQty + eval(x[i].value);
+                var txttotal = document.getElementById(totalTxtId);
+                var txtprice = document.getElementById(priceTxtId);
+                if (isNaN(totalQty)) {
+                    totalQty = eval(x[i].value);
+                }
+                var Total = eval(x[i].value) * txtprice.value;
+                if (isNaN(Total))
+                    txttotal.value = '';
+                else
+                    txttotal.value = Total;
+                totalAmount = eval(totalAmount) + eval(txttotal.value);
+
+            }
+        }
+        if (isNaN(totalAmount))
+            totalAmount = '';
+        document.getElementById('txtQtyTotal').value = totalQty;
+        document.getElementById('txtAmountTotal').value = totalAmount;
+
+        return;
+    }
+</script>

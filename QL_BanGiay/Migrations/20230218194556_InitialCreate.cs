@@ -237,7 +237,7 @@ namespace QLBanGiay.Migrations
                     TenGiay = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ChatLieu = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     MauSac = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    AnhDD = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AnhDD = table.Column<string>(type: "nvarchar(100)", maxLength: 50, nullable: true),
                     GiaBan = table.Column<int>(type: "int", nullable: true),
                     NgayCN = table.Column<DateTime>(type: "datetime", nullable: true),
                     TrangThai = table.Column<bool>(type: "bit", nullable: true)

@@ -70,10 +70,27 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             nhaphang.MaNhapHang = 0;
             if (ModelState.IsValid)
             {
+                var item = nhaphang.NhapHangCts.ToArray();
+
+                for (int i = 0; i < nhaphang.NhapHangCts.Count; i++)
+                {
+                    for (int j = 1; j < nhaphang.NhapHangCts.Count; j++)
+                    {
+                        if (item[i].MaGiay == item[j].MaGiay && item[i].MaSize == item[j].MaSize)
+                        {
+                            ModelState.AddModelError("NhapHangCts["+j+"].MaGiay", "Errors occurred in the Model");
+                            ViewBag.SupplierList = GetSuppliers();
+                            ViewBag.ProductList = GetProducts();
+                            ViewBag.SizeList = GetSizes();
+                            return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", nhaphang, null, "") });
+                        }
+                    }
+                }
                 try
                 {
                     nhaphang = await _PurchaseOrderRepo.Create(nhaphang);
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
@@ -126,13 +143,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult DeleteConfirm(int id)
         {
-            
+
             bool bolret = false;
             string errMessage = "";
             try
             {
                 bolret = _PurchaseOrderRepo.Delete(id);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 errMessage = errMessage + " " + ex.Message;
             }

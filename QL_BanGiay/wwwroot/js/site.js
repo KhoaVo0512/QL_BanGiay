@@ -82,8 +82,10 @@ jQueryAjaxPost = form => {
                     $('#form-modal .modal-title').html('');
                     $("#form-modal .close").click();
                 }
-                else
+                else {
                     $('#form-modal .modal-body').html(res.html);
+                }
+                   
             },
             error: function (err) {
                 console.log(err)
@@ -144,14 +146,15 @@ function AddItem(btn) {
     newRow.innerHTML = rowOuterHtml;
 
     var x = document.getElementsByTagName("INPUT");
-
     for (var cnt = 0; cnt < x.length; cnt++) {
         if (x[cnt].type == "text" && x[cnt].id.indexOf('_' + nextrowIdx + '_') > 0) {
-            if (x[cnt].id.indexOf('Unit') == 0)
-                x[cnt].value = '';
+            x[cnt].value = '';
+            if (x[cnt].id.indexOf('__MaSize') > 0)
+                x[cnt].value = 'Vui long chon Size Giay';
         }
         else if (x[cnt].type == "number" && x[cnt].id.indexOf('_' + nextrowIdx + '_') > 0)
             x[cnt].value = 0;
+        
     }
 
     rebindvalidators();
@@ -162,7 +165,6 @@ function rebindvalidators() {
     var $form = $("#CodeSbyAnizForm");
 
     $form.unbind();
-
     $form.data("validator", null);
 
     $.validator.unobtrusive.parse($form);
@@ -209,23 +211,29 @@ function CalcTotals() {
 
         var hidIsDelId = document.querySelector("[id$='" + idofIsDeleted + "']").id;
         var priceTxtId = document.querySelector("[id$='" + idofPrice + "']").id;
-        console.log(priceTxtId);
         var totalTxtId = document.querySelector("[id$='" + idofTotal + "']").id;
-        console.log(totalTxtId);
         if (document.getElementById(hidIsDelId).value != "true") {
+            if (eval(x[i].value) === undefined)
+                x[i].value = 0;
             totalQty = totalQty + eval(x[i].value);
-            console.log(eval(x[i].value));
             var txttotal = document.getElementById(totalTxtId);
             var txtprice = document.getElementById(priceTxtId);
-
-            txttotal.value = eval(x[i].value) * txtprice.value;
-            console.log(txttotal.value);
+            if (isNaN(totalQty)) {
+                totalQty = eval(x[i].value);
+            }
+            var Total = eval(x[i].value) * txtprice.value;
+            if (isNaN(Total))
+                txttotal.value = '';
+            else
+                txttotal.value = Total;
             totalAmount = eval(totalAmount) + eval(txttotal.value);
+
         }
     }
-
-    document.getElementById('txtQtyTotal').value = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalQty);
-    document.getElementById('txtAmountTotal').value = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalAmount);
+    if (isNaN(totalAmount))
+        totalAmount = '';
+    document.getElementById('txtQtyTotal').value = totalQty;
+    document.getElementById('txtAmountTotal').value = totalAmount;
 
     return;
 }

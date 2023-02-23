@@ -7,9 +7,10 @@
         <form asp-action="edit" asp-route-id="@Model.MaDongSanPham" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="single-form form-default form-border">
+                <input asp-for="MaDongSanPham" class="form-control" hidden/>
                 <label>Nhãn hiệu</label>
                 <div class="form-input">
-                    <select asp-for="MaNhanHieu" class="form-control" asp-items="ViewBag.BrandList"></select>
+                    <select asp-for="MaNhanHieu" class="form-select" asp-items="ViewBag.BrandList"></select>
                 </div>
                 <span asp-validation-for="MaNhanHieu" class="text-danger"></span>
             </div>

@@ -20,6 +20,7 @@ namespace QL_BanGiay.Models
         public string? Email { get; set; }
         [Required(ErrorMessage = "Nhập số điện thoại")]
         [Phone(ErrorMessage = "Nhập đúng định dạng số điện thoại")]
+        [RegularExpression(@"((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$", ErrorMessage = "Nhập sai số điện thoại")]
         public string? Sdt { get; set; }
 
         public int? GioiTinh { get; set; }
