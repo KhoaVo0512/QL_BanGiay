@@ -20,6 +20,7 @@ builder.Services.AddMvc().AddNToastNotifyToastr(new NToastNotify.ToastrOptions()
     CloseButton = true
 });
 builder.Services.AddScoped<IAccount, AccountRepository>();
+builder.Services.AddScoped<IProductDetails, ProductDetails>();
 builder.Services.AddScoped<ICollection, CollectionRepo>();
 builder.Services.AddScoped<IBrand, BrandRepo>();
 builder.Services.AddScoped<IPurchaseOrder, PurchaseOrderRepo>();
@@ -30,6 +31,9 @@ builder.Services.AddScoped<IProduce, ProduceRepo>();
 builder.Services.AddScoped<IProvince, ProvinceRepo>();
 builder.Services.AddScoped<IDistrict, DistrictRepo>();
 builder.Services.AddScoped<ICommune, CommuneRepo>();
+builder.Services.AddScoped<IWareHouse, WareHouseRepo>();
+builder.Services.AddScoped<IPrice, PriceRepo>();
+builder.Services.AddScoped<IShoeDetails, ShoeDetailsRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<QlyBanGiayContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
@@ -38,8 +42,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.LoginPath = "/account/login";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(3);
     options.Cookie.MaxAge = options.ExpireTimeSpan;
-    options.SlidingExpiration = true;
-    
+    options.SlidingExpiration = true;   
 });
 builder.Services.AddAuthorization(options =>
 {

@@ -14,7 +14,10 @@ namespace QL_BanGiay.Areas.Admin.Interface
         List<Giay> GetItemsConverse();
         List<Giay> GetItemsNike();
         List<Giay> GetItemsAdidas();
+        Giay GetItemWareHouse(string id);
+        Giay GetItemProductDetails(string nameshoe);
         bool IsShoeNoExists(string magiay);
+        bool IsNameShoeNoExists(string nameshoe);
         PaginatedList<Giay> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5);
     }
 }

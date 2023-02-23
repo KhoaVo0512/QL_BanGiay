@@ -1,0 +1,86 @@
+﻿@model QL_BanGiay.Data.Giay
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+
+}
+
+<div class="card">
+    <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
+        <h6>Chi tiết kho giày </h6>
+    </div>
+
+    <form id="CodeSbyAnizForm" asp-action="edit" onsubmit="return jQueryAjaxPost(this);">
+
+        <div class="row col-12">
+
+            <div class="row col-11 ml-5">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group col-2 ">
+                    <label class="control-label">Mã giày:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="MaGiay" class="form-control" readonly />
+                    <span asp-validation-for="MaGiay" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-2">
+                </div>
+
+                <div class="form-group col-2">
+                    <label class="control-label">Tên giày:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="TenGiay" class="form-control" readonly />
+                    <span asp-validation-for="TenGiay" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+
+                    <table id="CodesTable" class="table table-borderless table-sm mb-0 pb-0 border CodesTable">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Size giày</th>
+                                <th>Số lượng (Đôi)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="CsDiv">
+                            @for (int i = 0; i < Model.KhoGiays.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input readonly asp-for="MaGiay" class="form-control" value="@(i+1)"/>
+                                      
+                                    </td>
+                                    <th>
+                                        <select disabled asp-for="@Model.KhoGiays[i].MaSize" class="form-control" asp-items="ViewBag.SizeList"></select>
+                                    </th>
+                                    <td>
+                                        <input readonly type="text" asp-for="@Model.KhoGiays[i].SoLuong" class="form-control QtyTotal" />
+                                        <span asp-validation-for="@Model.KhoGiays[i].SoLuong" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group btn-group col-11">
+                <div class="col-5">
+                    <a class="btn btn-secondary btn-block" asp-action="index"
+                       asp-route-pg="@TempData.Peek("CurrentPage")">Trở về</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

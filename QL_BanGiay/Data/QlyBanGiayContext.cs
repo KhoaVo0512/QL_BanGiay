@@ -56,10 +56,11 @@ public partial class QlyBanGiayContext : DbContext
     public virtual DbSet<Tinh> Tinhs { get; set; }
 
     public virtual DbSet<Xa> Xas { get; set; }
+    public virtual DbSet<NoiDung> NoiDungs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.\\KHOA;Database=Qly_BanGiay;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;Database=Qly_BanGiay;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -83,7 +84,22 @@ public partial class QlyBanGiayContext : DbContext
                 .HasForeignKey(d => d.MaGiay)
                 .HasConstraintName("FK__AnhGiay__MaGiay__22751F6C");
         });
+        modelBuilder.Entity<NoiDung>(entity =>
+        {
+            entity.HasKey(e => e.MaNoiDung).HasName("PK__NoiDung__356240DFED68AB91");
 
+            entity.ToTable("NoiDung");
+
+            entity.Property(e => e.MaGiay)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ThongTin)
+                .HasMaxLength(10000)
+                .IsUnicode(false);
+            entity.HasOne(d => d.MaGiayNavigation).WithMany(p => p.NoiDungs)
+                .HasForeignKey(d => d.MaGiay)
+                .HasConstraintName("FK__NoiDung__MaGiay__45671F6C");
+        });
         modelBuilder.Entity<DiaChi>(entity =>
         {
             entity.HasKey(e => e.MaDiaChi).HasName("PK__DiaChi__EB61213EFBD5B0A6");

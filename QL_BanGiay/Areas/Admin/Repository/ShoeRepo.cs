@@ -1,7 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Frameworks;
+﻿using Microsoft.EntityFrameworkCore;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -56,15 +53,17 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<Giay> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.Giays.Where(ut=>ut.TenGiay.Contains(SearchText))
+                items = _context.Giays.Where(ut=>ut.TenGiay.ToLower().Contains(SearchText.ToLower()))
                     .Include(s=>s.MaDongSanPhamNavigation)
                     .Include(s=>s.MaNhaSanXuatNavigation)
+                    .Include(s=> s.NoiDungs)
                     .ToList();
             }
             else
                 items = _context.Giays
                     .Include(s => s.MaDongSanPhamNavigation)
                     .Include(s => s.MaNhaSanXuatNavigation)
+                    .Include(s => s.NoiDungs)
                     .ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
@@ -170,7 +169,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public async Task<ShoeContext> Edit(ShoeContext item)
         {
             var getShoe = _context.Giays.Where(s => s.MaGiay == item.MaGiay).FirstOrDefault();
-            string serverFolder = _webHostEnvironment + getShoe.AnhDD.ToString();
+            string serverFolder = _webHostEnvironment.WebRootPath + getShoe.AnhDD.ToString();
             FileInfo fi = new FileInfo(serverFolder);
             if (fi != null)
                 File.Delete(serverFolder);
@@ -220,10 +219,17 @@ namespace QL_BanGiay.Areas.Admin.Repository
                     File.Delete(path);
                     fa.Delete();
                 }
-                items.TenAnh = id[i].Name;
-                items.Url = id[i].URL;
-                i++;
-                _context.AnhGiays.Update(items);
+                _context.AnhGiays.Remove(items);
+                _context.SaveChanges();
+            }
+            getShoe.AnhGiays = new List<AnhGiay>();
+            foreach(var image in item.Images)
+            {
+                getShoe.AnhGiays.Add(new AnhGiay
+                {
+                    TenAnh = image.Name,
+                    Url = image.URL
+                });
             }
             _context.Update(getShoe);
             await _context.SaveChangesAsync();
@@ -277,6 +283,30 @@ namespace QL_BanGiay.Areas.Admin.Repository
                          where g.TrangThai == true
                          select g).ToList();
             return items;
+        }
+
+        public Giay GetItemWareHouse(string id)
+        {
+            var item = _context.Giays.Where(s => s.MaGiay == id).Include(s => s.KhoGiays).FirstOrDefault();
+            return item;
+        }
+
+        public bool IsNameShoeNoExists(string nameshoe)
+        {
+            var ct = _context.Giays.Where(s=>s.TenGiay.ToLower() == nameshoe.ToLower()).Count();
+            if (ct > 0)
+            {
+                return true;
+            }else
+                return false;
+
+        }
+
+        public Giay GetItemProductDetails(string nameshoe)
+        {
+            var item = _context.Giays.Where(s => s.TenGiay.ToLower() == nameshoe.ToLower()).Include(s=>s.AnhGiays).FirstOrDefault();
+            return item;
+
         }
     }
 }

@@ -25,10 +25,11 @@ public partial class Giay
     public bool? TrangThai { get; set; }
 
     public virtual ICollection<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
+    public virtual List<NoiDung> NoiDungs { get; } = new List<NoiDung>();
 
     public virtual ICollection<DonDatCt> DonDatCts { get; } = new List<DonDatCt>();
 
-    public virtual ICollection<KhoGiay> KhoGiays { get; } = new List<KhoGiay>();
+    public virtual List<KhoGiay> KhoGiays { get; } = new List<KhoGiay>();
 
     public virtual ICollection<KhuyenMaiCt> KhuyenMaiCts { get; } = new List<KhuyenMaiCt>();
 

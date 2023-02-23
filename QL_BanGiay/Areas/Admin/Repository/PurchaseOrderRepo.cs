@@ -11,9 +11,11 @@ namespace QL_BanGiay.Areas.Admin.Repository
     {
         private string _errors = "";
         private readonly QlyBanGiayContext _context;
-        public PurchaseOrderRepo(QlyBanGiayContext context)
+        private readonly IWareHouse _WareHouseRepo;
+        public PurchaseOrderRepo(QlyBanGiayContext context, IWareHouse WareHouseRepo)
         {
             _context = context;
+            _WareHouseRepo = WareHouseRepo;
         }
         private List<NhapHang> DoSort(List<NhapHang> items, string SortProperty, SortOrder sortOrder)
         {
@@ -44,6 +46,27 @@ namespace QL_BanGiay.Areas.Admin.Repository
         }
         public async Task<NhapHang> Create(NhapHang nhaphang)
         {
+            var items = nhaphang.NhapHangCts.ToArray();
+            for (int i = 0; i < nhaphang.NhapHangCts.Count; i++)
+            {
+                bool checkShoeSize = _WareHouseRepo.IsShoeSizeNoExists(items[i].MaGiay, items[i].MaSize);
+                if (checkShoeSize)
+                {
+                    var item = _WareHouseRepo.GetItemWareHouse(items[i].MaGiay, items[i].MaSize);
+                    item.SoLuong += items[i].SoLuong;
+                    _context.KhoGiays.Update(item);
+                }
+                else
+                {
+                    var newWareHouse = new KhoGiay
+                    {
+                        MaGiay = items[i].MaGiay,
+                        MaSize = (int)items[i].MaSize,
+                        SoLuong = items[i].SoLuong
+                    };
+                    _context.KhoGiays.Add(newWareHouse);
+                }
+            }
             _context.Add(nhaphang);
             await _context.SaveChangesAsync();
             return nhaphang;

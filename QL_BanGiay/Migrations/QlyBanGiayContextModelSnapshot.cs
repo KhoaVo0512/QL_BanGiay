@@ -486,6 +486,32 @@ namespace QLBanGiay.Migrations
                     b.ToTable("NhapHangCT", (string)null);
                 });
 
+            modelBuilder.Entity("QL_BanGiay.Data.NoiDung", b =>
+                {
+                    b.Property<int>("MaNoiDung")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNoiDung"));
+
+                    b.Property<string>("MaGiay")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("ThongTin")
+                        .HasMaxLength(10000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)");
+
+                    b.HasKey("MaNoiDung")
+                        .HasName("PK__NoiDung__356240DFED68AB91");
+
+                    b.HasIndex("MaGiay");
+
+                    b.ToTable("NoiDung", (string)null);
+                });
+
             modelBuilder.Entity("QL_BanGiay.Data.NoiSanXuat", b =>
                 {
                     b.Property<int>("MaNhaSanXuat")
@@ -779,6 +805,16 @@ namespace QLBanGiay.Migrations
                     b.Navigation("MaSizeNavigation");
                 });
 
+            modelBuilder.Entity("QL_BanGiay.Data.NoiDung", b =>
+                {
+                    b.HasOne("QL_BanGiay.Data.Giay", "MaGiayNavigation")
+                        .WithMany("NoiDungs")
+                        .HasForeignKey("MaGiay")
+                        .HasConstraintName("FK__NoiDung__MaGiay__45671F6C");
+
+                    b.Navigation("MaGiayNavigation");
+                });
+
             modelBuilder.Entity("QL_BanGiay.Data.QuyenCt", b =>
                 {
                     b.HasOne("QL_BanGiay.Data.NguoiDung", "MaNguoiDungNavigation")
@@ -833,6 +869,8 @@ namespace QLBanGiay.Migrations
                     b.Navigation("KhuyenMaiCts");
 
                     b.Navigation("NhapHangCts");
+
+                    b.Navigation("NoiDungs");
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.Huyen", b =>

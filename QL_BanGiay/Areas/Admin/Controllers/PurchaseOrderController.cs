@@ -100,7 +100,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
                 TempData["CurrentPage"] = 1;
-                _toastNotification.AddSuccessToastMessage("Dòng sản phẩm được thêm thành công");
+                _toastNotification.AddSuccessToastMessage("Hóa đơn nhập hàng thêm thành công");
                 return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
             ViewBag.SupplierList = GetSuppliers();
