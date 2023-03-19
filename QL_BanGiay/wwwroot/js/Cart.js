@@ -182,7 +182,7 @@ var cart = {
 
             var _item = this.items[i];
 
-            if (object.id === _item.id) {
+            if (object.id === _item.id && object.size === _item.size) {
 
                 _item.count = parseInt(object.count) + parseInt(_item.count);
                 _item.total = parseInt(object.total) + parseInt(_item.total);
@@ -200,24 +200,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (storage.getCart()) {
         cart.setItems(storage.getCart());
         helpers.updateView();
+        document.getElementById("cartCount").textContent = storage.getCart().length;
     } else {
         helpers.emptyView();
-
+        document.getElementById("cartCount").textContent = 0;
     }
-    var products = document.querySelector('.quantity button');
-    products.addEventListener('click', function (e) {
-        var select = document.getElementById('size');
-        var selectValue = select.options[select.selectedIndex].value;
-        if (selectValue == '') {
-            helpers.setHtml('selectError', '<p class="text-danger">Vui lòng chọn size sản phẩm</p>'); 
-        }
-        else {
-            helpers.setHtml('selectError', '');
-            var item = helpers.itemData(this.parentNode);
-            cart.addItem(item);
-            document.getElementById("cartCount").textContent = storage.getCart().length;
-        }
-    });
-});
-document.getElementById("cartCount").textContent = storage.getCart().length;
-console.log(document.getElementById("cartCount").textContent);
+}); 

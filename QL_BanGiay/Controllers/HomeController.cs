@@ -45,7 +45,9 @@ namespace QL_BanGiay.Controllers
             else
                 return View("NotFound");
         }
-        public IActionResult Privacy()
+        [Route("cart")]
+        [HttpGet]
+        public IActionResult Card()
         {
             return View();
         }

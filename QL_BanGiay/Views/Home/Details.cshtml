@@ -135,4 +135,18 @@
         }
         $input.val(value);
     });
+    var products = document.querySelector('.quantity button');
+    products.addEventListener('click', function (e) {
+        var select = document.getElementById('size');
+        var selectValue = select.options[select.selectedIndex].value;
+        if (selectValue == '') {
+            helpers.setHtml('selectError', '<p class="text-danger">Vui lòng chọn size sản phẩm</p>');
+        }
+        else {
+            helpers.setHtml('selectError', '');
+            var item = helpers.itemData(this.parentNode);
+            cart.addItem(item);
+            document.getElementById("cartCount").textContent = storage.getCart().length;
+        }
+    });
 </script>

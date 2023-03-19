@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "Card";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="page-main">
+    <div class="block">
+        <div class="container">
+            <div class="cart-table">
+                <div class="table-header">
+                    <div class="photo">
+                        Product Image
+                    </div>
+                    <div class="name">
+                        Product Name
+                    </div>
+                    <div class="price">
+                        Unit Price
+                    </div>
+                    <div class="qty">
+                        Qty
+                    </div>
+                    <div class="subtotal">
+                        Subtotal
+                    </div>
+                    <div class="remove">
+                        <span class="hidden-sm hidden-xs">Remove</span>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="photo">
+                        <a href="product.html"><img src="images/products/product-1.jpg" alt=""></a>
+                    </div>
+                    <div class="name">
+                        <a href="product.html">Boyfriend Short</a>
+                    </div>
+                    <div class="price">
+                        $85.00
+                    </div>
+                    <div class="qty qty-changer">
+                        <fieldset>
+                            <input type="button" value="&#8210;" class="decrease">
+                            <input type="text" class="qty-input" value="2" data-min="0" data-max="5">
+                            <input type="button" value="+" class="increase">
+                        </fieldset>
+                    </div>
+                    <div class="subtotal">
+                        $85.00
+                    </div>
+                    <div class="remove">
+                        <a href="#" class="icon icon-close-2"></a>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="photo">
+                        <a href="product.html"><img src="images/products/product-2.jpg" alt=""></a>
+                    </div>
+                    <div class="name">
+                        <a href="product.html">Floral Print Top</a>
+                    </div>
+                    <div class="price">
+                        $185.00
+                    </div>
+                    <div class="qty qty-changer">
+                        <fieldset>
+                            <input type="button" value="&#8210;" class="decrease">
+                            <input type="text" class="qty-input" value="2" data-min="0">
+                            <input type="button" value="+" class="increase">
+                        </fieldset>
+                    </div>
+                    <div class="subtotal">
+                        $185.00
+                    </div>
+                    <div class="remove">
+                        <a href="#" class="icon icon-close-2"></a>
+                    </div>
+                </div>
+                <div class="table-footer">
+                    <button class="btn btn-alt">CONTINUE SHOPPING</button>
+                    <button class="btn btn-alt pull-right"><i class="icon icon-bin"></i><span>Clear Shopping Cart</span></button>
+                    <button class="btn btn-alt pull-right"><i class="icon icon-sync"></i><span>UPDATE</span></button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 total-wrapper">
+                    <table class="total-price">
+                        <tr>
+                            <td>Subtotal</td>
+                            <td>$241.00</td>
+                        </tr>
+                        <tr>
+                            <td>Discount</td>
+                            <td>$12.00</td>
+                        </tr>
+                        <tr class="total">
+                            <td>Grand Total</td>
+                            <td>$229.00</td>
+                        </tr>
+                    </table>
+                    <div class="cart-action">
+                        <div>
+                            <a href="checkout.html" class="btn">Proceed To Checkout</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
