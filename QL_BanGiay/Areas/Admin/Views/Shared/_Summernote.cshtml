@@ -1,0 +1,42 @@
+﻿@model QL_BanGiay.Areas.Admin.Models.Summenote
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-vi-VN.min.js" integrity="sha512-ir/93ZWu1Y1LmyYrG6gIOcXCvGC/PehZtJcd6j1QoDF8EooxiYbRHKDVC/V4Kz6qPwI4HrOpvLCdpfpTedyYgw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+        $('@Model.IdEditor').summernote({
+            lang: 'vi-VN',
+            dialogsInBody: true,
+            placeholder: 'Enter content....',
+            height: @Model.height,
+            toolbar: @Html.Raw(Model.toolbar),
+            popover: @Html.Raw(Model.popover),
+            callbacks: {
+                onImageUpload: function (image) {
+                    uploadImage(image);
+                }
+            }
+        });
+        function uploadImage(image) {
+            var data = new FormData();
+            $.each(image, function (index, value) {
+                data.append("image", value);
+            });
+            $.ajax({
+                url: '/admin/shoedetails/UploadImage',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data,
+                type: "post",
+                success: function (url) {
+                    $.each(url['url'], function (i, value) {
+                        var image = $('<img>').attr('src', url['url'][i]);
+                        $('@Model.IdEditor').summernote("insertNode", image[0]);
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    });
+</script>

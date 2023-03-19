@@ -25,7 +25,7 @@ public partial class Giay
     public bool? TrangThai { get; set; }
 
     public virtual ICollection<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
-    public virtual List<NoiDung> NoiDungs { get; } = new List<NoiDung>();
+    public virtual List<NoiDung> NoiDungs { get; set; } = new List<NoiDung>();
 
     public virtual ICollection<DonDatCt> DonDatCts { get; } = new List<DonDatCt>();
 

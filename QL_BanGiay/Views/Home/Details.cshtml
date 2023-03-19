@@ -3,9 +3,11 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var data = 1;
+    var data = 0;
     CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
 }
+<link rel="stylesheet" href="~/css/details.css" />
+
 <section class="product-wrapper pt-50 pb-50">
     <div class="container">
         <div class="card-wrapper">
@@ -22,11 +24,6 @@
                         </div>
                     </div>
                     <div class="img-select">
-                        <div class="img-item">
-                            <a href="#" data-id="1">
-                                <img src="/assets/images/vans/3da9558f-9589-4c3c-ae2f-df2e769349da_product-10.jpg" alt="shoe image">
-                            </a>
-                        </div>
                         @foreach (var item in Model.AnhGiays)
                         {
                             data = data + 1;
@@ -43,37 +40,37 @@
                 <div class="product-content">
                     <h2 class="product-title">@Model.TenGiay-@Model.MaGiay</h2>
                     <div class="product-price">
-                        <p class="last-price">Old Price: <span>$257.00</span></p>
                         <p class="new-price">Giá: <span>@String.Format(elGR, "{0:0,0}", Model.GiaBan) VND</span></p>
                     </div>
 
                     <div class="product-detail">
-                        <h2>about this item: </h2>
+                        <h2>Thông tin về sản phẩm: </h2>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius. Dignissimos, labore suscipit. Unde.</p>
                     </div>
                     <div class="col-md-7">
                         <div class="single-form form-default form-border">
                             <div class="form-input">
-                                <select class="form-select" aria-label="Default select example" asp-items="ViewBag.SizeList">
+                                <select id="size" class="form-select" aria-label="Default select example" asp-items="ViewBag.SizeList">
                                 </select>
+                                <div id="selectError"></div>
                             </div>
                         </div>
                     </div>
                     <div class="purchase-info">
-                        <div class="quantity d-block mb-25 mt-sm-2">
+                        <div class="quantity d-block mb-25 mt-sm-2" data-name="@Model.TenGiay" data-id="@Model.MaGiay" data-price="@Model.GiaBan" data-image="@Model.AnhDD">
                             <label class="font-weight-600 no-margin-bottom">Số lượng:</label>
-                            <span class="padding-5px border-light-gray sm-text-large">
+                            <span class="padding-5px border-light-gray sm-text-large mr-70">
                                 <a href="javascript:void(0)" class="minus-btn text-black"><i class="fas fa-minus bg-transparent"></i></a>
-                                <input type="text" name="name" value="1" class="border-left-light-gray border-right-light-gray">
+                                <input onchange="change();" id="quanlity" type="text" name="name" value="1" class="count border-left-light-gray border-right-light-gray">
                                 <a href="javascript:void(0)" class="plus-btn text-black"><i class="fas fa-plus bg-transparent"></i></a>
                             </span>
-                            <button type="button" class="btn ml-100 mt-10">
-                                Đặt hàng
+                            <button id="local" href="javascript:void(0);" class="btn btn-danger mt-10">
+                                Thêm vào giỏ hàng
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -83,6 +80,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     const imgs = document.querySelectorAll('.img-select a');
+    const number = new RegExp('(?=.*[0-9])');
+    const special = new RegExp('(?=.*[ _@@!#\$%\^&\*\-\+\|\/\.\?\>\<\,\'\"\:\;\{\}\\]\[\~\`])');
+    function change() {
+        var input = document.getElementById('quanlity');
+        if (!number.test(input.value) || special.test(input.value)) {
+            input.value = 1;
+            input.innerHTML = 1;
+        }
+
+    }
     const imgBtns = [...imgs];
     let imgId = 1;
 
@@ -101,35 +108,31 @@
     }
 
     window.addEventListener('resize', slideImage);
-    $(document).ready(function () {
-        $('.minus-btn,.minus-btn-1').on('click', function (e) {
-            e.preventDefault();
-            var $this = $(this);
-            var $input = $this.closest('div').find('input');
-            var value = parseInt($input.val());
+    $('.minus-btn,.minus-btn-1').on('click', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
 
-            if (value > 1) {
-                value = value - 1;
-            } else {
-                value = 1;
-            }
-            $input.val(value);
-        });
-
-        $('.plus-btn,.plus-btn-1').on('click', function (e) {
-            e.preventDefault();
-            var $this = $(this);
-            var $input = $this.closest('div').find('input');
-            var value = parseInt($input.val());
-
-            if (value < 100) {
-                value = value + 1;
-            } else {
-                value = 100;
-            }
-            $input.val(value);
-        });
-
+        if (value > 1) {
+            value = value - 1;
+        } else {
+            value = 1;
+        }
+        $input.val(value);
     });
 
+    $('.plus-btn,.plus-btn-1').on('click', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $input = $this.closest('div').find('input');
+        var value = parseInt($input.val());
+
+        if (value < 100) {
+            value = value + 1;
+        } else {
+            value = 100;
+        }
+        $input.val(value);
+    });
 </script>

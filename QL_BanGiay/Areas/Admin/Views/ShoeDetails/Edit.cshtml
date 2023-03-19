@@ -1,13 +1,11 @@
-﻿@model QL_BanGiay.Areas.Admin.Models.ShoeContext
+﻿@model QL_BanGiay.Areas.Admin.Models.ShoeDetails
 @{
     ViewData["Title"] = "Edit";
     Layout = null;
-    string NameCollection = ViewBag.NameCollection;
-    int IdCollection = ViewBag.IdCollection;
 }
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create" asp-route-id="@Model.MaGiay" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+        <form asp-action="Edit" asp-route-id="@Model.MaGiay" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
                 <div class="col-md-6">
@@ -26,11 +24,16 @@
                     <div class="form-group">
                         <label class="control-label">Tên giày</label>
                         <div class="input-group">
-                            <input asp-for="TenGiay" class="form-control" />
+                            <input readonly asp-for="TenGiay" class="form-control" />
                         </div>
                         <span asp-validation-for="TenGiay" class="text-danger"></span>
                     </div>
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Thông tin sản phẩm</label>
+                <textarea asp-for="content" class="form-control"></textarea>
+                <span asp-validation-for="content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="col-md-6 offset-md-3 mt-4">
@@ -40,3 +43,7 @@
         </form>
     </div>
 </div>
+@{
+    var summernote = new QL_BanGiay.Areas.Admin.Models.Summenote("#content");
+}
+<partial name="_Summernote" model="summernote"></partial>

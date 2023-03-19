@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin | Bán Giày</title>
-
+@*  <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.css"/>*@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -94,7 +94,7 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="~/dist/js/pages/dashboard.js"></script>
 <script src="~/js/site.js"></script>
-@*<script src="~/assets/ckeditor/ckeditor.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-vi-VN.min.js" integrity="sha512-ir/93ZWu1Y1LmyYrG6gIOcXCvGC/PehZtJcd6j1QoDF8EooxiYbRHKDVC/V4Kz6qPwI4HrOpvLCdpfpTedyYgw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @await Component.InvokeAsync("NToastNotify")
 @RenderSection("Scripts", required: false)
 </body>

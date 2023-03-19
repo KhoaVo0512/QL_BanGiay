@@ -25,5 +25,6 @@ namespace QL_BanGiay.Areas.Admin.Models
         [Required(ErrorMessage = "Vui lòng chọn hình ảnh chi tiết cho sản phẩm")]
         public IFormFileCollection? AnhDetail { get; set; }
         public List<ShoeImageContext>? Images { get; set; }
+        public string? content { get; set; }
     }
 }
