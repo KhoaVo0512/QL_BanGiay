@@ -47,11 +47,20 @@ namespace QL_BanGiay.Controllers
         }
         [Route("cart")]
         [HttpGet]
-        public IActionResult Card()
+        public IActionResult Cart()
         {
             return View();
         }
-
+        [Route("/home/cartdetails")]
+        [HttpGet]
+        public IActionResult CartDetails(string idSanPham, int SoLuong, string SizeGiay, int idSize) 
+        {
+            var item = _ShoeRepo.GetItemCart(idSanPham);
+            ViewBag.SoLuong = SoLuong;
+            ViewBag.SizeGiay = SizeGiay;
+            ViewBag.IdSize = idSize;
+            return View(item);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode = null)
         {

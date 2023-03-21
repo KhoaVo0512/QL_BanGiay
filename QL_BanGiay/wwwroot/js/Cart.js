@@ -17,7 +17,18 @@ var localAdapter = {
     clearCart: function () {
 
         localStorage.removeItem(cartId);
-
+    },
+    removeCart: function (id, size) {
+        var Cart = storage.getCart();
+        var newCart = [];
+        $.each(Cart, function (index, item) {
+            if ((item.id != id) || (item.id == id && item.idsize != size)) {
+                newCart.push(item);
+            }
+        });
+        localAdapter.saveCart(newCart);
+        $(".row_" + id + size).remove();
+        document.getElementById("cartCount").textContent = storage.getCart().length;
     }
 
 };
@@ -65,14 +76,16 @@ var helpers = {
             patt = new RegExp("^[1-9]([0-9]+)?$");
         count.value = (patt.test(count.value) === true) ? parseInt(count.value) : 1;
         var select = document.getElementById('size');
-        var selectValue = select.options[select.selectedIndex].text;
+        var selectText = select.options[select.selectedIndex].text;
+        var selectValue = select.options[select.selectedIndex].value;
         var item = {
 
             name: object.getAttribute('data-name'),
             price: object.getAttribute('data-price'),
             id: object.getAttribute('data-id'),
             image: object.getAttribute('data-image'),
-            size: selectValue,
+            size: selectText,
+            idsize: selectValue,
             count: count.value,
             total: parseInt(object.getAttribute('data-price')) * parseInt(count.value)
 
@@ -140,6 +153,7 @@ var cart = {
                 id: item.id,
                 name: item.name,
                 size: item.size,
+                idsize: item.idsize,
                 price: item.price,
                 image: item.image,
                 count: item.count,

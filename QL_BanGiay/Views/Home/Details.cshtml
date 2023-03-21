@@ -65,7 +65,7 @@
                                 <input onchange="change();" id="quanlity" type="text" name="name" value="1" class="count border-left-light-gray border-right-light-gray">
                                 <a href="javascript:void(0)" class="plus-btn text-black"><i class="fas fa-plus bg-transparent"></i></a>
                             </span>
-                            <button id="local" href="javascript:void(0);" class="btn btn-danger mt-10">
+                            <button href="javascript:void(0);" class="btn btn-danger mt-10">
                                 Thêm vào giỏ hàng
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
@@ -81,7 +81,7 @@
 <script>
     const imgs = document.querySelectorAll('.img-select a');
     const number = new RegExp('(?=.*[0-9])');
-    const special = new RegExp('(?=.*[ _@@!#\$%\^&\*\-\+\|\/\.\?\>\<\,\'\"\:\;\{\}\\]\[\~\`])');
+    const special = new RegExp('(?=.*[ -_@@!#\$%\^&\*\-\+\|\/\.\?\>\<\,\'\"\:\;\{\}\\]\[\~\`])');
     function change() {
         var input = document.getElementById('quanlity');
         if (!number.test(input.value) || special.test(input.value)) {

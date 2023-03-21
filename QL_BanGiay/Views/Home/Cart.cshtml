@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Card";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/cart.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<main class="page-main">
+    <div class="block">
+        <div class="container">
+            <table class="table table-bordered" id="tableSanPham">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col" class="text-center">Giá</th>
+                        <th scope="col" class="text-center">Số lượng</th>
+                        <th scope="col" class="text-center">Tổng cộng</th>
+                        <th class="text-center" scope="col">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col total-wrapper">
+                    <table class="total-price">
+                        <tr>
+                            <td>Thành tiền</td>
+                            <td>$241.00</td>
+                        </tr>
+                        <tr>
+                            <td>Giảm giá</td>
+                            <td>$12.00</td>
+                        </tr>
+                        <tr class="total">
+                            <td>Tổng cộng</td>
+                            <td>$229.00</td>
+                        </tr>
+                    </table>
+                    <div class="cart-action">
+                        <div>
+                            <a href="checkout.html" class="btn btn-danger">Thanh toán</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@section Scripts {
+    <script>
+        var arrSanPham = storage.getCart();
+        for ( var i =0;i< arrSanPham.length;i++){
+            $.get("/Home/cartdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
+                $("#tableSanPham tbody").append(data);
+            });
+        }
+    </script>
+}

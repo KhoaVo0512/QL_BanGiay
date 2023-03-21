@@ -10,6 +10,7 @@ namespace QL_BanGiay.Areas.Admin.Interface
         Task<ShoeContext> Edit(ShoeContext item);
         bool Delete(string id);
         ShoeContext GetItem(string id);
+        Giay GetItemCart(string id);
         List<Giay> GetItemsVans();
         List<Giay> GetItemsConverse();
         List<Giay> GetItemsNike();

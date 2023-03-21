@@ -1,0 +1,30 @@
+﻿@model QL_BanGiay.Data.Giay
+@{
+    Layout = null;
+}
+<tr class="row_@Model.MaGiay@(ViewBag.IdSize)">
+    <td class="text-center col-1">
+        <a href="#"><img src="@Model.AnhDD" alt="img"></a>
+    </td>
+    <td class="name">
+        <a href="#" style="font-size: 19px;
+            line-height: 22px;
+            font-weight: 700;
+            color: #f82e56;
+            -webkit-transition: color 0.2s ease;
+            -o-transition: color 0.2s ease;
+            transition: color 0.2s ease;">@Model.TenGiay</a>
+        <br>
+        <small>@(ViewBag.SizeGiay)</small>
+    </td>
+    <td class="text-center">@Model.GiaBan</td>
+    <td class="qty qty-changer text-center">
+        <fieldset>
+            <input type="button" value="&#8210;" class="decrease">
+            <input type="text" class="qty-input" value="@(ViewBag.SoLuong)" data-min="0" data-max="5">
+            <input type="button" value="+" class="increase">
+        </fieldset>
+    </td>
+    <td class="text-center"> @((int)ViewBag.SoLuong * Model.GiaBan)</td>
+    <td class="remove text-center"><a onclick="storage.removeCart('@Model.MaGiay', @(ViewBag.IdSize));" href="javascript:void(0)" style="color: red;" class="fa-solid fa-trash-can"></a></td>
+</tr>

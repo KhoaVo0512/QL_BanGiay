@@ -308,5 +308,11 @@ namespace QL_BanGiay.Areas.Admin.Repository
             return item;
 
         }
+
+        public Giay GetItemCart(string id)
+        {
+            var item = _context.Giays.Where(s=>s.MaGiay == id).FirstOrDefault();
+            return item;
+        }
     }
 }
