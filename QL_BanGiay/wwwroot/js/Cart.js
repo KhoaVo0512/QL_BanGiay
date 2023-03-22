@@ -27,8 +27,11 @@ var localAdapter = {
             }
         });
         localAdapter.saveCart(newCart);
-        $(".row_" + id + size).remove();
+        $(".row_" + id + "-" + size).remove();
         document.getElementById("cartCount").textContent = storage.getCart().length;
+        var item = storage.getCart();
+        cart.setItems(item);
+        helpers.updateViewCart();
     }
 
 };
@@ -91,7 +94,16 @@ var helpers = {
 
         };
         return item;
-
+    },
+    itemCart: function (object) {
+        var counts = object.querySelector(".count");
+        var item = {
+            id: object.getAttribute('data-id'),
+            size: object.getAttribute('data-size'),
+            count: counts.value,
+            total: parseInt(object.getAttribute('data-price')) * parseInt(counts.value)
+        };
+        return item;
     },
     updateView: function () {
 
@@ -102,7 +114,16 @@ var helpers = {
             });
         this.setHtml('cartItems', compiled);
         this.updateTotal();
+    },
+    updateViewCart: function () {
 
+        var items = cart.getItems(),
+            template = this.getHtml('cartT'),
+            compiled = _.template(template, {
+                items: items
+            });
+        this.setHtml('cartItems', compiled);
+        this.updateTotalCart();
     },
     emptyView: function () {
 
@@ -113,7 +134,16 @@ var helpers = {
     updateTotal: function () {
         var id = document.getElementById('totalPrice');
         this.setHtml('totalPrice', cart.total + ' VND');
-
+    },
+    updateTotalCart: function () {
+        var id = document.getElementById('totalPrice');
+        var items = storage.getCart();
+        var total = 0;
+        for (var i = 0; i < items.length; i++) {
+            var _item = items[i];
+            total += _item.total;
+        }
+        this.setHtml('totalPrice', total + ' VND');
     }
 
 };
@@ -204,11 +234,21 @@ var cart = {
                 storage.saveCart(this.items);
 
             }
-
         }
+    },
+    updateItemCart: function (object) {
+        for (var i = 0; i < this.items.length; i++) {
 
+            var _item = this.items[i];
+
+            if (object.id === _item.id && object.size === _item.size) {
+                _item.count = parseInt(object.count);
+                _item.total = parseInt(object.total);
+                this.items[i] = _item;
+                storage.saveCart(this.items);
+            }
+        }
     }
-
 };
 document.addEventListener('DOMContentLoaded', function () {
     if (storage.getCart()) {
@@ -219,4 +259,31 @@ document.addEventListener('DOMContentLoaded', function () {
         helpers.emptyView();
         document.getElementById("cartCount").textContent = 0;
     }
-}); 
+});
+$('.minus-btn,.minus-btn-1').on('click', function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    var $input = $this.closest('div').find('input');
+    var value = parseInt($input.val());
+
+    if (value > 1) {
+        value = value - 1;
+    } else {
+        value = 1;
+    }
+    $input.val(value);
+});
+
+$('.plus-btn,.plus-btn-1').on('click', function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    var $input = $this.closest('div').find('input');
+    var value = parseInt($input.val());
+
+    if (value < 100) {
+        value = value + 1;
+    } else {
+        value = 100;
+    }
+    $input.val(value);
+});

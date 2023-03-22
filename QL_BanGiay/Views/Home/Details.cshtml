@@ -77,76 +77,54 @@
         </div>
     </div>
 </section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    const imgs = document.querySelectorAll('.img-select a');
-    const number = new RegExp('(?=.*[0-9])');
-    const special = new RegExp('(?=.*[ -_@@!#\$%\^&\*\-\+\|\/\.\?\>\<\,\'\"\:\;\{\}\\]\[\~\`])');
-    function change() {
-        var input = document.getElementById('quanlity');
-        if (!number.test(input.value) || special.test(input.value)) {
-            input.value = 1;
-            input.innerHTML = 1;
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const imgs = document.querySelectorAll('.img-select a');
+        const number = /[a-z,A-Z]/;
+        const special = /[ `!@@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        function change() {
+            var input = document.getElementById('quanlity');
+            if (number.test(input.value)) {
+                input.value = 1;
+                input.innerHTML = 1;
+            }
+            else if (special.test(input.value)) {
+                input.value = 1;
+                input.innerHTML = 1;              
+            }
         }
+        const imgBtns = [...imgs];
+        let imgId = 1;
 
-    }
-    const imgBtns = [...imgs];
-    let imgId = 1;
-
-    imgBtns.forEach((imgItem) => {
-        imgItem.addEventListener('click', (event) => {
-            event.preventDefault();
-            imgId = imgItem.dataset.id;
-            slideImage();
+        imgBtns.forEach((imgItem) => {
+            imgItem.addEventListener('click', (event) => {
+                event.preventDefault();
+                imgId = imgItem.dataset.id;
+                slideImage();
+            });
         });
-    });
 
-    function slideImage() {
-        const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+        function slideImage() {
+            const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
 
-        document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
-    }
-
-    window.addEventListener('resize', slideImage);
-    $('.minus-btn,.minus-btn-1').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $input = $this.closest('div').find('input');
-        var value = parseInt($input.val());
-
-        if (value > 1) {
-            value = value - 1;
-        } else {
-            value = 1;
+            document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
         }
-        $input.val(value);
-    });
 
-    $('.plus-btn,.plus-btn-1').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $input = $this.closest('div').find('input');
-        var value = parseInt($input.val());
-
-        if (value < 100) {
-            value = value + 1;
-        } else {
-            value = 100;
-        }
-        $input.val(value);
-    });
-    var products = document.querySelector('.quantity button');
-    products.addEventListener('click', function (e) {
-        var select = document.getElementById('size');
-        var selectValue = select.options[select.selectedIndex].value;
-        if (selectValue == '') {
-            helpers.setHtml('selectError', '<p class="text-danger">Vui lòng chọn size sản phẩm</p>');
-        }
-        else {
-            helpers.setHtml('selectError', '');
-            var item = helpers.itemData(this.parentNode);
-            cart.addItem(item);
-            document.getElementById("cartCount").textContent = storage.getCart().length;
-        }
-    });
-</script>
+        window.addEventListener('resize', slideImage);
+        var products = document.querySelector('.quantity button');
+        products.addEventListener('click', function (e) {
+            var select = document.getElementById('size');
+            var selectValue = select.options[select.selectedIndex].value;
+            if (selectValue == '') {
+                helpers.setHtml('selectError', '<p class="text-danger">Vui lòng chọn size sản phẩm</p>');
+            }
+            else {
+                helpers.setHtml('selectError', '');
+                var item = helpers.itemData(this.parentNode);
+                cart.addItem(item);
+                document.getElementById("cartCount").textContent = storage.getCart().length;
+            }
+        });
+    </script>
+}

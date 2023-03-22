@@ -1,8 +1,10 @@
-﻿@model QL_BanGiay.Data.Giay
+﻿@using System.Globalization;
+@model QL_BanGiay.Data.Giay
 @{
     Layout = null;
+    CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
 }
-<tr class="row_@Model.MaGiay@(ViewBag.IdSize)">
+<tr class="row_@Model.MaGiay-@(ViewBag.IdSize)" data-id="@Model.MaGiay" data-size="@(ViewBag.SizeGiay)" data-price="@Model.GiaBan">
     <td class="text-center col-1">
         <a href="#"><img src="@Model.AnhDD" alt="img"></a>
     </td>
@@ -17,14 +19,14 @@
         <br>
         <small>@(ViewBag.SizeGiay)</small>
     </td>
-    <td class="text-center">@Model.GiaBan</td>
+    <td class="text-center" id="price-@Model.MaGiay-@(ViewBag.IdSize)">@String.Format(elGR, "{0:0,0}",Model.GiaBan) VND</td>
     <td class="qty qty-changer text-center">
         <fieldset>
-            <input type="button" value="&#8210;" class="decrease">
-            <input type="text" class="qty-input" value="@(ViewBag.SoLuong)" data-min="0" data-max="5">
-            <input type="button" value="+" class="increase">
+            <a href="javascript:void(0)" onclick="lowQuantity(`@Model.MaGiay`,@(ViewBag.IdSize))" class="minus-btn-@Model.MaGiay-@(ViewBag.IdSize) text-black"><i class="fas fa-minus bg-transparent"></i></a>
+            <input onchange="change(`@Model.MaGiay`,@(ViewBag.IdSize));" id="quantity-@Model.MaGiay-@(ViewBag.IdSize)" type="text" name="name" value="@(ViewBag.SoLuong)" class="count border-left-light-gray border-right-light-gray">
+            <a href="javascript:void(0)" onclick="heigthQuantity(`@Model.MaGiay`,@(ViewBag.IdSize))" class="plus-btn text-black"><i class="fas fa-plus bg-transparent"></i></a>
         </fieldset>
     </td>
-    <td class="text-center"> @((int)ViewBag.SoLuong * Model.GiaBan)</td>
+    <td class="text-center" id="total-@Model.MaGiay-@(ViewBag.IdSize)"> @String.Format(elGR, "{0:0,0}", ViewBag.SoLuong * Model.GiaBan) VND</td>
     <td class="remove text-center"><a onclick="storage.removeCart('@Model.MaGiay', @(ViewBag.IdSize));" href="javascript:void(0)" style="color: red;" class="fa-solid fa-trash-can"></a></td>
 </tr>

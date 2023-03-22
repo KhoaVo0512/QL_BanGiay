@@ -424,10 +424,12 @@ body.quickview .page-main > .zoomContainer {
         border-left: none;
     }
 
-    .qty,
+    .cart-table .qty,
     .cart-table .price,
     .cart-table .subtotal {
-        width: 2%;
+        display: block;
+        position: absolute;
+        width: 33.33333%;
         bottom: 10px;
         left: 0;
     }

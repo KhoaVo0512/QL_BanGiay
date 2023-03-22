@@ -7,42 +7,48 @@
 <main class="page-main">
     <div class="block">
         <div class="container">
-            <table class="table table-bordered" id="tableSanPham">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col">Hình ảnh</th>
-                        <th scope="col">Tên sản phẩm</th>
-                        <th scope="col" class="text-center">Giá</th>
-                        <th scope="col" class="text-center">Số lượng</th>
-                        <th scope="col" class="text-center">Tổng cộng</th>
-                        <th class="text-center" scope="col">Xóa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-            <div class="row">
-                <div class="col total-wrapper">
-                    <table class="total-price">
+            <div class="cart-table">
+                <table class="table table-bordered" id="tableSanPham">
+                    <thead class="table-light">
                         <tr>
-                            <td>Thành tiền</td>
-                            <td>$241.00</td>
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col" class="text-center">Giá</th>
+                            <th scope="col" class="text-center">Số lượng</th>
+                            <th scope="col" class="text-center">Tổng cộng</th>
+                            <th class="text-center" scope="col">Xóa</th>
                         </tr>
-                        <tr>
-                            <td>Giảm giá</td>
-                            <td>$12.00</td>
-                        </tr>
-                        <tr class="total">
-                            <td>Tổng cộng</td>
-                            <td>$229.00</td>
-                        </tr>
-                    </table>
-                    <div class="cart-action">
-                        <div>
-                            <a href="checkout.html" class="btn btn-danger">Thanh toán</a>
-                        </div>
+                    </thead>
+                    <tbody class="table-body">
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <button class="btn btn-dark"><i style="margin-right: 5px;" class="fa-solid fa-chevron-left"></i>Tiếp tục mua hàng</button>
+                    <button style="float: right !important; margin-right: 10px;" class="btn btn-dark pull-right"><i style="margin-right: 5px;" class="fa-solid fa-trash-can"></i><span>Xóa tất cả giỏ hàng</span></button>
+                    <button id="update" style="float: right !important;" class="btn btn-dark pull-right"><i style="margin-right: 5px;" class="fa-sharp fa-solid fa-rotate"></i><span>Câp nhật</span></button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 offset-md-6">
+                        <table class="total-price">
+                            <tr>
+                                <td>Tổng</td>
+                                <td>$241.00</td>
+                            </tr>
+                            <tr>
+                                <td>Giảm giá</td>
+                                <td>$12.00</td>
+                            </tr>
+                            <tr class="total">
+                                <td>Grand Total</td>
+                                <td>$229.00</td>
+                            </tr>
+                        </table>
+                        <div class="cart-action">
+                            <div>
+                                <a href="checkout.html" class="btn">Thanh toán</a>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,10 +58,95 @@
 @section Scripts {
     <script>
         var arrSanPham = storage.getCart();
-        for ( var i =0;i< arrSanPham.length;i++){
+        for (var i = 0; i < arrSanPham.length; i++) {
             $.get("/Home/cartdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
                 $("#tableSanPham tbody").append(data);
             });
+        }
+        var products = document.querySelector('.table-footer #update');
+        products.addEventListener('click', function (e) {
+            e.preventDefault();
+            var table = document.getElementsByTagName("table")[1]; //first table
+            var rows = table.rows;
+            //loop through rows
+            for (var i = 1; i < rows.length; i += 1) {
+                var item = rows[i];
+                var cartItem = helpers.itemCart(item);
+                cart.updateItemCart(cartItem);
+            }
+            cart.setItems(storage.getCart());
+            helpers.updateViewCart();
+        });
+        function change(id, size) {
+            const numberCart = /[a-z,A-Z]/;
+            const special = /[ `!@@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+            var input = document.getElementById('quantity-' + id + '-' + size);
+            var total = document.getElementById('total-' + id + '-' + size);
+            var price = document.getElementById('price-' + id + '-' + size).innerHTML;
+            if (numberCart.test(input.value)) {
+                input.value = 1;
+                input.innerHTML = 1;
+                var index = price.indexOf('VND');
+                var item = price.substring(0, index - 1);
+                var price = item.replaceAll('.', '');
+                price = parseInt(price);
+                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                total.innerHTML = price;
+            }
+            else if (special.test(input.value)) {
+                input.value = 1;
+                input.innerHTML = 1;
+                var index = price.indexOf('VND');
+                var item = price.substring(0, index - 1);
+                var price = item.replaceAll('.', '');
+                price = parseInt(price);
+                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                total.innerHTML = price;
+            } else {
+                var total = document.getElementById('total-' + id + '-' + size);
+                var price = price * input.value;
+                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                total.innerHTML = price;
+            }
+
+
+        }
+        function lowQuantity(id, size) {
+            var input = document.getElementById('quantity-' + id + '-' + size);
+            var value = input.value;
+
+            if (value > 1) {
+                value = parseInt(value) - 1;
+                var total = document.getElementById('total-' + id + '-' + size);
+                var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
+                var index = priceValue.indexOf('VND');
+                var item = priceValue.substring(0, index - 1);
+                var price = item.replaceAll('.', '');
+                price = parseInt(price) * value;
+                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                total.innerHTML = price;
+            } else {
+                value = 1;
+            }
+            input.value = value;
+        }
+        function heigthQuantity(id, size) {
+            var input = document.getElementById('quantity-' + id + '-' + size);;
+            var value = input.value;
+            if (value < 100) {
+                value = parseInt(value) + 1;
+                var total = total = document.getElementById('total-' + id + '-' + size);
+                var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
+                var index = priceValue.indexOf('VND');
+                var item = priceValue.substring(0, index - 1);
+                var price = item.replaceAll('.', '');
+                price = parseInt(price) * value;
+                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                total.innerHTML = price;
+            } else {
+                value = 100;
+            }
+            input.value = value;
         }
     </script>
 }
