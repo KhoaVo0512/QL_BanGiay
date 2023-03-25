@@ -61,6 +61,39 @@ namespace QL_BanGiay.Controllers
             ViewBag.IdSize = idSize;
             return View(item);
         }
+        [Route("checkout")]
+        [HttpGet]
+        public IActionResult Checkout()
+        {
+            return View();
+        }
+        [Route("/home/checkoutdetails")]
+        [HttpGet]
+        public IActionResult CheckoutDetails(string idSanPham, int SoLuong, string SizeGiay, int idSize)
+        {
+            var item = _ShoeRepo.GetItemCart(idSanPham);
+            ViewBag.SoLuong = SoLuong;
+            ViewBag.SizeGiay = SizeGiay;
+            ViewBag.IdSize = idSize;
+            return View(item);
+        }
+        [Route("/home/checkoutdetails/{note}")]
+        [HttpPost]
+        public JsonResult CheckoutDetails(CheckOutModel model, string? note)
+        {
+            return Json("student saved successfully");
+        }
+        //[Route("/home/checkoutproducts")]
+        //[HttpPost]
+        //public JsonResult CheckoutDetails(List<ProductModel> Stock)
+        //{
+        //    return Json("student saved successfully");
+        //}
+        [Route("/Home/GetJsonData")]
+        public JsonResult GetJsonData([FromBody] ProductModel[] Stock)
+        {
+            return Json(Stock);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode = null)
         {

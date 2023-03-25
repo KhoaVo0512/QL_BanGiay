@@ -30,8 +30,19 @@ var localAdapter = {
         $(".row_" + id + "-" + size).remove();
         document.getElementById("cartCount").textContent = storage.getCart().length;
         var item = storage.getCart();
-        cart.setItems(item);
-        helpers.updateViewCart();
+        if (item.length != 0) {
+            if (item.length < 2) {
+                var checkout = document.getElementById('checkout');
+                checkout.removeAttribute("style");
+            }
+            cart.setItems(item);
+            helpers.updateViewCart();
+        } else {
+            storage.clearCart();
+            helpers.emptyView();
+            document.getElementById('checkout-footer').innerHTML = '';
+            document.getElementById("cartCount").textContent = 0;
+        }
     }
 
 };
@@ -113,7 +124,7 @@ var helpers = {
                 items: items
             });
         this.setHtml('cartItems', compiled);
-        this.updateTotal();
+/*        this.updateTotal()*/;
     },
     updateViewCart: function () {
 
@@ -123,28 +134,33 @@ var helpers = {
                 items: items
             });
         this.setHtml('cartItems', compiled);
-        this.updateTotalCart();
+/*        this.updateTotalCart();*/
     },
     emptyView: function () {
 
-        this.setHtml('cartItems', '<p>Giỏ hàng đang trống</p>');
-        this.updateTotal();
+        this.setHtml('cartItems', '<p class="text-center">Giỏ hàng đang trống</p>');
+/*        this.updateTotal();*/
 
     },
-    updateTotal: function () {
-        var id = document.getElementById('totalPrice');
-        this.setHtml('totalPrice', cart.total + ' VND');
-    },
-    updateTotalCart: function () {
-        var id = document.getElementById('totalPrice');
-        var items = storage.getCart();
-        var total = 0;
-        for (var i = 0; i < items.length; i++) {
-            var _item = items[i];
-            total += _item.total;
-        }
-        this.setHtml('totalPrice', total + ' VND');
-    }
+    //updateTotal: function () {
+    //    var id = document.getElementById('totalPrice');
+    //    this.setHtml('totalPrice', cart.total + ' VND');
+    //},
+    //updateTotalCart: function () {
+    //    var id = document.getElementById('totalPrice');
+    //    var items = storage.getCart();
+    //    var total = 0;
+    //    if (items == null) {
+    //        this.setHtml('totalPrice', total + ' VND');
+    //    } else {
+    //        for (var i = 0; i < items.length; i++) {
+    //            var _item = items[i];
+    //            total += _item.total;
+    //        }
+    //        this.setHtml('totalPrice', total + ' VND');
+    //    }
+
+    //}
 
 };
 
@@ -255,8 +271,17 @@ document.addEventListener('DOMContentLoaded', function () {
         cart.setItems(storage.getCart());
         helpers.updateView();
         document.getElementById("cartCount").textContent = storage.getCart().length;
+        var checkout = document.getElementById('checkout-footer');
+        checkout.innerHTML = "<div class='checkout-btn'><a href='/cart' style = 'margin-top: 10px;margin-bottom: 10px;' class='main-btn primary-btn-border'>Xem giỏ hàng</a><a href='/checkout' style='float: right !important;margin-bottom: 10px;margin-top: 10px;' class='main-btn primary-btn'>Đặt hàng</a></div>";
+        if (storage.getCart().length > 1) {
+            var checkout = document.getElementById('checkout');
+            console.log(checkout);
+            checkout.style.overflow = "auto";
+            checkout.style.height = "325px";
+        }
     } else {
         helpers.emptyView();
+        document.getElementById('checkout-footer').innerHTML = '';
         document.getElementById("cartCount").textContent = 0;
     }
 });

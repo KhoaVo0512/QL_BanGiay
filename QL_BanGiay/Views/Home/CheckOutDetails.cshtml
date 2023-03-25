@@ -1,0 +1,25 @@
+﻿@using System.Globalization;
+@model QL_BanGiay.Data.Giay
+@{
+    Layout = null;
+    CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
+}
+<div class="table-row">
+    <div class="photo">
+        <a href="@Model.TenGiay"><img src="@Model.AnhDD" alt=""></a>
+    </div>
+    <div class="name">
+        <a href="@Model.TenGiay">@Model.TenGiay</a>
+        <br />
+        <small>@(ViewBag.SizeGiay)</small>
+    </div>
+    <div class="price">
+        @String.Format(elGR, "{0:0,0}",Model.GiaBan) VND
+    </div>
+    <div class="qty">
+        @(ViewBag.SoLuong)
+    </div>
+    <div class="subtotal">
+        @String.Format(elGR, "{0:0,0}", ViewBag.SoLuong * Model.GiaBan) VND
+    </div>
+</div>

@@ -1,5 +1,57 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+
+.breadcrumbs {
+    margin: 0;
+    margin-top: -50px;
+    padding: 29px 0;
+    list-style: none;
+}
+
+@media screen and (max-width: 991px) {
+    .breadcrumbs {
+        margin-top: -30px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .breadcrumbs {
+        padding: 20px 0;
+    }
+}
+
+.breadcrumbs li {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: #333745;
+    text-transform: uppercase;
+}
+
+    .breadcrumbs li span {
+        padding-left: 7px;
+    }
+
+    .breadcrumbs li a {
+        padding-left: 7px;
+        padding-right: 5px;
+        color: #333745;
+        font-weight: 400;
+        text-decoration: none;
+        align-content: center;
+        -webkit-transition: color 0.2s ease;
+        -o-transition: color 0.2s ease;
+        transition: color 0.2s ease;
+    }
+
+        .breadcrumbs li a:hover {
+            color: #f82e56;
+        }
+
+    .breadcrumbs li:first-child span {
+        padding-left: 0;
+    }
 .CodesTable table {
     width: 100%
 }

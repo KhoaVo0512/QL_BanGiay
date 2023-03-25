@@ -185,26 +185,13 @@
                                         <div class="checkout-header d-flex justify-content-between">
                                             <h6 class="title">Giỏ hàng</h6>
                                         </div>
-
-                                        <div class="checkout-table">
+                                        <div class="checkout-table" id="checkout">
                                             <table class="table">
                                                 <tbody id="cartItems">
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>
-
-                                        <div class="checkout-footer">
-                                            <div class="checkout-sub-total d-flex justify-content-between">
-                                                <p class="value">Tổng cộng giá:</p>
-                                                <p id="totalPrice" class="price">0 VND</p>
-                                            </div>
-                                            <div class="checkout-btn">
-                                                <a href="cart" style="margin-top: 10px;margin-bottom: 10px;" class="main-btn primary-btn-border">
-                                                   Xem giỏ hàng
-                                                </a>
-                                                <a href="checkout-page.html" style="float: right !important;margin-bottom: 10px;margin-top: 10px;" class="main-btn primary-btn">Đặt hàng</a>
-                                            </div>
+                                        <div id="checkout-footer" class="checkout-footer">
                                         </div>
                                     </div>
                                 </div>
@@ -220,6 +207,7 @@
         <div class="overlay-7"></div>
     </header>
 </div>
+
 <script type="text/template" id="cartT">
       <% _.each(items, function (item) { %>
            <tr>
@@ -230,17 +218,12 @@
                                                                          alt="Product">
                                                                 </div>
                                                                 <div class="product-content media-body">
-                                                                    <h5 class="title">
-                                                                        <a href="product-details-page.html"><%= item.name %></a>
+                                                                    <h5 class="title" style="font-size: 15px;">
+                                                                        <a href="<%= item.name %>"><%= item.name %></a>
                                                                     </h5>
                                                                     <ul>
-                                                                        <li><span><%= item.size %></span></li>
-                                                                        <li>
-                                                                            <a class="delete" href="javascript:void(0)">
-                                                                                <i class="mdi mdi-delete"></i>
-                                                                            </a>
-                                                                        </li>
-                                                                    </ul>
+                                                                        <li><span style="font-size: 12px;"><%= item.size %></span></li>
+                                                                    </ul> 
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -248,6 +231,9 @@
                                                         <td class="checkout-price">
                                                             <p class="price"><%= item.price %></p>
                                                         </td>
+                                                        <td><a class="delete" href="javascript:void(0)" onclick="storage.removeCart('<%= item.id %>', <%= item.idsize %>);">
+                                                                                <i style="color: red;" class="fa-solid fa-trash-can"></i>
+                                                                            </a></td>
                                                     </tr>
     <% }); %>
 </script>

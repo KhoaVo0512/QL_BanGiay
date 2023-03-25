@@ -2,9 +2,17 @@
     ViewData["Title"] = "Card";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/assets/css/cart.css" />
+<link rel="stylesheet" href="~/css/Checkout.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <main class="page-main">
+    <div class="block">
+        <div class="container">
+            <ul class="breadcrumbs">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li>/<span>Giỏ hàng</span></li>
+            </ul>
+        </div>
+    </div>
     <div class="block">
         <div class="container">
             <div class="cart-table">
@@ -23,8 +31,8 @@
                     </tbody>
                 </table>
                 <div class="table-footer">
-                    <button class="btn btn-dark"><i style="margin-right: 5px;" class="fa-solid fa-chevron-left"></i>Tiếp tục mua hàng</button>
-                    <button style="float: right !important; margin-right: 10px;" class="btn btn-dark pull-right"><i style="margin-right: 5px;" class="fa-solid fa-trash-can"></i><span>Xóa tất cả giỏ hàng</span></button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-dark"><i style="margin-right: 5px;" class="fa-solid fa-chevron-left"></i>Tiếp tục mua hàng</a>
+                    <button id="clear" style="float: right !important; margin-right: 10px;" class="btn btn-dark pull-right"><i style="margin-right: 5px;" class="fa-solid fa-trash-can"></i><span>Xóa tất cả giỏ hàng</span></button>
                     <button id="update" style="float: right !important;" class="btn btn-dark pull-right"><i style="margin-right: 5px;" class="fa-sharp fa-solid fa-rotate"></i><span>Câp nhật</span></button>
                 </div>
                 <div class="row">
@@ -45,7 +53,7 @@
                         </table>
                         <div class="cart-action">
                             <div>
-                                <a href="checkout.html" class="btn">Thanh toán</a>
+                                <a href="/checkout" class="btn">Thanh toán</a>
                             </div>
 
                         </div>
@@ -58,24 +66,39 @@
 @section Scripts {
     <script>
         var arrSanPham = storage.getCart();
-        for (var i = 0; i < arrSanPham.length; i++) {
-            $.get("/Home/cartdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
-                $("#tableSanPham tbody").append(data);
-            });
+        if (arrSanPham != null){
+            for (var i = 0; i < arrSanPham.length; i++) {
+                $.get("/Home/cartdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
+                    $("#tableSanPham tbody").append(data);
+                });
+            }
         }
+        
         var products = document.querySelector('.table-footer #update');
         products.addEventListener('click', function (e) {
             e.preventDefault();
             var table = document.getElementsByTagName("table")[1]; //first table
             var rows = table.rows;
-            //loop through rows
-            for (var i = 1; i < rows.length; i += 1) {
-                var item = rows[i];
-                var cartItem = helpers.itemCart(item);
-                cart.updateItemCart(cartItem);
-            }
-            cart.setItems(storage.getCart());
+            if (rows.length >1){
+                for (var i = 1; i < rows.length; i += 1) {
+                    var item = rows[i];
+                    var cartItem = helpers.itemCart(item);
+                    cart.updateItemCart(cartItem);
+                }
+                cart.setItems(storage.getCart());
+                helpers.updateViewCart();
+            }     
+        });
+        document.querySelector('#clear').addEventListener('click', function (e) {
+            cart.clearItems();
+            $(document.getElementsByClassName('table-body')).remove();
+            document.getElementById("cartCount").textContent = 0;
             helpers.updateViewCart();
+            var checkout = document.getElementById('checkout');
+            checkout.removeAttribute("style");
+            helpers.setHtml('cartItems', '<p class="text-center">Giỏ hàng đang trống</p>');
+            document.getElementById('checkout-footer').innerHTML = '';
+
         });
         function change(id, size) {
             const numberCart = /[a-z,A-Z]/;
