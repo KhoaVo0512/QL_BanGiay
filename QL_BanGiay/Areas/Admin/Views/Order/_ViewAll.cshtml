@@ -1,0 +1,125 @@
+﻿@using QL_BanGiay.Areas.Admin.Models;
+@using System.Globalization;
+@model IEnumerable<QL_BanGiay.Data.DonDat>
+@{
+    ViewData["Title"] = "Quản lí đơn đặt";
+    SortModel sortModel = (SortModel)ViewData["sortModel"];
+    PagerModel pager = ViewBag.Pager;
+    int stt = 0;
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+            @*<div class="col-sm-6">
+                <a onclick="showInPopup('@Url.Action("create","order",null,Context.Request.Scheme)','Thêm sản phẩm mới')" class="breadcrumb float-sm-right">
+                    <p class="btn btn-success">Thêm sản phẩm mới</p>
+                </a>
+            </div><!-- /.col -->*@
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <partial name="_topBar" model="@pager" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                STT
+                            </th>
+                            <th>
+                                Mã đơn hàng
+                            </th>
+                            <th>
+                                Tên người đặt
+                            </th>
+                            <th>
+                                Số điện thoại
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("NgayDat").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("NgayDat").SortExpression">
+                                    Ngày đặt
+                                </a>
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+                            <th>
+                                Hình thức thanh toán
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            stt = stt + 1;
+                            <tr>
+                                <td>
+                                    @stt
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaDonDat)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.HoNguoiDung) @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.TenNguoiDung)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelitem=> item.MaNguoiDungNavigation.Sdt)
+                                </td>
+                                <td style="width: 350px;">
+                                    <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayDat" class="form-control" />
+                                </td>
+                                <td>
+                                    @if (item.TrangThai == 0)
+                                    {
+                                        <span>Chưa thanh toán</span>
+                                    }else if (item.TrangThai == 1)
+                                    {
+                                        <span>Đã thanh toán</span>
+                                    }else
+                                    {
+                                        <span>Đơn hàng đã hủy</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.MaVnpay == "0")
+                                    {
+                                        <span>Thanh toán khi nhận hàng</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Đã thanh toán qua VNPay</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.TrangThai == 0)
+                                    {
+                                        <a onclick="showInPopup('@Url.Action("Details", "order",new {id = item.MaDonDat},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <partial name="_bottomBar" model="@pager" />
+            </div>
+        </div>
+    </div>
+</div>

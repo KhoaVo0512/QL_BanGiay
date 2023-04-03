@@ -14,24 +14,27 @@ namespace QL_BanGiay.Areas.Admin.Controllers
     {
         private readonly IShoe _ShoeRepo;
         private readonly ISize _SizeRepo;
-        public WareHouseController(IShoe shoeRepo, ISize sizeRepo)
+        private readonly IWareHouse _WareHouseRepo;
+        public WareHouseController(IShoe shoeRepo, ISize sizeRepo, IWareHouse wareHouse)
         {
             _ShoeRepo = shoeRepo;
             _SizeRepo = sizeRepo;
+            _WareHouseRepo = wareHouse;
         }
 
         [Route("warehouse")]
         [Route("warehouse/index")]
-        public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
+        public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 10)
         {
             SortModel sortModel = new SortModel();
             sortModel.AddColumn("MaGiay");
             sortModel.AddColumn("NameShoe");
-            sortModel.AddColumn("Price");
+            sortModel.AddColumn("Size");
+            sortModel.AddColumn("Quantity");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
-            PaginatedList<Giay> items = _ShoeRepo.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
+            PaginatedList<KhoGiay> items = _WareHouseRepo.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
             var pager = new PagerModel(items.TotalRecords, pg, pageSize);
             pager.SortExpression = sortExpression;
             this.ViewBag.Pager = pager;

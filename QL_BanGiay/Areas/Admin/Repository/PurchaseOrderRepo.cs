@@ -142,7 +142,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public int GetNewPONumber()
         {
             int number = 0;
-            var LastNumber = _context.NhapHangs.OrderByDescending(s=>s.MaNhapHang).Select(s=>s.MaNhapHang).SingleOrDefault();
+            var LastNumber = _context.NhapHangs.Max(s => s.MaNhapHang);
             if (LastNumber == 0)
             {
                 number = 1;

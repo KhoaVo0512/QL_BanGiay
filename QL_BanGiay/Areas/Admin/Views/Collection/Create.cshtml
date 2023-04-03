@@ -7,14 +7,14 @@
         <form asp-action="create" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="single-form form-default form-border">
-                <label>Nhãn hiệu</label>
+                <label>Nhãn hiệu<span class="required">*</span></label>
                 <div class="form-input">
                     <select asp-for="MaNhanHieu" class="form-select" asp-items="ViewBag.BrandList"></select>
                 </div>
                 <span asp-validation-for="MaNhanHieu" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Tên giày</label>
+                <label class="control-label">Tên dòng sản phẩm<span class="required">*</span></label>
                 <div class="input-group">
                     <input asp-for="TenDongSanPham" class="form-control" />
                 </div>

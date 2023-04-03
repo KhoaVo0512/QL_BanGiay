@@ -1,7 +1,11 @@
-﻿@model QL_BanGiay.Models.CheckOutModel
+﻿@using System.Security.Claims;
+@model QL_BanGiay.Models.CheckOutModel
 @{
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var idNd = Context.Session.GetString("IdNguoiDungLogin");
+    var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)
+                                            .Select(c => c.Value).SingleOrDefault();
 }
 <link rel="stylesheet" href="~/css/Checkout.css" />
 <div id="wrapper">
@@ -11,8 +15,8 @@
             <div class="block">
                 <div class="container">
                     <ul class="breadcrumbs">
-                        <li><a href="index.html">Trang Chu</a></li>
-                        <li>/<span>Checkout</span></li>
+                        <li><a href="/">Trang Chủ</a></li>
+                        <li>/<span>Thanh toán</span></li>
                     </ul>
                 </div>
             </div>
@@ -20,109 +24,153 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-5">
-                            <h2>CHI TIẾT THANH TOÁN</h2>
-                            <form class="white" action="#" id="checkoutForm">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>Họ<span class="required">*</span></label>
-                                        <input asp-for="Ho" id="Ho" type="text" class="form-control">
-                                        <span class="text-danger" asp-validation-for="Ho"></span>
+
+                            <h2 style="color: blue;">THÔNG TIN NGƯỜI MUA</h2>
+                            @if (sId == null)
+                            {
+                                <form class="white" action="#" id="checkoutForm">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Họ<span class="required">*</span></label>
+                                            <input asp-for="Ho" id="Ho" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Ho"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Tên<span class="required">*</span></label>
+                                            <input asp-for="Ten" id="Ten" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Ho"></span>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label>Tên<span class="required">*</span></label>
-                                        <input asp-for="Ten" id="Ten" type="text" class="form-control">
-                                        <span class="text-danger" asp-validation-for="Ho"></span>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>E-mail<span class="required">*</span></label>
+                                            <input asp-for="Email" id="Email" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Email"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Số điện thoại<span class="required">*</span></label>
+                                            <input asp-for="Sdt" id="Sdt" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Sdt"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>E-mail<span class="required">*</span></label>
-                                        <input asp-for="Email" id="Email" type="text" class="form-control">
-                                        <span class="text-danger" asp-validation-for="Email"></span>
+                                    <label>Địa chỉ<span class="required">*</span></label>
+                                    <input asp-for="DiaChi" type="text" class="form-control">
+                                    <span class="text-danger" asp-validation-for="DiaChi"></span>
+                                    <div class="row">
+                                        <div class="form-input col-sm-4">
+                                            <label>Tỉnh<span class="required">*</span></label>
+                                            <select asp-for="MaTinh" class="form-select" id="Tinh" required>
+                                                <option value="" label="----Chọn----"></option>
+                                            </select>
+                                            <span asp-validation-for="MaTinh" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-input col-sm-4">
+                                            <label>Huyện<span class="required">*</span></label>
+                                            <select asp-for="MaHuyen" required class="form-select" id="Huyen">
+                                                <option value="">----Chọn----</option>
+                                            </select>
+                                            <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-input col-sm-4">
+                                            <label>Xã<span class="required">*</span></label>
+                                            <select asp-for="MaXa" class="form-select" id="Xa">
+                                                <option value="">----Chọn----</option>
+                                            </select>
+                                            <span asp-validation-for="MaXa" class="text-danger"></span>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label>Số điện thoại<span class="required">*</span></label>
-                                        <input asp-for="Sdt" id="Sdt" type="text" class="form-control">
-                                        <span class="text-danger" asp-validation-for="Sdt"></span>
+                                </form>
+                            }
+                            else
+                            {
+                                <form class="white" action="#" id="FormND">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Họ<span class="required">*</span></label>
+                                            <input asp-for="Ho" id="Ho" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Ho"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Tên<span class="required">*</span></label>
+                                            <input asp-for="Ten" id="Ten" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Ten"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <label>Địa chỉ</label>
-                                <input asp-for="DiaChi" type="text" class="form-control">
-                                <span class="text-danger" asp-validation-for="DiaChi"></span>
-                                <div class="row">
-                                    <div class="form-input col-sm-4">
-                                        <label>Tỉnh</label>
-                                        <select asp-for="MaTinh" class="form-select" id="Tinh" required>
-                                            <option value="" label="----Chọn----"></option>
-                                        </select>
-                                        <span asp-validation-for="MaTinh" class="text-danger"></span>
+                                    <label>Địa chỉ<span class="required">*</span></label>
+                                    <div class="radioset">
+                                        <fieldset id="group2">
+                                            @for (int i = 0; i < Model.DiaChis.Count; i++)
+                                            {
+                                                @if (i == 0)
+                                                {
+                                                    <label class="radio">
+                                                        <input id="DiaChi_@i" type="radio" name="IdDiaChi" value="@Model.IdDiaChi[i]" checked>
+                                                        <span class="outer"><span class="inner"></span></span> @Model.DiaChis[i]
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="radio">
+                                                        <input id="DiaChi_@i" type="radio" name="IdDiaChi" value="@Model.IdDiaChi[i]">
+                                                        <span class="outer"><span class="inner"></span></span> @Model.DiaChis[i]
+                                                    </label>
+                                                }
+                                            }
+                                        </fieldset>
+                                        <label class="radio">
+                                            <input id="create_diachi" type="radio" name="IdDiaChi" value="">
+                                            <span class="outer"><span class="inner"></span></span> Thêm địa chỉ mới
+                                        </label>
                                     </div>
-                                    <div class="form-input col-sm-4">
-                                        <label>Huyện</label>
-                                        <select asp-for="MaHuyen" required class="form-select" id="Huyen">
-                                            <option value="">----Chọn----</option>
-                                        </select>
-                                        <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                                    <div id="insert_form" hidden>
+                                        <label>Địa chỉ<span class="required">*</span></label>
+                                        <input asp-for="DiaChi" type="text" class="form-control DiaChi">
+                                        <span class="text-danger" asp-validation-for="DiaChi"></span>
+                                        <div class="row">
+                                            <div class="form-input col-sm-4">
+                                                <label>Tỉnh<span class="required">*</span></label>
+                                                <select asp-for="MaTinh" class="form-select DiaChi" id="Tinh" required>
+                                                    <option value="" label="----Chọn----"></option>
+                                                </select>
+                                                <span asp-validation-for="MaTinh" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-input col-sm-4">
+                                                <label>Huyện<span class="required">*</span></label>
+                                                <select asp-for="MaHuyen" required class="form-select DiaChi" id="Huyen">
+                                                    <option value="">----Chọn----</option>
+                                                </select>
+                                                <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-input col-sm-4">
+                                                <label>Xã<span class="required">*</span></label>
+                                                <select asp-for="MaXa" class="form-select DiaChi" id="Xa">
+                                                    <option value="">----Chọn----</option>
+                                                </select>
+                                                <span asp-validation-for="MaXa" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-input col-sm-4">
-                                        <label>Xã</label>
-                                        <select asp-for="MaXa" class="form-select" id="Xa">
-                                            <option value="">----Chọn----</option>
-                                        </select>
-                                        <span asp-validation-for="MaXa" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </form>
-                            @* <h2>Delivery</h2>
-                            <p>Choose delivery option below</p>
-                            <form class="white" action="#">
+                                </form>
+
+                            }
+
+                            <h2 style="color: blue;">Hình thức thanh toán</h2>
                             <div class="radioset">
-                            <label class="radio">
-                            <input id="radioDelivery1" type="radio" name="radioDelivery" value="none">
-                            <span class="outer"><span class="inner"></span></span><b>Standard Delivery</b> $5.99 / Delivery in 5 to 7 business Days
-                            </label>
-                            <label class="radio">
-                            <input id="radioDelivery2" type="radio" name="radioDelivery" value="none">
-                            <span class="outer"><span class="inner"></span></span><b>Express Delivery</b> $19.99 / Delivery in 1 business Days
-                            </label>
+                                <fieldset id="group1">
+                                    <label class="radio">
+                                        <input id="radioDelivery1" type="radio" name="radioDelivery" value="0" checked>
+                                        <span class="outer"><span class="inner"></span></span> Thanh toán khi nhận hàng
+                                    </label>
+                                    <label class="radio">
+                                        <input id="radioDelivery2" type="radio" name="radioDelivery" value="1">
+                                        <span class="outer"><span class="inner"></span></span> Thanh toán qua VNPAY
+                                    </label>
+                                </fieldset>
                             </div>
-                            </form>
-                            <h2>Payment & Order Review</h2>
-                            <form class="white" action="#">
-                            <p>Credit Card</p>
-                            <p class="payment-link">
-                            <a href="#"><img src="images/payment-logo/icon-pay-1.png" alt=""></a>
-                            <a href="#"><img src="images/payment-logo/icon-pay-2.png" alt=""></a>
-                            <a href="#"><img src="images/payment-logo/icon-pay-3.png" alt=""></a>
-                            <a href="#"><img src="images/payment-logo/icon-pay-4.png" alt=""></a>
-                            <a href="#"><img src="images/payment-logo/icon-pay-5.png" alt=""></a>
-                            </p>
-                            <div class="row">
-                            <div class="col-sm-6">
-                            <label>Credit Card Number<span class="required">*</span></label>
-                            <input type="text" class="form-control">
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                            <label>Month<span class="required">*</span></label>
-                            <div class="select-wrapper">
-                            <select class="form-control">
-                            <option value="">01</option>
-                            </select>
-                            </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-3">
-                            <label>Year<span class="required">*</span></label>
-                            <div class="select-wrapper">
-                            <select class="form-control">
-                            <option value="">2017</option>
-                            </select>
-                            </div>
-                            </div>
-                            </div>
-                            </form>*@
+
                         </div>
                         <div class="col-md-7">
-                            <h2>
+                            <h2 style="color: blue;">
                                 ĐƠN HÀNG CỦA BẠN
                             </h2>
                             <div class="cart-table cart-table--sm">
@@ -159,13 +207,13 @@
                                 </tr>
                             </table>
                             <div class="clearfix"></div>
-                            <h2>Ghi chú đặt hàng</h2>
+                            <h2 style="color: blue;">Ghi chú đặt hàng</h2>
                             <form class="white" action="#">
                                 <label>
                                     Ghi chú về đơn đặt hàng của bạn, ví dụ: ghi chú đặc biệt cho giao hàng
                                 </label>
                                 <textarea id="Note" class="form-control"></textarea>
-                                <div>
+                                <div id="btncheckout">
                                     <button id="checkoutsubmit" class="btn btn-alt">XÁC NHẬN ĐƠN HÀNG</button>
                                 </div>
                             </form>
@@ -181,8 +229,28 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $(document).ready(function () {
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Message"]");</script>
+    }
+
+    @if (sId != null)
+    {
+        <script type="text/javascript">
+            var getdia = document.getElementById('create_diachi');
+            var insert_diachi = document.getElementById('insert_form');
+            getdia.addEventListener('click', function (e) {
+                console.log("abc");
+                insert_diachi.removeAttribute("hidden");
+                document.querySelectorAll('.DiaChi').forEach(element => element.disabled = false);
+
+            });
+            var change_DT = document.getElementById("group2");
+            change_DT.addEventListener('change', function (e) {
+                insert_diachi.hidden = true;
+                document.querySelectorAll('.DiaChi').forEach(element => element.disabled = true);
+            });
+            console.log('@sId');
             var arrSanPham = storage.getCart();
             var grandTotal = 0;
             var items = new Array();
@@ -195,8 +263,7 @@
                     grandTotal += arrSanPham[i].total;
                 }
             }
-            console.log(grandTotal);
-            $.validator.unobtrusive.parse($("#checkoutForm"));
+            $.validator.unobtrusive.parse($("#FormND"));
             getTinh();
             $('#Huyen').attr('disabled', true);
             $('#Xa').attr('disabled', true);
@@ -241,46 +308,266 @@
                     }
                 });
             }
-            var Subtotal = document.getElementById('Subtotal');
-            Subtotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-            var GrandTotal = document.getElementById('GrandTotal');
-            GrandTotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-        });
-
-        var checkout = document.getElementById('checkoutsubmit');
-        checkout.addEventListener('click', function (e) {
-            e.preventDefault();
-            if ($("#checkoutForm").valid()) {
-                var formData = $("#checkoutForm").serialize();
-                var note = document.getElementById('Note').value;
-                if (note == "")
-                    note = 'No';
+            console.log(items);
+            function AjaxCheckOutUser(id, note) {
+                var sanpham = storage.getCart();
+                var array_sp = new Array();
+                for (var i = 0; i < sanpham.length; i++) {
+                    var count = sanpham[i].count.toString();
+                    array_sp.push({ Id: sanpham[i].id, Idsize: sanpham[i].idsize, Quantity: count, Total: sanpham[i].total })
+                }
                 $.ajax({
-                    url: "/home/checkoutdetails/" + note,
                     type: "POST",
-                    data: formData,
+                    url: '/home/test/' + id + '/' + '0' + "/" + note,
+                    dataType: "json",
+                    data: JSON.stringify(array_sp),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
                     success: function (response) {
-                        alert(response);
+                        window.location.replace("/");
+                        cart.clearItems();
                     },
                     error: function (request, status, error) {
                         alert(request.responseText);
                     }
                 });
             }
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetJsonData","Home")',
-                dataType: "json",
-                data: JSON.stringify(items),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    alert(response);
-                },
-                error: function (request, status, error) {
-                    alert(request.responseText);
+            var Subtotal = document.getElementById('Subtotal');
+            Subtotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            var GrandTotal = document.getElementById('GrandTotal');
+            GrandTotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            var checkout = document.getElementById('checkoutsubmit');
+
+            checkout.addEventListener('click', function (e) {
+                e.preventDefault();
+                var thanhtoangiaohang = document.getElementById('radioDelivery1');
+                if (thanhtoangiaohang.checked) {
+                    if ($("#FormND").valid()) {
+                        const form = document.getElementById("FormND");
+                        const formData = new FormData(form);
+                        const formJSON = Object.fromEntries(formData.entries());
+                        var note = document.getElementById('Note').value;
+                        if (note == "")
+                            note = 'Không có';
+                        $.ajax({
+                            type: "POST",
+                            url: '/home/checkoutuser',
+                            data: formJSON,
+                            success: function (data) {
+                                AjaxCheckOutUser('@sId', note);
+                            },
+                            error: function (request, status, error) {
+                                alert(request.responseText);
+                            }
+                        });
+                    }
+                } else {
+                    if ($("#FormND").valid()) {
+                        const form = document.getElementById("FormND");
+                        const formData = new FormData(form);
+                        const formJSON = Object.fromEntries(formData.entries());
+                        var note = document.getElementById('Note').value;
+                        if (note == "")
+                            note = 'Không có';
+                        $.ajax({
+                            url: "/home/checkoutuser",
+                            type: "POST",
+                            data: formJSON,
+                            success: function (response) {
+                                var sanpham = storage.getCart();
+                                var array_sp = new Array();
+                                for (var i = 0; i < sanpham.length; i++) {
+                                    var count = sanpham[i].count.toString();
+                                    array_sp.push({ Id: sanpham[i].id, Idsize: sanpham[i].idsize, Quantity: count, Total: sanpham[i].total })
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/home/test/' + '@sId' + '/' + '1' + "/" + note,
+                                    dataType: "json",
+                                    data: JSON.stringify(array_sp),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/Home/Payment/" + data.total,
+                                            success: function (trave) {
+                                                window.location.replace(trave.action);
+                                            }
+                                        })
+                                    },
+                                    error: function (request, status, error) {
+                                        alert(request.responseText);
+                                    }
+                                });
+                            },
+                            error: function (request, status, error) {
+                                alert(request.responseText);
+                            }
+                        });
+                    }
                 }
+
             });
-        });
-    </script>
+        </script>
+    }
+    else
+    {
+        <script>
+            $(document).ready(function () {
+                var arrSanPham = storage.getCart();
+                var grandTotal = 0;
+                var items = new Array();
+                if (arrSanPham != null) {
+                    for (var i = 0; i < arrSanPham.length; i++) {
+                        $.get("/home/checkoutdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
+                            $(".cart-table").append(data);
+                        });
+                        items.push({ Id: arrSanPham[i].id, Idsize: arrSanPham[i].idsize, Quantity: arrSanPham[i].count, Total: arrSanPham[i].total })
+                        grandTotal += arrSanPham[i].total;
+                    }
+                }
+                $.validator.unobtrusive.parse($("#checkoutForm"));
+                getTinh();
+                $('#Huyen').attr('disabled', true);
+                $('#Xa').attr('disabled', true);
+                $("#Tinh").change(function () {
+                    var id = $(this).val();
+                    $('#Huyen').attr('disabled', false);
+                    $('#Huyen').empty();
+                    $('#Huyen').append('<option value="">----Chọn----</option>');
+                    $('#Xa').attr('disabled', true);
+                    $('#Xa').empty();
+                    $('#Xa').append('<option value="">----Chọn----</option>');
+                    $.ajax({
+                        url: '/account/Huyen?id=' + id,
+                        success: function (result) {
+                            $.each(result, function (i, data) {
+                                $('#Huyen').append('<option value=' + data['maHuyen'] + '>' + data['tenHuyen'] + '</option>');
+                            });
+                        }
+                    });
+                });
+                $("#Huyen").change(function () {
+                    $('#Xa').attr('disabled', false);
+                    var id = $(this).val();
+                    $('#Xa').empty();
+                    $('#Xa').append('<option value="">----Chọn----</option>');
+                    $.ajax({
+                        url: '/account/Xa?id=' + id,
+                        success: function (result) {
+                            $.each(result, function (i, data) {
+                                $('#Xa').append('<option value=' + data['maXa'] + '>' + data['tenXa'] + '</option>');
+                            });
+                        }
+                    });
+                });
+                function getTinh() {
+                    $.ajax({
+                        url: '/account/Tinh',
+                        success: function (result) {
+                            $.each(result, function (i, data) {
+                                $('#Tinh').append('<option value=' + data['maTinh'] + '>' + data['tenTinh'] + '</option>');
+                            });
+                        }
+                    });
+                }
+                var Subtotal = document.getElementById('Subtotal');
+                Subtotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                var GrandTotal = document.getElementById('GrandTotal');
+                GrandTotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                var checkout = document.getElementById('checkoutsubmit');
+                function Ajax2(id) {
+                    var sanpham = storage.getCart();
+                    var array_sp = new Array();
+                    for (var i = 0; i < sanpham.length; i++) {
+                        var count = sanpham[i].count.toString();
+                        array_sp.push({ Id: sanpham[i].id, Idsize: sanpham[i].idsize, Quantity: count, Total: sanpham[i].total })
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: '/home/getjsondata/' + id + '/0',
+                        dataType: "json",
+                        data: JSON.stringify(array_sp),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            window.location.replace("/");
+                            cart.clearItems();
+                        },
+                        error: function (request, status, error) {
+                            alert(request.responseText);
+                        }
+                    });
+                }
+                checkout.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var id_nd = "";
+                    console.log(JSON.stringify(items));
+                    var thanhtoangiahang = document.getElementById('radioDelivery1');
+                    if (thanhtoangiahang.checked) {
+                        if ($("#checkoutForm").valid()) {
+                            var formData = $("#checkoutForm").serialize();
+                            var note = document.getElementById('Note').value;
+                            if (note == "")
+                                note = 'không có';
+                            $.ajax({
+                                url: "/home/checkoutdetails/" + note,
+                                type: "POST",
+                                data: formData,
+                                success: function (response) {
+                                    if (response.isValid) {
+                                        Ajax2(response.id);
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                    alert(request.responseText);
+                                }
+                            });
+                        }
+                    } else {
+                        if ($("#checkoutForm").valid()) {
+                            var formData = $("#checkoutForm").serialize();
+                            var note = document.getElementById('Note').value;
+                            if (note == "")
+                                note = 'không có';
+                            $.ajax({
+                                url: "/home/checkoutdetails/" + note,
+                                type: "POST",
+                                data: formData,
+                                success: function (response) {
+                                    if (response.isValid) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '/home/getjsondata/' + response.id + '/1',
+                                            dataType: "json",
+                                            data: JSON.stringify(items),
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (data) {
+                                                $.ajax({
+                                                    type: "GET",
+                                                    url: "/Home/Payment/" + data.total,
+                                                    success: function (trave) {
+                                                        window.location.replace(trave.action);
+                                                    }
+                                                })
+                                            },
+                                            error: function (request, status, error) {
+                                                alert(request.responseText);
+                                            }
+                                        });
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                    alert(request.responseText);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+    }
+
 }

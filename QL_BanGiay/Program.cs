@@ -34,15 +34,29 @@ builder.Services.AddScoped<ICommune, CommuneRepo>();
 builder.Services.AddScoped<IWareHouse, WareHouseRepo>();
 builder.Services.AddScoped<IPrice, PriceRepo>();
 builder.Services.AddScoped<IShoeDetails, ShoeDetailsRepo>();
+builder.Services.AddScoped<ICheckout, CheckoutRepository>();
+builder.Services.AddScoped<IOrder, OrderRepo>();
+builder.Services.AddScoped<IBill, BillRepo>();
+builder.Services.AddScoped<IAddress, AddressRepo>();
+builder.Services.AddScoped<IUser, UserRepo>();
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
 builder.Services.AddDbContext<QlyBanGiayContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => 
 { 
     options.LoginPath = "/account/login";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(3);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+
     options.Cookie.MaxAge = options.ExpireTimeSpan;
-    options.SlidingExpiration = true;   
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = false;
+});
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 builder.Services.AddAuthorization(options =>
 {
@@ -61,12 +75,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 app.UseRouting();
 app.UseNToastNotify();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

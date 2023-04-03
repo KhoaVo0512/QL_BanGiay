@@ -44,29 +44,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-default form-border">
-                                        <label style="margin-bottom: 10px;font-size: 14px;margin-left: 18px;font-weight: bold;text-align: left !important;">
-                                            Giới tính:
-                                            </label>
-                                        <div class="form-check form-check-inline">
-                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="1" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
-                                                Nam
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="2">
-                                            <label class="form-check-label" for="exampleRadios2">
-                                                Nữ
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input asp-for="GioiTinh" class="form-check-input" type="radio" value="3">
-                                            <label class="form-check-label" for="exampleRadios3">
-                                                Giới tính khác
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div class="single-form form-default form-border ">
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -86,6 +63,14 @@
                                                 </div>
                                             </div>
                                         </div> 
+                                    </div>
+                                    <div class="single-form form-default form-border">
+                                        <label>Tài khoản</label>
+                                        <div class="form-input">
+                                            <input asp-for="Username">
+                                            <i class="mdi mdi-map-marker"></i>
+                                            <span asp-validation-for="Username" class="text-danger"></span>
+                                        </div>
                                     </div>
                                     <div class="single-form form-default form-border ">
                                         <div class="row">
@@ -115,22 +100,21 @@
                                             <input asp-for="DiaChi">
                                             <i class="mdi mdi-map-marker"></i>
                                             <span asp-validation-for="DiaChi" class="text-danger"></span>
-                                        </div>
-                                       
+                                        </div>                             
                                     </div>
                                  
                                     <div class="single-form form-default form-border">
                                         <div class="row">                             
                                             <div class="form-input col-sm-4">
                                                 <label>Tỉnh</label>
-                                                <select asp-for="MaTinh" class="form-select" id="Tinh" required>
+                                                <select asp-for="MaTinh" class="form-select" id="Tinh">
                                                     <option value="" label="----Chọn----"></option>
                                                 </select>
                                                 <span asp-validation-for="MaTinh" class="text-danger"></span>
                                             </div>
                                             <div class="form-input col-sm-4">
                                                 <label>Huyện</label>
-                                                <select asp-for="MaHuyen" required class="form-select" id="Huyen">
+                                                <select asp-for="MaHuyen" class="form-select" id="Huyen">
                                                     <option value="">----Chọn----</option>
                                                 </select>
                                                 <span asp-validation-for="MaHuyen" class="text-danger"></span>

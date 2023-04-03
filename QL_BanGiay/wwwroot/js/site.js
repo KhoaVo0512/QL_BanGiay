@@ -48,6 +48,8 @@ function preview_image() {
             $('#imgPreview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
         }
     }
+    var hidden = document.getElementById('image-display');
+    hidden.style.display = "none";
 }
 //Preview images array
 function preview_images() {
@@ -65,6 +67,8 @@ function preview_images() {
             $('#image_preview').append("<img style='margin-top: 10px; width: 60px; height: 60px;' src='" + URL.createObjectURL(event.target.files[i]) + "'><br>");
         }
     }
+    var hidden = document.getElementById('images-display');
+    hidden.style.display = "none";
 }
 jQueryAjaxPost = form => {
     try {
@@ -150,7 +154,7 @@ function AddItem(btn) {
         if (x[cnt].type == "text" && x[cnt].id.indexOf('_' + nextrowIdx + '_') > 0) {
             x[cnt].value = '';
             if (x[cnt].id.indexOf('__MaSize') > 0)
-                x[cnt].value = 'Vui long chon Size Giay';
+                x[cnt].value = 'Vui long chon size giay';
         }
         else if (x[cnt].type == "number" && x[cnt].id.indexOf('_' + nextrowIdx + '_') > 0)
             x[cnt].value = 0;

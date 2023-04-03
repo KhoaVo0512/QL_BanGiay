@@ -1,0 +1,110 @@
+﻿@model QL_BanGiay.Models.CreateAddressModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CreateAddress" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-12">
+                <div class="single-form form-default form-border">
+                    <label>Địa chỉ</label>
+                    <div class="input-group">
+                        <input asp-for="DiaChi" class="form-control" />
+                    </div>
+                    <span asp-validation-for="DiaChi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Tỉnh</label>
+                        <div class="form-input">
+                            <select asp-for="MaTinh" class="form-select" id="Tinh">
+                                <option value="" label="----Chọn----"></option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="MaTinh" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Huyện</label>
+                        <div class="form-input">
+                            <select asp-for="MaHuyen" class="form-select" id="Huyen">
+                                <option value="">----Chọn----</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Xã</label>
+                        <div class="form-input">
+                            <select asp-for="MaXa" class="form-select" id="Xa">
+                                <option value="">----Chọn----</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="MaXa" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8 offset-md-5 mt-4">
+                    <input style="background-color: blue;" type="submit" value="Lưu" class="btn btn-primary btn-block px-7" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        getTinh();
+        $('#Huyen').attr('disabled', true);
+        $('#Xa').attr('disabled', true);
+        $("#Tinh").change(function () {
+            var id = $(this).val();
+            $('#Huyen').attr('disabled', false);
+            $('#Huyen').empty();
+            $('#Huyen').append('<option value="">----Chọn----</option>');
+            $('#Xa').attr('disabled', true);
+            $('#Xa').empty();
+            $('#Xa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Huyen?id=' + id,
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#Huyen').append('<option value=' + data['maHuyen'] + '>' + data['tenHuyen'] + '</option>');
+                    });
+                }
+            });
+        });
+        $("#Huyen").change(function () {
+            $('#Xa').attr('disabled', false);
+            var id = $(this).val();
+            $('#Xa').empty();
+            $('#Xa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Xa?id=' + id,
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#Xa').append('<option value=' + data['maXa'] + '>' + data['tenXa'] + '</option>');
+                    });
+                }
+            });
+        });
+    });
+    function getTinh() {
+        $.ajax({
+            url: '/account/Tinh',
+            success: function (result) {
+                $.each(result, function (i, data) {
+                    $('#Tinh').append('<option value=' + data['maTinh'] + '>' + data['tenTinh'] + '</option>');
+                });
+            }
+        });
+        console.log("abc");
+    }
+</script>

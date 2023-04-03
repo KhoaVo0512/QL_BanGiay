@@ -6,11 +6,23 @@ namespace QL_BanGiay.Interface
     public interface IAccount
     {
         Task RegisterAccount(RegisterModel register);
-        Task Login(LoginModel login);
         bool IsAccountNoExists(RegisterModel account);
-        bool IsEmailNoExists(LoginModel account);
-        NguoiDung GetAccount(string email);
+        bool IsUsernameNoExits(string account);
+        bool IsEmailUserNoExites(string email);
+        bool IsEmailUser(string email, string id);
+        Task<string> NguoiDung(CheckOutModel model, string note);
+        Task<DiaChi> CreateDiaChiDD(CheckOutModel model, string id);
+        bool CreateAddressUser(CreateAddressModel model, string id);
+        bool EditAddressUser(CreateAddressModel model, string id);
+        CreateAddressModel GetEditAddressUser(int id);
+        TaiKhoan GetAccount(string email);
+        NguoiDung GetUser(string id);
+        EditAccountModel GetAccountModel(string model);
+        bool EditAccount(EditAccountModel model, string id, int idAddress);
         List<Quyen> GetRoles(string Id);
+        bool DeleteAddressUser(int id);
+        bool ChangePassword(ChangePasswordModel model, string id);
+        TaiKhoan GetTaiKhoan(string id);
 
     }
 }

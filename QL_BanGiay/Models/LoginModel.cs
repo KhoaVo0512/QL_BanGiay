@@ -4,9 +4,8 @@ namespace QL_BanGiay.Models
 {
     public class LoginModel
     {
-        [EmailAddress]
         [Required(ErrorMessage = "Vui lòng nhập email của bạn")]
-        public string? Email { get; set; }
+        public string? Username { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         public string? Password { get; set; }

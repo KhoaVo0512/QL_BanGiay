@@ -1,0 +1,18 @@
+﻿@model QL_BanGiay.Data.DonDat
+@{
+    Layout = null;
+}
+<h4>Bạn có muốn xóa đơn hàng này không?</h4>
+<div>
+    <form asp-action="delete" asp-route-id="@Model.MaDonDat" style="margin-bottom: 20px " onsubmit="return jQueryAjaxDelete(this);">
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
+            <button type="button" class="btn btn-secondary" onclick="CloseModal();">Trở về</button>
+        </div>
+    </form>
+</div>
+<script>
+    function CloseModal() {
+        $("#form-modal .close").click();
+    }
+</script>

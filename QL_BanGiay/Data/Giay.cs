@@ -16,7 +16,8 @@ public partial class Giay
     public string? ChatLieu { get; set; }
 
     public string? MauSac { get; set; }
-    public string? AnhDD { get; set; }
+
+    public string? AnhDd { get; set; }
 
     public int? GiaBan { get; set; }
 
@@ -24,10 +25,15 @@ public partial class Giay
 
     public bool? TrangThai { get; set; }
 
-    public virtual ICollection<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
-    public virtual List<NoiDung> NoiDungs { get; set; } = new List<NoiDung>();
+    public string? NoiDung { get; set; }
+
+    public string? TomTat { get; set; }
+
+    public virtual List<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
 
     public virtual ICollection<DonDatCt> DonDatCts { get; } = new List<DonDatCt>();
+
+    public virtual ICollection<HoaDonCt> HoaDonCts { get; } = new List<HoaDonCt>();
 
     public virtual List<KhoGiay> KhoGiays { get; } = new List<KhoGiay>();
 
@@ -37,5 +43,5 @@ public partial class Giay
 
     public virtual NoiSanXuat? MaNhaSanXuatNavigation { get; set; }
 
-    public virtual ICollection<NhapHangCt> NhapHangCts { get; } = new List<NhapHangCt>();
+    public virtual List<NhapHangCt> NhapHangCts { get; set; } = new List<NhapHangCt>();
 }

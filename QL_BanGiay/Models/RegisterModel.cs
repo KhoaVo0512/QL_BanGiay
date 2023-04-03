@@ -4,7 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace QL_BanGiay.Models
 {
     public class RegisterModel
-    { 
+    {
+        [Required] 
+        public string Username { get; set; } 
+        
         [Required(ErrorMessage = "Nhập mật khẩu")]
         [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$", ErrorMessage = "Nhập ít nhất 6 kí tự, 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí tự đặc biệt và 1 số")]
         public string? Password { get; set; }
@@ -23,7 +26,6 @@ namespace QL_BanGiay.Models
         [RegularExpression(@"((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$", ErrorMessage = "Nhập sai số điện thoại")]
         public string? Sdt { get; set; }
 
-        public int? GioiTinh { get; set; }
         [Required(ErrorMessage = "Chọn tỉnh hoăc thành phố")]
         public string? MaTinh { get; set; }
         [Required(ErrorMessage = "Chọn huyện hoặc quận")]

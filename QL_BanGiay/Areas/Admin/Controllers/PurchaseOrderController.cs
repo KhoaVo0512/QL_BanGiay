@@ -74,7 +74,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
 
                 for (int i = 0; i < nhaphang.NhapHangCts.Count; i++)
                 {
-                    for (int j = 1; j < nhaphang.NhapHangCts.Count; j++)
+                    for (int j = i+1; j < nhaphang.NhapHangCts.Count; j++)
                     {
                         if (item[i].MaGiay == item[j].MaGiay && item[i].MaSize == item[j].MaSize)
                         {
@@ -106,6 +106,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             ViewBag.SupplierList = GetSuppliers();
             ViewBag.ProductList = GetProducts();
             ViewBag.SizeList = GetSizes();
+            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             _toastNotification.AddErrorToastMessage("Lỗi nhập hóa đơn nhập hàng");
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", nhaphang, null, "") });
         }

@@ -1,4 +1,4 @@
-﻿@model QL_BanGiay.Areas.Admin.Models.ShoeContext
+﻿@model QL_BanGiay.Areas.Admin.Models.EditShoeModel
 @{
     ViewData["Title"] = "Edit";
     Layout = null;
@@ -6,7 +6,7 @@
     int IdCollection = ViewBag.IdCollection;
 }
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12"> 
         <form asp-action="Edit" asp-route-id="@Model.MaGiay" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row">
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="single-form form-default form-border">
                         <label>Nhãn hiệu</label>
                         <div class="form-input">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="single-form form-default form-border">
                         <label>Dòng sản phẩm</label>
                         <div class="form-input">
@@ -52,7 +52,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Giá bán:</label>
+                        <div class="form-input">
+                            <input asp-for="GiaBan" class="form-control" />
+                            <span asp-validation-for="GiaBan" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="single-form form-default form-border">
                         <label>Nơi sản xuất</label>
                         <div class="form-input">
@@ -89,11 +100,12 @@
                         <label class="control-label">Chọn ảnh đại diện</label>
                         <div class="custom-file">
                             <input asp-for="MaAnhNen" onchange="preview_image();" class="form-control" id="imageBrowes" />
-
+                            <div id="image-display">
+                                <img style="margin-top: 10px; width: 60px; height: 60px;" src="@Url.Content(Model.AnhDD)">
+                            </div>
                             <div id="imgPreview" style="display: flex;">
                             </div>
                         </div>
-                        <span asp-validation-for="MaAnhNen" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -102,8 +114,13 @@
                         <div class="custom-file">
                             <input asp-for="AnhDetail" onchange="preview_images();" class="form-control" id="imagesBrowes" />
                         </div>
+                        <div id="images-display">
+                            @foreach (var item in Model.AnhGiays)
+                            {
+                                <img style="margin-top: 10px; width: 60px; height: 60px;" src="@Url.Content(item.Url)">
+                            }
+                        </div>
                         <div id="image_preview" style="display: flex;"></div>
-                        <span asp-validation-for="AnhDetail" class="text-danger"></span>
                     </div>
                 </div>
             </div>

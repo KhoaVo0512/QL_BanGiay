@@ -1,5 +1,4 @@
 ﻿var cartId = "cart";
-
 var localAdapter = {
 
     saveCart: function (object) {
@@ -21,14 +20,20 @@ var localAdapter = {
     removeCart: function (id, size) {
         var Cart = storage.getCart();
         var newCart = [];
-        $.each(Cart, function (index, item) {
-            if ((item.id != id) || (item.id == id && item.idsize != size)) {
-                newCart.push(item);
+        for (var i = 0; i < Cart.length; i++) {
+            if ((Cart[i].id != id) || (Cart[i].id == id && Cart[i].idsize != size)) {
+                newCart.push(Cart[i]);
             }
-        });
+        }
+        //$.each(Cart, function (index, item) {
+        //    if ((item.id != id) || (item.id == id && item.idsize != size)) {
+        //        newCart.push(item);
+        //    }
+        //});
         localAdapter.saveCart(newCart);
         $(".row_" + id + "-" + size).remove();
         document.getElementById("cartCount").textContent = storage.getCart().length;
+        toastr.success("Cập nhật giỏ hàng thành công");
         var item = storage.getCart();
         if (item.length != 0) {
             if (item.length < 2) {
@@ -37,9 +42,9 @@ var localAdapter = {
             }
             cart.setItems(item);
             helpers.updateViewCart();
+            
         } else {
-            storage.clearCart();
-            helpers.emptyView();
+            cart.clearItems();
             document.getElementById('checkout-footer').innerHTML = '';
             document.getElementById("cartCount").textContent = 0;
         }
@@ -111,6 +116,7 @@ var helpers = {
         var item = {
             id: object.getAttribute('data-id'),
             size: object.getAttribute('data-size'),
+            idsize: object.getAttribute('data-idsize'),
             count: counts.value,
             total: parseInt(object.getAttribute('data-price')) * parseInt(counts.value)
         };
@@ -258,7 +264,7 @@ var cart = {
             var _item = this.items[i];
 
             if (object.id === _item.id && object.size === _item.size) {
-                _item.count = parseInt(object.count);
+                _item.count = object.count;
                 _item.total = parseInt(object.total);
                 this.items[i] = _item;
                 storage.saveCart(this.items);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace QL_BanGiay.Data;
 
@@ -10,7 +10,6 @@ public partial class NhapHangCt
     public int MaNhapHangCt { get; set; }
     [Required(ErrorMessage = "Vui lòng chọn sản phẩm")]
     public string? MaGiay { get; set; }
-
     public int? MaNhapHang { get; set; }
     [Required(ErrorMessage = "Vui lòng chọn size giày")]
     public int? MaSize { get; set; }
@@ -30,7 +29,7 @@ public partial class NhapHangCt
     public bool IsDeleted { get; set; } = false;
     [MaxLength(75)]
     [NotMapped]
-    [Required]
+    [Required(ErrorMessage = "Vui lòng chọn sản phẩm")]
     public string Description { get; set; } = "";
     [NotMapped]
     public decimal Total { get; set; }

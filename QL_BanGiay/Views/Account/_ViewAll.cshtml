@@ -1,0 +1,721 @@
+﻿@model QL_BanGiay.Data.NguoiDung
+@{
+
+}
+<section class="user-dashboard-section section-b-space">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-xxl-3 col-lg-4">
+                <div class="dashboard-left-sidebar">
+                    <div class="close-button d-flex d-lg-none">
+                        <button class="close-sidebar">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="profile-box">
+                        <div class="cover-image">
+                            <img src="~/assets/images/imagesUser/cover-img.jpg" class="img-fluid blur-up lazyload" alt="">
+                        </div>
+
+                        <div class="profile-contain">
+                            <div class="profile-image">
+                                <div class="position-relative">
+                                    <img src="@Model.TaiKhoans[0].AnhTk" class="blur-up lazyload update_img" alt="">
+                                    <div class="cover-icon">
+                                        <i class="fa-solid fa-pen">
+                                            <input type="file" onchange="readURL(this,0)">
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="profile-name">
+                                <h3>@Html.DisplayFor(s=>s.HoNguoiDung) @Html.DisplayFor(s=>s.TenNguoiDung)</h3>
+                                <h6 class="text-content">@Model.Email</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                                <i data-feather="user"></i>
+                                Thông tin tài khoản
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill" data-bs-target="#pills-order" type="button" role="tab" aria-controls="pills-order" aria-selected="false">
+                                <i data-feather="shopping-bag"></i>
+                                Lịch sử đặt hàng
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill" data-bs-target="#pills-address" type="button" role="tab" aria-controls="pills-address" aria-selected="false">
+                                <i data-feather="map-pin"></i>
+                                Địa chỉ
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-xxl-9 col-lg-8">
+                <button class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none">
+                    Show
+                    Menu
+                </button>
+                <div class="dashboard-right-sidebar">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+                            <div class="dashboard-order">
+                                <div class="title">
+                                    <h2>My Orders History</h2>
+                                    <span class="title-leaf title-leaf-gray">
+                                        <svg class="icon-width bg-gray">
+                                            <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div class="order-contain">
+                                    <div class="order-box dashboard-bg-box">
+                                        <div class="order-container">
+                                            <div class="order-icon">
+                                                <i data-feather="box"></i>
+                                            </div>
+
+                                            <div class="order-detail">
+                                                <h4>Delivere <span>Panding</span></h4>
+                                                <h6 class="text-content">Gouda parmesan caerphilly mozzarella cottage cheese cauliflower cheese taleggio gouda.</h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-order-detail">
+                                            <a href="product-left-thumbnail.html" class="order-image">
+                                                <img src="../assets/images/vegetable/product/1.png"
+                                                     class="blur-up lazyload" alt="">
+                                            </a>
+
+                                            <div class="order-wrap">
+                                                <a href="product-left-thumbnail.html">
+                                                    <h3>Fantasy Crunchy Choco Chip Cookies</h3>
+                                                </a>
+                                                <p class="text-content">Cheddar dolcelatte gouda. Macaroni cheese cheese strings feta halloumi cottage cheese jarlsberg cheese triangles say cheese.</p>
+                                                <ul class="product-size">
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Price : </h6>
+                                                            <h5>$20.68</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Rate : </h6>
+                                                            <div class="product-rating ms-2">
+                                                                <ul class="rating">
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Sold By : </h6>
+                                                            <h5>Fresho</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Quantity : </h6>
+                                                            <h5>250 G</h5>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="order-box dashboard-bg-box">
+                                        <div class="order-container">
+                                            <div class="order-icon">
+                                                <i data-feather="box"></i>
+                                            </div>
+
+                                            <div class="order-detail">
+                                                <h4>Delivered <span class="success-bg">Success</span></h4>
+                                                <h6 class="text-content">
+                                                    Cheese on toast cheesy grin cheesy grin cottage cheese caerphilly everyone loves cottage cheese the big cheese.
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-order-detail">
+                                            <a href="product-left-thumbnail.html" class="order-image">
+                                                <img src="../assets/images/vegetable/product/2.png" alt=""
+                                                     class="blur-up lazyload">
+                                            </a>
+
+                                            <div class="order-wrap">
+                                                <a href="product-left-thumbnail.html">
+                                                    <h3>Cold Brew Coffee Instant Coffee 50 g</h3>
+                                                </a>
+                                                <p class="text-content">Pecorino paneer port-salut when the cheese comes out everybody's happy red leicester mascarpone blue castello cauliflower cheese.</p>
+                                                <ul class="product-size">
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Price : </h6>
+                                                            <h5>$20.68</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Rate : </h6>
+                                                            <div class="product-rating ms-2">
+                                                                <ul class="rating">
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Sold By : </h6>
+                                                            <h5>Fresho</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Quantity : </h6>
+                                                            <h5>250 G</h5>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="order-box dashboard-bg-box">
+                                        <div class="order-container">
+                                            <div class="order-icon">
+                                                <i data-feather="box"></i>
+                                            </div>
+
+                                            <div class="order-detail">
+                                                <h4>Delivere <span>Panding</span></h4>
+                                                <h6 class="text-content">Cheesy grin boursin cheesy grin cheesecake blue castello cream cheese lancashire melted cheese.</h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-order-detail">
+                                            <a href="product-left-thumbnail.html" class="order-image">
+                                                <img src="../assets/images/vegetable/product/3.png" alt=""
+                                                     class="blur-up lazyload">
+                                            </a>
+
+                                            <div class="order-wrap">
+                                                <a href="product-left-thumbnail.html">
+                                                    <h3>Peanut Butter Bite Premium Butter Cookies 600 g</h3>
+                                                </a>
+                                                <p class="text-content">Cow bavarian bergkase mascarpone paneer squirty cheese fromage frais cheese slices when the cheese comes out everybody's happy.</p>
+                                                <ul class="product-size">
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Price : </h6>
+                                                            <h5>$20.68</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Rate : </h6>
+                                                            <div class="product-rating ms-2">
+                                                                <ul class="rating">
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Sold By : </h6>
+                                                            <h5>Fresho</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Quantity : </h6>
+                                                            <h5>250 G</h5>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="order-box dashboard-bg-box">
+                                        <div class="order-container">
+                                            <div class="order-icon">
+                                                <i data-feather="box"></i>
+                                            </div>
+
+                                            <div class="order-detail">
+                                                <h4>Delivered <span class="success-bg">Success</span></h4>
+                                                <h6 class="text-content">Caerphilly port-salut parmesan pecorino croque monsieur dolcelatte melted cheese cheese and wine.</h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="product-order-detail">
+                                            <a href="product-left-thumbnail.html" class="order-image">
+                                                <img src="../assets/images/vegetable/product/4.png"
+                                                     class="blur-up lazyload" alt="">
+                                            </a>
+
+                                            <div class="order-wrap">
+                                                <a href="product-left-thumbnail.html">
+                                                    <h3>SnackAmor Combo Pack of Jowar Stick and Jowar Chips</h3>
+                                                </a>
+                                                <p class="text-content">The big cheese cream cheese pepper jack cheese slices danish fontina everyone loves cheese on toast bavarian bergkase.</p>
+                                                <ul class="product-size">
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Price : </h6>
+                                                            <h5>$20.68</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Rate : </h6>
+                                                            <div class="product-rating ms-2">
+                                                                <ul class="rating">
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star" class="fill"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i data-feather="star"></i>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Sold By : </h6>
+                                                            <h5>Fresho</h5>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="size-box">
+                                                            <h6 class="text-content">Quantity : </h6>
+                                                            <h5>250 G</h5>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show" id="pills-address" role="tabpanel" aria-labelledby="pills-address-tab">
+                            <div class="dashboard-address">
+                                <div class="title title-flex">
+                                    <div>
+                                        <h2>ĐỊA CHỈ</h2>
+                                        <span class="title-leaf">
+                                            <svg class="icon-width bg-gray">
+                                                <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
+
+                                    <a onclick="showInPopup('@Url.Action("createaddress","account",null,Context.Request.Scheme)','Thêm sản phẩm mới')" class="btn theme-bg-color text-white btn-sm fw-bold mt-lg-0 mt-3">
+                                        <i class="fa-solid fa-plus mr-1"></i><span style="margin-left: 5px;">Thêm địa chỉ</span>
+                                    </a>
+                                </div>
+
+                                <div class="row g-sm-4 g-3">
+                                    @for (int i = 0; i < Model.DiasChiUser.Count; i++)
+                                    {
+                                        <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6">
+                                            <div class="address-box">
+                                                <div>
+                                                    <div class="table-responsive address-table">
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Địa chỉ :</td>
+                                                                    <td>
+                                                                        <p>
+                                                                            @Model.DiasChiUser[i]
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="button-group">
+                                                    <a onclick="showInPopup('@Url.Action("editaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Chỉnh sửa địa chỉ')" class="btn btn-sm add-button w-100">
+                                                        <i data-feather="edit"></i>
+                                                        Sửa
+                                                    </a>
+                                                    <a onclick="showInPopup('@Url.Action("deleteaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Xóa địa chỉ')" class="btn btn-sm add-button w-100">
+                                                        <i data-feather="trash-2"></i>
+                                                        Xóa
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <div class="dashboard-profile">
+                                <div class="title">
+                                    <h2>THÔNG TIN TÀI KHOẢN</h2>
+                                    <span class="title-leaf">
+                                        <svg class="icon-width bg-gray">
+                                            <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div class="profile-detail dashboard-bg-box">
+                                    <div class="dashboard-title">
+                                        <h3>Thông tin người dùng</h3>
+                                    </div>
+                                    <div class="profile-name-detail">
+                                        <div class="d-sm-flex align-items-center d-block">
+                                            <h3>@Html.DisplayFor(s=>s.HoNguoiDung) @Html.DisplayFor(s=>s.TenNguoiDung)</h3>
+                                        </div>
+                                        <a style="cursor: pointer;" onclick="showInPopup('@Url.Action("edit","account",null,Context.Request.Scheme)','Chỉnh sửa thông tin người dùng')">Chỉnh sửa</a>
+                                    </div>
+
+                                    <div class="location-profile">
+                                        <ul>
+                                            <li>
+                                                <div class="location-box">
+                                                    <i class="fa-solid fa-envelope"></i>
+                                                    <h6>@Model.Email</h6>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="location-box">
+                                                    <i class="fa-solid fa-phone"></i>
+                                                    <h6>
+                                                        @Model.Sdt
+                                                    </h6>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="location-box">
+                                                    <i class="fa-solid fa-location-dot"></i>
+                                                    <h6>@Model.Address</h6>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="profile-about dashboard-bg-box">
+                                    <div class="row">
+                                        <div class="col-xxl-7">
+                                            <div class="dashboard-title mb-3">
+                                                <h3>Thông tin tài khoản</h3>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Tên tài khoản :</td>
+                                                            <td>
+                                                                <a href="javascript:void(0)">
+                                                                    @Model.TaiKhoans[0].Username
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Mật khẩu :</td>
+                                                            <td>
+                                                                <a style="cursor: pointer;" onclick="showInPopup('@Url.Action("changepassword", "account",null,Context.Request.Scheme)','Thay đổi mật khẩu')">
+                                                                    ●●●●●●
+                                                                    <span>Chỉnh sửa</span>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- User Dashboard Section End -->
+<!-- Deal Box Modal Start -->
+<div class="modal fade theme-modal deal-modal" id="deal-box" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title w-100" id="deal_today">Deal Today</h5>
+                    <p class="mt-1 text-content">Recommended deals for you.</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="deal-offer-box">
+                    <ul class="deal-offer-list">
+                        <li class="list-1">
+                            <div class="deal-offer-contain">
+                                <a href="shop-left-sidebar.html" class="deal-image">
+                                    <img src="../assets/images/vegetable/product/10.png" class="blur-up lazyload"
+                                         alt="">
+                                </a>
+
+                                <a href="shop-left-sidebar.html" class="deal-contain">
+                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
+                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="list-2">
+                            <div class="deal-offer-contain">
+                                <a href="shop-left-sidebar.html" class="deal-image">
+                                    <img src="../assets/images/vegetable/product/11.png" class="blur-up lazyload"
+                                         alt="">
+                                </a>
+
+                                <a href="shop-left-sidebar.html" class="deal-contain">
+                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
+                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="list-3">
+                            <div class="deal-offer-contain">
+                                <a href="shop-left-sidebar.html" class="deal-image">
+                                    <img src="../assets/images/vegetable/product/12.png" class="blur-up lazyload"
+                                         alt="">
+                                </a>
+
+                                <a href="shop-left-sidebar.html" class="deal-contain">
+                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
+                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="list-1">
+                            <div class="deal-offer-contain">
+                                <a href="shop-left-sidebar.html" class="deal-image">
+                                    <img src="../assets/images/vegetable/product/13.png" class="blur-up lazyload"
+                                         alt="">
+                                </a>
+
+                                <a href="shop-left-sidebar.html" class="deal-contain">
+                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
+                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bg overlay Start -->
+<div class="bg-overlay"></div>
+<!-- Add address modal box end -->
+<!-- Location Modal Start -->
+<div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-hlog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Choose your Delivery Location</h5>
+                <p class="mt-1 text-content">Enter your address and we will specify the offer for your area.</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="location-list">
+                    <div class="search-input">
+                        <input type="search" class="form-control" placeholder="Search Your Area">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <div class="disabled-box">
+                        <h6>Select a Location</h6>
+                    </div>
+
+                    <ul class="location-select custom-height">
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Alabama</h6>
+                                <span>Min: $130</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Arizona</h6>
+                                <span>Min: $150</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>California</h6>
+                                <span>Min: $110</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Colorado</h6>
+                                <span>Min: $140</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Florida</h6>
+                                <span>Min: $160</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Georgia</h6>
+                                <span>Min: $120</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Kansas</h6>
+                                <span>Min: $170</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Minnesota</h6>
+                                <span>Min: $120</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>New York</h6>
+                                <span>Min: $110</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javascript:void(0)">
+                                <h6>Washington</h6>
+                                <span>Min: $130</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    showInPopup = (url, title) => {
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (res) {
+                $("#form-modal .modal-body").html(res);
+                $("#form-modal .modal-title").html(title);
+                const myModal = new bootstrap.Modal(document.getElementById('form-modal'));
+                myModal.show();
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+    }
+
+</script>

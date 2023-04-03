@@ -18,16 +18,16 @@
                     Đăng nhập với tài khoản
                 </h4>
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-11">
                         <form action="/account/login?returnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
                             @Html.AntiForgeryToken()
                             <div class="single-form form-default">
-                                <label>Email</label>
+                                <label>Tài khoản</label>
                                 <div class="form-input">
-                                    <input asp-for="Email" type="email" placeholder="user@email.com">
-                                    <i class="mdi mdi-email"></i>
+                                    <input asp-for="Username" type="text">
+                                    <i class="mdi mdi-account"></i>
                                 </div>
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
                             <div class="single-form form-default">
                                 <label>Mật khẩu</label>
@@ -48,28 +48,11 @@
                             </div>
                             <div class="single-form">
                                 <button type="submit" class="main-btn primary-btn">Đăng nhập</button>
+                                <p class="login">
+                                    Chưa có tài khoản? <a asp-action="Register">Đăng ký</a>
+                                </p>
                             </div>
                         </form>
-                    </div>
-                    <div class="col-md-5">
-                        <p class="account">Đăng nhập với tài khoản xã hội</p>
-                        <ul>
-                            <li>
-                                <a asp-action="SigninFacebook" asp-controller="Home" class="facebook-login-registration">
-                                    <i class="lni lni-facebook-original"></i>
-                                    <span>Đăng nhập với Facebook</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-action="Signin" asp-controller="Home" class="google-login-registration">
-                                    <img src="~/assets/images/google-logo.svg" alt="">
-                                    <span>Đăng nhập với Google</span>
-                                </a>
-                            </li>
-                        </ul>
-                        <p class="login">
-                            Chưa có tài khoản? <a asp-action="Register">Đăng ký</a>
-                        </p>
                     </div>
                 </div>
             </div>

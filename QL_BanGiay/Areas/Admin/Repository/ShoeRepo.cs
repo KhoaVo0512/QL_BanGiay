@@ -51,19 +51,18 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public PaginatedList<Giay> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5)
         {
             List<Giay> items;
+
             if (SearchText != "" && SearchText != null)
             {
                 items = _context.Giays.Where(ut=>ut.TenGiay.ToLower().Contains(SearchText.ToLower()))
                     .Include(s=>s.MaDongSanPhamNavigation)
                     .Include(s=>s.MaNhaSanXuatNavigation)
-                    .Include(s=> s.NoiDungs)
                     .ToList();
             }
             else
                 items = _context.Giays
                     .Include(s => s.MaDongSanPhamNavigation)
                     .Include(s => s.MaNhaSanXuatNavigation)
-                    .Include(s => s.NoiDungs)
                     .ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
@@ -107,7 +106,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 MauSac = item.MauSac,
                 ChatLieu = item.ChatLieu,
                 TenGiay = item.TenGiay,
-                AnhDD = item.anhNenUrl,
+                AnhDd = item.anhNenUrl,
                 TrangThai = true,
                 NgayCn = DateTime.Now,
                 MaNhaSanXuat = item.MaNhaSanXuat
@@ -148,12 +147,12 @@ namespace QL_BanGiay.Areas.Admin.Repository
             return "/" + folderPath;
         }
 
-        public ShoeContext GetItem(string id)
+        public EditShoeModel GetItem(string id)
         {
-            var getShoe = _context.Giays.Where(s => s.MaGiay == id).Include(e => e.AnhGiays).FirstOrDefault();
+            var getShoe = _context.Giays.Where(s => s.MaGiay == id).Include(e => e.AnhGiays).Include(s=>s.AnhGiays).FirstOrDefault();
             var getBrand = _context.DongSanPhams.Where(s => s.MaDongSanPham == getShoe.MaDongSanPham).Select(s => s.MaNhanHieu).SingleOrDefault();
 
-            ShoeContext item = new ShoeContext
+            EditShoeModel item = new EditShoeModel
             {
                 MaGiay = getShoe.MaGiay,
                 TenGiay = getShoe.TenGiay,
@@ -162,75 +161,94 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 MauSac = getShoe.MauSac,
                 MaNhaSanXuat = (int)getShoe.MaNhaSanXuat,
                 MaNhanHieu = (int)getBrand,
+                GiaBan = getShoe.GiaBan.ToString(),
+                AnhDD = getShoe.AnhDd
             };
+            item.AnhGiays = new List<AnhGiay>();
+            foreach(var s in getShoe.AnhGiays)
+            {
+                item.AnhGiays.Add(s);
+            }
             return item;
         }
 
-        public async Task<ShoeContext> Edit(ShoeContext item)
+        public async Task<EditShoeModel> Edit(EditShoeModel item)
         {
             var getShoe = _context.Giays.Where(s => s.MaGiay == item.MaGiay).FirstOrDefault();
-            string serverFolder = _webHostEnvironment.WebRootPath + getShoe.AnhDD.ToString();
-            FileInfo fi = new FileInfo(serverFolder);
-            if (fi != null)
-                File.Delete(serverFolder);
-            string folder;
-            if (item.MaAnhNen != null)
+            string serverFolder = _webHostEnvironment.WebRootPath + getShoe.AnhDd.ToString();
+            if (item.MaAnhNen == null && item.AnhDetail == null)
             {
-                folder = "assets/images/anhdaidien/";
-                item.anhNenUrl = await UploadImage(folder, item.MaAnhNen);
-            }
-            if (item.AnhDetail != null)
+                getShoe.TenGiay = item.TenGiay;
+                getShoe.NgayCn = DateTime.Now;
+                getShoe.ChatLieu = item.ChatLieu;
+                getShoe.MauSac = item.MauSac;
+                getShoe.MaNhaSanXuat = item.MaNhaSanXuat;
+                getShoe.MaDongSanPham = item.MaDongSanPham;
+                getShoe.GiaBan = int.Parse(item.GiaBan);
+            } else
             {
-                if (item.MaNhanHieu == 1)
-                    folder = "assets/images/converse/";
-                else if (item.MaNhanHieu == 2)
-                    folder = "assets/images/vans/";
-                else if (item.MaNhanHieu == 3)
-                    folder = "assets/images/adidas/";
-                else folder = "assets/images/nike/";
-                item.Images = new List<ShoeImageContext>();
-                foreach (var file in item.AnhDetail)
+                FileInfo fi = new FileInfo(serverFolder);
+                if (fi != null)
+                    File.Delete(serverFolder);
+                string folder;
+                if (item.MaAnhNen != null)
                 {
-                    var shoeImage = new ShoeImageContext()
+                    folder = "assets/images/anhdaidien/";
+                    item.anhNenUrl = await UploadImage(folder, item.MaAnhNen);
+                }
+                if (item.AnhDetail != null)
+                {
+                    if (item.MaNhanHieu == 1)
+                        folder = "assets/images/converse/";
+                    else if (item.MaNhanHieu == 2)
+                        folder = "assets/images/vans/";
+                    else if (item.MaNhanHieu == 3)
+                        folder = "assets/images/adidas/";
+                    else folder = "assets/images/nike/";
+                    item.Images = new List<ShoeImageContext>();
+                    foreach (var file in item.AnhDetail)
                     {
-                        Name = file.FileName,
-                        URL = await UploadImage(folder, file)
-                    };
-                    item.Images.Add(shoeImage);
+                        var shoeImage = new ShoeImageContext()
+                        {
+                            Name = file.FileName,
+                            URL = await UploadImage(folder, file)
+                        };
+                        item.Images.Add(shoeImage);
+                    }
                 }
-            }
-            getShoe.TenGiay = item.TenGiay;
-            getShoe.NgayCn = DateTime.Now;
-            getShoe.ChatLieu = item.ChatLieu;
-            getShoe.MauSac = item.MauSac;
-            getShoe.MaNhaSanXuat = item.MaNhaSanXuat;
-            getShoe.MaDongSanPham = item.MaDongSanPham;
-            getShoe.AnhDD = item.anhNenUrl;
-            var getImageShoe = _context.AnhGiays.Where(s => s.MaGiay == item.MaGiay).ToList();
-            var id = item.Images.ToArray();
-            int i = 0;
-            var path = "";
-            foreach (var items in getImageShoe)
-            {
-                path = _webHostEnvironment.WebRootPath + items.Url.ToString();
-                FileInfo fa = new FileInfo(path);
-                if (fa!= null)
+                getShoe.TenGiay = item.TenGiay;
+                getShoe.NgayCn = DateTime.Now;
+                getShoe.ChatLieu = item.ChatLieu;
+                getShoe.MauSac = item.MauSac;
+                getShoe.MaNhaSanXuat = item.MaNhaSanXuat;
+                getShoe.MaDongSanPham = item.MaDongSanPham;
+                getShoe.AnhDd = item.anhNenUrl;
+                getShoe.GiaBan = int.Parse(item.GiaBan);
+                var getImageShoe = _context.AnhGiays.Where(s => s.MaGiay == item.MaGiay).ToList();
+                var id = item.Images.ToArray();
+                var path = "";
+                foreach (var items in getImageShoe)
                 {
-                    File.Delete(path);
-                    fa.Delete();
+                    path = _webHostEnvironment.WebRootPath + items.Url.ToString();
+                    FileInfo fa = new FileInfo(path);
+                    if (fa != null)
+                    {
+                        File.Delete(path);
+                        fa.Delete();
+                    }
+                    _context.AnhGiays.Remove(items);
+                    _context.SaveChanges();
                 }
-                _context.AnhGiays.Remove(items);
-                _context.SaveChanges();
-            }
-            getShoe.AnhGiays = new List<AnhGiay>();
-            foreach(var image in item.Images)
-            {
-                getShoe.AnhGiays.Add(new AnhGiay
+                getShoe.AnhGiays = new List<AnhGiay>();
+                foreach (var image in item.Images)
                 {
-                    TenAnh = image.Name,
-                    Url = image.URL
-                });
-            }
+                    getShoe.AnhGiays.Add(new AnhGiay
+                    {
+                        TenAnh = image.Name,
+                        Url = image.URL
+                    });
+                }
+            }           
             _context.Update(getShoe);
             await _context.SaveChangesAsync();
             return item;

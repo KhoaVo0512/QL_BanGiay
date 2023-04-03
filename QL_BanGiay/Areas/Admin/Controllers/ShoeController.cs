@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
@@ -7,21 +8,25 @@ using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Areas.Admin.Repository;
 using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
+using System.Data;
 using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class ShoeController : Controller
     {
         private readonly IShoe _ShoeRepo;
+        private readonly IShoeDetails _ShoeDetails;
         private readonly ICollection _CollectionRepo;
         private readonly IBrand _BrandRepo;
         private readonly ISupplier _SupplierRepo;
         private readonly IProduce _ProduceRepo;
         private readonly IToastNotification _toastNotification;
-        public ShoeController (IShoe shoe, ICollection collection, IBrand brandRepo, ISupplier supplier, IProduce produce, IToastNotification toastNotification)
+        public ShoeController (IShoe shoe, ICollection collection, IBrand brandRepo, ISupplier supplier
+            , IProduce produce, IToastNotification toastNotification, IShoeDetails shoeDetails)
         {
             _toastNotification = toastNotification;
             _ProduceRepo = produce;
@@ -29,6 +34,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             _CollectionRepo = collection;
             _ShoeRepo = shoe;            
             _BrandRepo = brandRepo;
+            _ShoeDetails = shoeDetails;
 
         }
         [Route("shoe")]
@@ -89,12 +95,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
                 TempData["CurrentPage"] = 1;
+
                 _toastNotification.AddSuccessToastMessage("Sản phẩm đã được thêm thành công");
                 return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
             _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
             ViewBag.BrandList = GetBrands();
             ViewBag.ProduceList = GetProduce();
+            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
         }
         [Route("shoe/delete")]
@@ -131,7 +139,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [NoDirectAccess]
         public IActionResult Edit(string id)
         {
-            ShoeContext item = _ShoeRepo.GetItem(id);
+            EditShoeModel item = _ShoeRepo.GetItem(id);
             var collection = _CollectionRepo.GetItem(item.MaDongSanPham);
             ViewBag.NameCollection = collection.TenDongSanPham;
             ViewBag.IdCollection = collection.MaDongSanPham;
@@ -142,7 +150,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [Route("shoe/edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Edit(ShoeContext item)
+        public async Task<JsonResult> Edit(EditShoeModel item)
         {
             if (ModelState.IsValid)
             {
@@ -154,7 +162,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                     ViewBag.BrandList = GetBrands();
                     ViewBag.ProduceList = GetProduce();
-                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
+                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "Edit", item, null, "") });
                 }
                 Sort();
                 var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
@@ -168,9 +176,58 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
             ViewBag.BrandList = GetBrands();
             ViewBag.ProduceList = GetProduce();
+            var collection = _CollectionRepo.GetItem(item.MaDongSanPham);
+            ViewBag.NameCollection = collection.TenDongSanPham;
+            ViewBag.IdCollection = collection.MaDongSanPham;
+            
+            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
         }
+        [Route("shoe/information")]
+        [HttpGet]
 
+        public IActionResult Information(string id)
+        {
+            var item = _ShoeDetails.GetItem(id);
+            return View(item);
+        }
+        [Route("shoe/information")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult Information(ShoeDetails model)
+        {
+            bool bln = false;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bln = _ShoeDetails.Edit(model);
+                    if (bln)
+                    {
+                        Sort();
+                        var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                        var pager = new PagerModel(items.TotalRecords, 1, 5);
+                        pager.SortExpression = "";
+                        this.ViewBag.Pager = pager;
+                        TempData["CurrentPage"] = 1;
+                        _toastNotification.AddSuccessToastMessage("Sản phẩm được sửa nội dung thành công thành công");
+                        return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+                    }
+                    else
+                    {
+                        _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+                        return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "information", model, null, "") });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(String.Empty, ex.ToString());
+                    _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "information", model, null, "") });
+                }
+            }
+            return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "information", model, null, "") });
+        }
         [Route("shoe/GetCollections")]
         public JsonResult GetCollections(int id)
         {

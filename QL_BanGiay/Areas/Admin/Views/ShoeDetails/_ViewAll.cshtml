@@ -6,13 +6,13 @@
     PagerModel pager = ViewBag.Pager;
     int stt = 0;
     var items = "";
-    foreach (var item in Model)
-    {
-        for (int i =0; i< item.NoiDungs.Count; i++)
-        {
-            items = item.NoiDungs[0].ThongTin;
-        }
-    }
+    //foreach (var item in Model)
+    //{
+    //    for (int i =0; i< item.NoiDungs.Count; i++)
+    //    {
+    //        items = item.NoiDungs[0].ThongTin;
+    //    }
+    //}
 }
 
 <div class="content-header">
@@ -78,13 +78,13 @@
                                     @Html.DisplayFor(modelItem => item.TenGiay)
                                 </td>
                                 <td>
-                                    <img src="@Url.Content(item.AnhDD)" style="width:45px; height:45px" />
+                                    <img src="@Url.Content(item.AnhDd)" style="width:45px; height:45px" />
                                 </td>
                                 <td>
-                                    @for(int i = 0; i< item.NoiDungs.Count; i++)
+                                   @* @for(int i = 0; i< item.NoiDungs.Count; i++)
                                     {
                                         @Html.Raw(item.NoiDungs[i].ThongTin);
-                                    }
+                                    }*@
                                     
                                 </td>
                                 <td>

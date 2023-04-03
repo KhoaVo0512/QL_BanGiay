@@ -1,0 +1,54 @@
+﻿@model QL_BanGiay.Areas.Admin.Models.ShoeDetails
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Information" asp-route-id="@Model.MaGiay" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Mã giày</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">#</div>
+                            </div>
+                            <input readonly asp-for="MaGiay" class="form-control" />
+                        </div>
+                        <span asp-validation-for="MaGiay" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Tên giày</label>
+                        <div class="input-group">
+                            <input readonly asp-for="TenGiay" class="form-control" />
+                        </div>
+                        <span asp-validation-for="TenGiay" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tóm tắt sản phẩm</label>
+                <textarea asp-for="tomtat" class="form-control"></textarea>
+                <span asp-validation-for="tomtat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Thông tin sản phẩm</label>
+                <textarea asp-for="content" class="form-control"></textarea>
+                <span asp-validation-for="content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3 mt-4">
+                    <input type="submit" value="Lưu" class="btn btn-primary btn-block px-5" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@{
+    var summernote = new QL_BanGiay.Areas.Admin.Models.Summenote("#content");
+}
+<partial name="_Summernote" model="summernote"></partial>

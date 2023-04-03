@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Mã giày</label>
+                        <label class="control-label">Mã giày<span class="required">*</span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">#</div>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Tên giày</label>
+                        <label class="control-label">Tên giày<span class="required">*</span></label>
                         <div class="input-group">
                             <input asp-for="TenGiay" class="form-control" />
                         </div>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single-form form-default form-border">
-                        <label>Dòng sản phẩm</label>
+                        <label>Dòng sản phẩm<span class="required">*</span></label>
                         <div class="form-input">
                             <select asp-for="MaDongSanPham" asp-items="ViewBag.CollectionList" class="form-select">
                             </select>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="single-form form-default form-border">
-                        <label>Nơi sản xuất</label>
+                        <label>Nơi sản xuất<span class="required">*</span></label>
                         <div class="form-input">
                             <select asp-for="MaNhaSanXuat" class="form-select" asp-items="ViewBag.ProduceList"></select>
                             <span asp-validation-for="MaNhaSanXuat" class="text-danger"></span>
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Màu sắc</label>
+                        <label class="control-label">Màu sắc<span class="required">*</span></label>
                         <div class="input-group">
                             <input asp-for="MauSac" class="form-control" />
                         </div>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Chất liệu</label>
+                        <label class="control-label">Chất liệu<span class="required">*</span></label>
                         <div class="input-group">
                             <input asp-for="ChatLieu" class="form-control" />
                         </div>
@@ -86,7 +86,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Chọn ảnh đại diện</label>
+                        <label class="control-label">Chọn ảnh đại diện<span class="required">*</span></label>
                         <div class="custom-file">
                             <input asp-for="MaAnhNen" onchange="preview_image();" class="form-control" id="imageBrowes" />
 
@@ -98,7 +98,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Chọn ảnh cho chi tiết</label>
+                        <label class="control-label">Chọn ảnh cho chi tiết<span class="required">*</span></label>
                         <div class="custom-file">
                             <input asp-for="AnhDetail" onchange="preview_images();" class="form-control" id="imagesBrowes" />
                         </div>

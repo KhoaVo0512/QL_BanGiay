@@ -1,0 +1,234 @@
+﻿@model QL_BanGiay.Data.HoaDon
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+}
+<div class="card">
+    <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
+        <h6>Chi tiết đơn đặt </h6>
+    </div>
+
+    <form id="CodeSbyAnizForm" asp-action="details" onsubmit="return jQueryAjaxPost(this);">
+
+        <div class="row col-12">
+
+            <div class="row col-11 ml-5">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group col-2 ">
+                    <label class="control-label">Mã hóa đơn:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="MaHd" class="form-control" readonly />
+                    <span asp-validation-for="MaHd" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-1">
+                </div>
+
+                <div class="form-group col-2">
+                    <label class="control-label">Ngày đặt đơn hàng:</label>
+                </div>
+                <div class="form-group col-4">
+                    <input readonly asp-for="NgayLapDh" class="form-control" />
+                    <span asp-validation-for="NgayLapDh" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Người đặt:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input readonly asp-for="TenKH" class="form-control" />
+                    <span asp-validation-for="TenKH" class="text-danger"></span>
+                </div>
+                <div class="form-group col-1">
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Ngày giao hàng:</label>
+                </div>
+                <div class="form-group col-4">
+                    <input readonly asp-for="NgayGiaoHd" class="form-control" />
+                    <span asp-validation-for="NgayGiaoHd" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Số điện thoại:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input readonly asp-for="Sdt" class="form-control" />
+                    <span asp-validation-for="Sdt" class="text-danger"></span>
+                </div>
+                <div class="form-group col-1">
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Ghi chú:</label>
+                </div>
+                <div class="form-group col-4">
+                    <textarea readonly asp-for="GhiChu" class="form-control"></textarea>
+                    <span asp-validation-for="GhiChu" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-2">
+                    <label class="control-label">Email:</label>
+                </div>
+                <div class="form-group col-10">
+                    <input readonly asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Địa chỉ nhận:</label>
+                </div>
+                <div class="form-group col-10">
+                    <input readonly asp-for="DiaChiNhan" class="form-control" />
+                    <span asp-validation-for="DiaChiNhan" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <table id="CodesTable" class="table table-borderless table-sm mb-0 pb-0 border CodesTable">
+                        <thead>
+                            <tr>
+                                <th>Mã giày</th>
+                                <th style="text-align: center;">Tên giày</th>
+                                <th style="text-align: center;">Size giày</th>
+                                <th style="text-align: center;">Số lượng (Đôi)</th>
+                                <th>Giá (VND)</th>
+                                <th>Tổng cộng (VND)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="CsDiv">
+                            @for (int i = 0; i < Model.HoaDonCts.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input readonly asp-for="@Model.HoaDonCts[i].MaGiay" class="form-control" />
+                                        <span asp-validation-for="@Model.HoaDonCts[i].MaGiay" class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <input asp-for="@Model.HoaDonCts[i].Description" class="form-control form-control-plaintext" readonly />
+                                        <span asp-validation-for="@Model.HoaDonCts[i].Description" class="text-danger"></span>
+                                    </td>
+                                    <th>
+                                        <select disabled asp-for="@Model.HoaDonCts[i].MaSize" class="form-control" asp-items="ViewBag.SizeList"></select>
+                                        <span asp-validation-for="@Model.HoaDonCts[i].MaSize" class="text-danger" style="font-weight: initial;"></span>
+                                    </th>
+                                    <td style="width: 50px">
+                                        <input readonly type="text" asp-for="@Model.HoaDonCts[i].SoLuong" class="form-control QtyTotal" />
+                                        <span asp-validation-for="@Model.HoaDonCts[i].SoLuong" class="text-danger"></span>
+                                    </td>
+
+                                    <td>
+                                        <input readonly type="text" asp-for="@Model.HoaDonCts[i].DonGia" class="form-control form-control PriceTotal" />
+                                        <span asp-validation-for="@Model.HoaDonCts[i].DonGia" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.HoaDonCts[i].Total" class="form-control form-control-plaintext AmountTotal" readonly />
+                                        <input type="hidden" asp-for="@Model.HoaDonCts[i].IsDeleted" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <table class="table table-sm mb-0 pb-0 border">
+                        <thead>
+                            <tr>
+                                <th style="width:13%;">
+                                    Tổng cộng
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                    <input style="text-align: center;" type="text" id="txtQtyTotal" class="form-control form-control-plaintext" value="" readonly />
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:13%;">
+                                </th>
+
+                                <th style="width:18.12%;">
+                                    <input readonly type="text" id="txtAmountTotal" class="form-control form-control-plaintext" value="" />
+                                </th>
+
+                                <th style="width:9%;">
+                                </th>
+                            </tr>
+
+                        </thead>
+                    </table>
+
+
+                </div>
+
+                <div class="form-group col-12">
+                </div>
+
+                <div class="form-group col-12">
+                </div>
+            </div>
+            <div class="form-group btn-group col-11 ml-5">
+                <div class="col-4">
+                    <a class="btn btn-secondary btn-block" asp-action="index"
+                       asp-route-pg="@TempData.Peek("CurrentPage")">Trở về</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+
+}
+<script>
+    TinhItem();
+    function TinhItem() {
+        var x = document.getElementsByClassName('QtyTotal');
+        var totalQty = 0;
+        var Amount = 0;
+        var totalAmount = 0;
+        var i;
+        for (i = 0; i < x.length; i++) {
+
+            var idofIsDeleted = i + "__IsDeleted";
+            var idofPrice = i + "__DonGia";
+
+            var idofTotal = i + "__Total";
+
+            var hidIsDelId = document.querySelector("[id$='" + idofIsDeleted + "']").id;
+            var priceTxtId = document.querySelector("[id$='" + idofPrice + "']").id;
+            var totalTxtId = document.querySelector("[id$='" + idofTotal + "']").id;
+            if (document.getElementById(hidIsDelId).value != "true") {
+                if (eval(x[i].value) === undefined)
+                    x[i].value = 0;
+                totalQty = totalQty + eval(x[i].value);
+                var txttotal = document.getElementById(totalTxtId);
+                var txtprice = document.getElementById(priceTxtId);
+                if (isNaN(totalQty)) {
+                    totalQty = eval(x[i].value);
+                }
+                var Total = eval(x[i].value) * txtprice.value;
+                if (isNaN(Total))
+                    txttotal.value = '';
+                else
+                    txttotal.value = Total;
+                totalAmount = eval(totalAmount) + eval(txttotal.value);
+
+            }
+        }
+        if (isNaN(totalAmount))
+            totalAmount = '';
+        document.getElementById('txtQtyTotal').value = totalQty;
+        document.getElementById('txtAmountTotal').value = totalAmount;
+        return;
+    }
+</script>

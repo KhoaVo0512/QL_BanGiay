@@ -1,0 +1,108 @@
+﻿@using QL_BanGiay.Areas.Admin.Models;
+@model IEnumerable<QL_BanGiay.Data.HoaDon>
+@{
+    ViewData["Title"] = "Quản lí hóa đơn";
+    SortModel sortModel = (SortModel)ViewData["sortModel"];
+    PagerModel pager = ViewBag.Pager;
+    int stt = 0;
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <partial name="_topBar" model="@pager" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                STT
+                            </th>
+                            <th>
+                                Mã hóa đơn
+                            </th>
+                            <th>
+                                Tên người đặt
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("NgayGiaoDH").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("NgayGiaoDH").SortExpression">
+                                    Ngày giao
+                                </a>
+                            </th>
+                            <th>
+                                Tổng tiền
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            stt = stt + 1;
+                            <tr>
+                                <td>
+                                    @stt
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaHd)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.HoNguoiDung) @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.TenNguoiDung)
+                                </td>
+                                <td style="width: 350px;">
+                                    <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayGiaoHd" class="form-control" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TongTien)
+                                </td>
+                               
+                                <td>
+                                    <a onclick="showInPopup('@Url.Action("Details", "checkout",new {id = item.MaHd},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <partial name="_bottomBar" model="@pager" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function ChangeTrangThai(mahd) {
+        var trangthai = document.getElementById('item_' + mahd);
+        $.ajax({
+            url: "/admin/checkout/trangthai/" ,
+            type: "POST",
+            data: { mahd: mahd, id : trangthai.value},
+            success: function (data) {
+                if (trangthai.value == "2"){
+                    trangthai.setAttribute('disabled', true);
+                }
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+        });
+    }
+</script>

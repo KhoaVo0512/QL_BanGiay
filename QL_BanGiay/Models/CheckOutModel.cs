@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QL_BanGiay.Data;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QL_BanGiay.Models
 {
     public class CheckOutModel
     {
         [Required(ErrorMessage = "Nhập họ của bạn")]
-        public string? Ho{ get; set; }
+        public string? Ho { get; set; }
         [Required(ErrorMessage = "Nhập tên của bạn")]
-        public string? Ten{ get; set; }
+        public string? Ten { get; set; }
         [Required(ErrorMessage = "Nhập địa chỉ Email")]
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string? Email { get; set; }
@@ -23,7 +25,10 @@ namespace QL_BanGiay.Models
         public string? MaXa { get; set; }
         [Required(ErrorMessage = "Nhập địa chỉ")]
         public string? DiaChi { get; set; }
-
         public string? GhiChu { get; set ; }
+        [NotMapped]
+        public List<string>? DiaChis { get; set; }
+        [NotMapped]
+        public List<int>? IdDiaChi { get; set; }
     }
 }

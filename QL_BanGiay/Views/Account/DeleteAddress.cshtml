@@ -1,0 +1,18 @@
+﻿@model QL_BanGiay.Models.CreateAddressModel
+@{
+    Layout = null;
+}
+<h4>Bạn có muốn xóa hóa địa hàng này?</h4>
+<div>
+    <form asp-action="DeleteAddressConfirm" asp-route-id="@Model.MaDiaChi" style="margin-bottom: 20px " onsubmit="return jQueryAjaxDelete(this);">
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <button type="button" class="btn btn-secondary" onclick="CloseModal();">Hủy</button>
+        </div>
+    </form>
+</div>
+<script>
+    function CloseModal() {
+        $("#form-modal .close").click();
+    }
+</script>

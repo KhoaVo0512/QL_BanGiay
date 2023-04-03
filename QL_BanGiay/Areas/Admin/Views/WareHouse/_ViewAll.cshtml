@@ -1,5 +1,5 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
-@model IEnumerable<QL_BanGiay.Data.Giay>
+@model IEnumerable<QL_BanGiay.Data.KhoGiay>
 @{
     ViewData["Title"] = "Quản lí kho giày";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
@@ -32,7 +32,10 @@
                                 STT
                             </th>
                             <th>
-                                Mã giày
+                                <i class="@sortModel.GetColumn("MaGiay").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("MaGiay").SortExpression">
+                                    Mã giày
+                                </a>
                             </th>
                             <th>
                                 <i class="@sortModel.GetColumn("NameShoe").SortIcon" arial-hidden="true"></i>
@@ -41,7 +44,19 @@
                                 </a>
                             </th>
                             <th>
+                                <i class="@sortModel.GetColumn("Size").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Size").SortExpression">
+                                    Tên Size
+                                </a>
+                            </th>
+                            <th>
                                 Avatar
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("Quantity").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Quantity").SortExpression">
+                                    Số lượng
+                                </a>
                             </th>
                         </tr>
                     </thead>
@@ -57,13 +72,16 @@
                                     @Html.DisplayFor(modelItem => item.MaGiay)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TenGiay)
+                                    @Html.DisplayFor(modelItem => item.MaGiayNavigation.TenGiay)
                                 </td>
                                 <td>
-                                    <img src="@Url.Content(item.AnhDD)" style="width:45px; height:45px" />
+                                    @Html.DisplayFor(modelItem => item.MaSizeNavigation.TenSize)
                                 </td>
                                 <td>
-                                    <a onclick="showInPopup('@Url.Action("Details", "warehouse",new {id = item.MaGiay},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
+                                    <img src="@Url.Content(item.MaGiayNavigation.AnhDd)" style="width:45px; height:45px" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SoLuong)
                                 </td>
                             </tr>
                         }

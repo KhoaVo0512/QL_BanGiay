@@ -5,6 +5,8 @@ namespace QL_BanGiay.Data;
 
 public partial class KhuyenMaiCt
 {
+    public int Id { get; set; }
+
     public string? MaGiay { get; set; }
 
     public string? MaKhuyenMai { get; set; }
@@ -12,8 +14,6 @@ public partial class KhuyenMaiCt
     public double? Tile { get; set; }
 
     public int? GiaHienTai { get; set; }
-
-    public int Id { get; set; }
 
     public virtual Giay? MaGiayNavigation { get; set; }
 

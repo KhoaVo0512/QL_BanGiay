@@ -7,9 +7,9 @@ namespace QL_BanGiay.Areas.Admin.Interface
     public interface IShoe 
     {
         Task<ShoeContext> Create(ShoeContext item);
-        Task<ShoeContext> Edit(ShoeContext item);
+        Task<EditShoeModel> Edit(EditShoeModel item);
         bool Delete(string id);
-        ShoeContext GetItem(string id);
+        EditShoeModel GetItem(string id);
         Giay GetItemCart(string id);
         List<Giay> GetItemsVans();
         List<Giay> GetItemsConverse();

@@ -1,0 +1,140 @@
+﻿@model QL_BanGiay.Models.EditAccountModel
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" asp-route-id="@Model.MaNguoiDung" asp-route-IdAddress="@Model.MaDiaChi" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label class="control-label">Họ</label>
+                        <div class="input-group">
+                            <input asp-for="HoNguoiDung" class="form-control" />
+                        </div>
+                        <span asp-validation-for="HoNguoiDung" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label class="control-label">Tên</label>
+                        <div class="input-group">
+                            <input asp-for="TenNguoiDung" class="form-control" />
+                        </div>
+                        <span asp-validation-for="TenNguoiDung" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Email</label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Số điện thoại</label>
+                        <div class="input-group">
+                            <input asp-for="Sdt" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Sdt" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="single-form form-default form-border">
+                    <label>Địa chỉ</label>
+                    <div class="input-group">
+                        <input asp-for="DiaChi" class="form-control" />
+                    </div>
+                    <span asp-validation-for="DiaChi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Tỉnh</label>
+                        <div class="form-input">
+                            <select asp-for="MaTinh" class="form-select" asp-items="ViewBag.Tinh"></select>
+
+                        </div>
+                        <span asp-validation-for="MaTinh" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Huyện</label>
+                        <div class="form-input">
+                            <select asp-for="MaHuyen" class="form-select" asp-items="ViewBag.Huyen"></select>
+
+                        </div>
+                        <span asp-validation-for="MaHuyen" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Xã</label>
+                        <div class="form-input">
+                            <select asp-for="MaXa" class="form-select" asp-items="ViewBag.Xa"></select>
+
+                        </div>
+                        <span asp-validation-for="MaXa" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-8 offset-md-5 mt-4">
+                    <input style="background-color: blue;" type="submit" value="Lưu" class="btn btn-primary btn-block px-7" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        //$('#MaHuyen').attr('disabled', true);
+        //$('#MaXa').attr('disabled', true);
+        $("#MaTinh").change(function () {
+            var id = $(this).val();
+            $('#MaHuyen').attr('disabled', false);
+            $('#MaHuyen').empty();
+            $('#MaHuyen').append('<option value="">----Chọn----</option>');
+            $('#MaXa').attr('disabled', true);
+            $('#MaXa').empty();
+            $('#MaXa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Huyen?id=' + id,
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#MaHuyen').append('<option value=' + data['maHuyen'] + '>' + data['tenHuyen'] + '</option>');
+                    });
+                }
+            });
+        });
+        $("#MaHuyen").change(function () {
+            $('#MaXa').attr('disabled', false);
+            var id = $(this).val();
+            $('#MaXa').empty();
+            $('#MaXa').append('<option value="">----Chọn----</option>');
+            $.ajax({
+                url: '/account/Xa?id=' + id,
+                success: function (result) {
+                    $.each(result, function (i, data) {
+                        $('#MaXa').append('<option value=' + data['maXa'] + '>' + data['tenXa'] + '</option>');
+                    });
+                }
+            });
+        });
+       
+    });
+</script>

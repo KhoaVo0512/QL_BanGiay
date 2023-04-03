@@ -7,7 +7,7 @@ namespace QL_BanGiay.Data;
 public partial class NhapHang
 {
     public int MaNhapHang { get; set; }
-    [Required(ErrorMessage = "Vui lòng nhà cung cấp")]
+    [Required(ErrorMessage = "Vui lòng chọn nhà cung cấp")]
     public int? MaDonViNhap { get; set; }
     [Required(ErrorMessage = "Vui lòng nhập số hóa đơn")]
     public int? SoHoaDon { get; set; }

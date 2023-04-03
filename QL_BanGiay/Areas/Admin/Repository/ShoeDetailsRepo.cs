@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -18,14 +19,16 @@ namespace QL_BanGiay.Areas.Admin.Repository
             try
             {
                 var item = _context.Giays.Where(s => s.MaGiay == context.MaGiay).FirstOrDefault();
-                item.NoiDungs.Add(new NoiDung()
+                if (item != null)
                 {
-                    MaGiay = context.MaGiay,
-                    ThongTin = context.content
-                });
-                _context.Update(item);
-                _context.SaveChanges();
-                return true;
+                    item.NoiDung = context.content;
+                    item.TomTat = context.tomtat;
+                    _context.Update(item);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception)
             {
@@ -38,19 +41,19 @@ namespace QL_BanGiay.Areas.Admin.Repository
             var getShoe = _context.Giays.Where(s => s.MaGiay == shoeId)
                 .Include(e => e.AnhGiays)
                 .FirstOrDefault();
-            var getContent = _context.NoiDungs.Where(s => s.MaGiay == shoeId).FirstOrDefault();
             ShoeDetails item = new ShoeDetails();
-            if (getContent == null)
+            if (getShoe.NoiDung == null)
             {
-                item.MaGiay = getShoe.MaGiay.ToString();
+                item.MaGiay = getShoe.MaGiay;
                 item.TenGiay = getShoe.TenGiay;
                 item.content = "";
-            }
-            else
+                item.tomtat = "";
+            }else
             {
-                item.MaGiay = getShoe.MaGiay.ToString();
+                item.MaGiay = getShoe.MaGiay;
                 item.TenGiay = getShoe.TenGiay;
-                item.content = getContent.ThongTin;
+                item.content = getShoe.NoiDung;
+                item.tomtat = getShoe.TomTat;
             }
             return item;
         }

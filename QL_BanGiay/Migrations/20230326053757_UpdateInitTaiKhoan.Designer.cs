@@ -12,8 +12,8 @@ using QL_BanGiay.Data;
 namespace QLBanGiay.Migrations
 {
     [DbContext(typeof(QlyBanGiayContext))]
-    [Migration("20230301090505_CreateNoiDung")]
-    partial class CreateNoiDung
+    [Migration("20230326053757_UpdateInitTaiKhoan")]
+    partial class UpdateInitTaiKhoan
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,9 @@ namespace QLBanGiay.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
 
+                    b.Property<string>("MaNguoiDungNavigationMaNguoiDung")
+                        .HasColumnType("varchar(10)");
+
                     b.Property<string>("MaXa")
                         .HasMaxLength(20)
                         .IsUnicode(false)
@@ -81,7 +84,7 @@ namespace QLBanGiay.Migrations
                     b.HasKey("MaDiaChi")
                         .HasName("PK__DiaChi__EB61213EFBD5B0A6");
 
-                    b.HasIndex("MaNguoiDung");
+                    b.HasIndex("MaNguoiDungNavigationMaNguoiDung");
 
                     b.HasIndex("MaXa");
 
@@ -234,9 +237,17 @@ namespace QLBanGiay.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("NgayCN");
 
+                    b.Property<string>("NoiDung")
+                        .HasMaxLength(10000)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TenGiay")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TomTat")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<bool?>("TrangThai")
                         .HasColumnType("bit");
@@ -362,10 +373,6 @@ namespace QLBanGiay.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<string>("Avatar")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime")
                         .HasColumnName("Create_at");
@@ -374,17 +381,9 @@ namespace QLBanGiay.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("GioiTinh")
-                        .HasColumnType("int");
-
                     b.Property<string>("HoNguoiDung")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(70)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(70)");
 
                     b.Property<string>("Sdt")
                         .HasMaxLength(10)
@@ -489,32 +488,6 @@ namespace QLBanGiay.Migrations
                     b.ToTable("NhapHangCT", (string)null);
                 });
 
-            modelBuilder.Entity("QL_BanGiay.Data.NoiDung", b =>
-                {
-                    b.Property<int>("MaNoiDung")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNoiDung"));
-
-                    b.Property<string>("MaGiay")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("ThongTin")
-                        .HasMaxLength(10000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.HasKey("MaNoiDung")
-                        .HasName("PK__NoiDung__356240DFED68AB91");
-
-                    b.HasIndex("MaGiay");
-
-                    b.ToTable("NoiDung", (string)null);
-                });
-
             modelBuilder.Entity("QL_BanGiay.Data.NoiSanXuat", b =>
                 {
                     b.Property<int>("MaNhaSanXuat")
@@ -561,20 +534,25 @@ namespace QLBanGiay.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("MaNguoiDung")
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)");
-
                     b.Property<int>("MaQuyen")
                         .HasColumnType("int");
+
+                    b.Property<string>("NguoiDungMaNguoiDung")
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id")
                         .HasName("PK__QuyenCT__3214EC2779942593");
 
-                    b.HasIndex("MaNguoiDung");
-
                     b.HasIndex("MaQuyen");
+
+                    b.HasIndex("NguoiDungMaNguoiDung");
+
+                    b.HasIndex("UserName");
 
                     b.ToTable("QuyenCT", (string)null);
                 });
@@ -595,6 +573,38 @@ namespace QLBanGiay.Migrations
                         .HasName("PK__SizeGiay__A787E7EDA8016F2A");
 
                     b.ToTable("SizeGiay", (string)null);
+                });
+
+            modelBuilder.Entity("QL_BanGiay.Data.TaiKhoan", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("AnhTK")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("MaNguoiDung")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("Username")
+                        .HasName("PK__TaiKhoan__356240DFED68C12");
+
+                    b.HasIndex("MaNguoiDung");
+
+                    b.ToTable("TaiKhoan", (string)null);
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.Tinh", b =>
@@ -653,8 +663,7 @@ namespace QLBanGiay.Migrations
                 {
                     b.HasOne("QL_BanGiay.Data.NguoiDung", "MaNguoiDungNavigation")
                         .WithMany("DiaChis")
-                        .HasForeignKey("MaNguoiDung")
-                        .HasConstraintName("FK__DiaChi__MaNguoiD__40058253");
+                        .HasForeignKey("MaNguoiDungNavigationMaNguoiDung");
 
                     b.HasOne("QL_BanGiay.Data.Xa", "MaXaNavigation")
                         .WithMany("DiaChis")
@@ -808,32 +817,36 @@ namespace QLBanGiay.Migrations
                     b.Navigation("MaSizeNavigation");
                 });
 
-            modelBuilder.Entity("QL_BanGiay.Data.NoiDung", b =>
-                {
-                    b.HasOne("QL_BanGiay.Data.Giay", "MaGiayNavigation")
-                        .WithMany("NoiDungs")
-                        .HasForeignKey("MaGiay")
-                        .HasConstraintName("FK__NoiDung__MaGiay__45671F6C");
-
-                    b.Navigation("MaGiayNavigation");
-                });
-
             modelBuilder.Entity("QL_BanGiay.Data.QuyenCt", b =>
                 {
-                    b.HasOne("QL_BanGiay.Data.NguoiDung", "MaNguoiDungNavigation")
-                        .WithMany("QuyenCts")
-                        .HasForeignKey("MaNguoiDung")
-                        .HasConstraintName("FK__QuyenCT__MaNguoi__41EDCAC5");
-
                     b.HasOne("QL_BanGiay.Data.Quyen", "MaQuyenNavigation")
                         .WithMany("QuyenCts")
                         .HasForeignKey("MaQuyen")
                         .IsRequired()
                         .HasConstraintName("FK__QuyenCT__MaQuyen__3A4CA8FD");
 
-                    b.Navigation("MaNguoiDungNavigation");
+                    b.HasOne("QL_BanGiay.Data.NguoiDung", null)
+                        .WithMany("QuyenCts")
+                        .HasForeignKey("NguoiDungMaNguoiDung");
+
+                    b.HasOne("QL_BanGiay.Data.TaiKhoan", "UsernameNavigation")
+                        .WithMany("QuyenCts")
+                        .HasForeignKey("UserName")
+                        .HasConstraintName("FK__QuyenCT__Username__41EDCAC5");
 
                     b.Navigation("MaQuyenNavigation");
+
+                    b.Navigation("UsernameNavigation");
+                });
+
+            modelBuilder.Entity("QL_BanGiay.Data.TaiKhoan", b =>
+                {
+                    b.HasOne("QL_BanGiay.Data.NguoiDung", "NguoiDungNavigation")
+                        .WithMany("TaiKhoans")
+                        .HasForeignKey("MaNguoiDung")
+                        .HasConstraintName("FK__TaiKhoan__NguoiDung__53789F6C");
+
+                    b.Navigation("NguoiDungNavigation");
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.Xa", b =>
@@ -872,8 +885,6 @@ namespace QLBanGiay.Migrations
                     b.Navigation("KhuyenMaiCts");
 
                     b.Navigation("NhapHangCts");
-
-                    b.Navigation("NoiDungs");
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.Huyen", b =>
@@ -893,6 +904,8 @@ namespace QLBanGiay.Migrations
                     b.Navigation("DonDats");
 
                     b.Navigation("QuyenCts");
+
+                    b.Navigation("TaiKhoans");
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.NhanHieu", b =>
@@ -920,6 +933,11 @@ namespace QLBanGiay.Migrations
                     b.Navigation("KhoGiays");
 
                     b.Navigation("NhapHangCts");
+                });
+
+            modelBuilder.Entity("QL_BanGiay.Data.TaiKhoan", b =>
+                {
+                    b.Navigation("QuyenCts");
                 });
 
             modelBuilder.Entity("QL_BanGiay.Data.Tinh", b =>

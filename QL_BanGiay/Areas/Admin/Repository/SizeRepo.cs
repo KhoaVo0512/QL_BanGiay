@@ -1,4 +1,5 @@
-﻿using QL_BanGiay.Areas.Admin.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 
@@ -45,6 +46,13 @@ namespace QL_BanGiay.Areas.Admin.Repository
             PaginatedList<SizeGiay> retItems = new PaginatedList<SizeGiay>(items, pageIndex, pageSize);
 
             return retItems;
+        }
+
+        public List<KhoGiay> GetSizeShoe(string id)
+        {
+            var items = _context.KhoGiays.Where(s=>s.MaGiay == id && s.SoLuong > 0)
+                .Include(s=>s.MaSizeNavigation).OrderBy(s=>s.MaSizeNavigation.TenSize).ToList();
+            return items;
         }
     }
 }

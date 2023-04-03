@@ -96,7 +96,8 @@
                                 @if (Context.User.Identity.IsAuthenticated)
                                 {
                                     <li>
-                                        <a>Hello @User.Identity.Name</a>
+                                        <a href="/account">Tài khoản</a>
+
                                     </li>
                                     <li>
                                         <a asp-controller="Account" asp-action="SigOut">Đăng Xuất</a>

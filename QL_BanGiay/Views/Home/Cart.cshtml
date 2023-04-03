@@ -8,7 +8,7 @@
     <div class="block">
         <div class="container">
             <ul class="breadcrumbs">
-                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="/">Trang chủ</a></li>
                 <li>/<span>Giỏ hàng</span></li>
             </ul>
         </div>
@@ -39,16 +39,16 @@
                     <div class="col-md-6 offset-md-6">
                         <table class="total-price">
                             <tr>
-                                <td>Tổng</td>
-                                <td>$241.00</td>
+                                <td>Tổng thể</td>
+                                <td id="Subtotal"></td>
                             </tr>
                             <tr>
                                 <td>Giảm giá</td>
-                                <td>$12.00</td>
+                                <td>0 VND</td>
                             </tr>
                             <tr class="total">
-                                <td>Grand Total</td>
-                                <td>$229.00</td>
+                                <td>Tổng cộng</td>
+                                <td id="GrandTotal"></td>
                             </tr>
                         </table>
                         <div class="cart-action">
@@ -66,28 +66,52 @@
 @section Scripts {
     <script>
         var arrSanPham = storage.getCart();
-        if (arrSanPham != null){
+        var grandTotal = 0;
+        if (arrSanPham != null) {
             for (var i = 0; i < arrSanPham.length; i++) {
                 $.get("/Home/cartdetails?idSanPham=" + arrSanPham[i].id + "&SoLuong=" + arrSanPham[i].count + "&SizeGiay=" + arrSanPham[i].size + "&idSize=" + arrSanPham[i].idsize, function (data) {
                     $("#tableSanPham tbody").append(data);
                 });
+                grandTotal += arrSanPham[i].total;
             }
         }
-        
+        var Subtotal = document.getElementById('Subtotal');
+        Subtotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        var GrandTotal = document.getElementById('GrandTotal');
+        GrandTotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
         var products = document.querySelector('.table-footer #update');
         products.addEventListener('click', function (e) {
             e.preventDefault();
             var table = document.getElementsByTagName("table")[1]; //first table
             var rows = table.rows;
-            if (rows.length >1){
+            var updateTotal = 0;
+            let blt = true;
+            if (rows.length > 1) {
                 for (var i = 1; i < rows.length; i += 1) {
                     var item = rows[i];
                     var cartItem = helpers.itemCart(item);
-                    cart.updateItemCart(cartItem);
+                    var id = document.getElementById('quantityError_' + cartItem.id).innerHTML;
+                    console.log(id);
+                    if (id != ''){
+                        blt = false;
+                        break;
+                    }else{
+                        cart.updateItemCart(cartItem);
+                    }
+                    
                 }
-                cart.setItems(storage.getCart());
-                helpers.updateViewCart();
-            }     
+                if (blt){
+                    var getItems = storage.getCart();
+                    cart.setItems(getItems);
+                    for (var j = 0; j < getItems.length; j++) {
+                        updateTotal += getItems[j].total;
+                    }
+                    Subtotal.innerHTML = updateTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                    GrandTotal.innerHTML = updateTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                    helpers.updateViewCart();
+                    toastr.success("Cập nhật giỏ hàng thành công");
+                }
+            }
         });
         document.querySelector('#clear').addEventListener('click', function (e) {
             cart.clearItems();
@@ -98,7 +122,10 @@
             checkout.removeAttribute("style");
             helpers.setHtml('cartItems', '<p class="text-center">Giỏ hàng đang trống</p>');
             document.getElementById('checkout-footer').innerHTML = '';
-
+            updateTotal = 0;
+            Subtotal.innerHTML = updateTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            GrandTotal.innerHTML = updateTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            toastr.success("Xóa giỏ hàng thành công");
         });
         function change(id, size) {
             const numberCart = /[a-z,A-Z]/;
@@ -126,10 +153,27 @@
                 price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
                 total.innerHTML = price;
             } else {
-                var total = document.getElementById('total-' + id + '-' + size);
-                var price = price * input.value;
-                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                total.innerHTML = price;
+                $.ajax({
+                    url: "/Home/checkproduct?id=" + id + "&idSize=" + size,
+                    type: "GET",
+                    success: function (data) {
+                        const parsed = parseInt(input.value);
+                        if (data < parsed) {
+                            helpers.setHtml('quantityError_' + id, '<p class="text-danger">Vui lòng chọn số lượng dưới ' + (data + 1) + ' đôi.</p>');
+                        } else {
+                            console.log("abc");
+                            helpers.setHtml('quantityError_' + id, '');
+                            var price = document.getElementById('price-' + id + '-' + size).innerHTML;
+                            var index = price.indexOf('VND');
+                            var item = price.substring(0, index - 1);
+                            var price = item.replaceAll('.', '');
+                            price = parseInt(price);
+                            var price = parseInt(price) * parseInt(input.value);
+                            price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                            total.innerHTML = price;
+                        }
+                    }
+                });
             }
 
 
@@ -140,14 +184,26 @@
 
             if (value > 1) {
                 value = parseInt(value) - 1;
-                var total = document.getElementById('total-' + id + '-' + size);
-                var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
-                var index = priceValue.indexOf('VND');
-                var item = priceValue.substring(0, index - 1);
-                var price = item.replaceAll('.', '');
-                price = parseInt(price) * value;
-                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                total.innerHTML = price;
+                $.ajax({
+                    url: "/Home/checkproduct?id=" + id + "&idSize=" + size,
+                    type: "GET",
+                    success: function (data) {
+                        const parsed = parseInt(value);
+                        if (data < parsed) {
+                            helpers.setHtml('quantityError_' + id, '<p class="text-danger">Vui lòng chọn số lượng dưới ' + (data+ 1) + ' đôi.</p>');
+                        } else {
+                            helpers.setHtml('quantityError_' + id, '');
+                            var total = document.getElementById('total-' + id + '-' + size);
+                            var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
+                            var index = priceValue.indexOf('VND');
+                            var item = priceValue.substring(0, index - 1);
+                            var price = item.replaceAll('.', '');
+                            price = parseInt(price) * value;
+                            price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                            total.innerHTML = price;
+                        }
+                    }
+                });
             } else {
                 value = 1;
             }
@@ -158,14 +214,26 @@
             var value = input.value;
             if (value < 100) {
                 value = parseInt(value) + 1;
-                var total = total = document.getElementById('total-' + id + '-' + size);
-                var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
-                var index = priceValue.indexOf('VND');
-                var item = priceValue.substring(0, index - 1);
-                var price = item.replaceAll('.', '');
-                price = parseInt(price) * value;
-                price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-                total.innerHTML = price;
+                $.ajax({
+                    url: "/Home/checkproduct?id=" + id + "&idSize=" + size,
+                    type: "GET",
+                    success: function (data) {
+                        const parsed = parseInt(value);
+                        if (data < parsed) {
+                            helpers.setHtml('quantityError_' + id, '<p class="text-danger">Vui lòng chọn số lượng dưới ' + (data + 1) + ' đôi.</p>');
+                        } else {
+                            helpers.setHtml('quantityError_' + id, '');
+                            var total = document.getElementById('total-' + id + '-' + size);
+                            var priceValue = document.getElementById('price-' + id + '-' + size).innerHTML;
+                            var index = priceValue.indexOf('VND');
+                            var item = priceValue.substring(0, index - 1);
+                            var price = item.replaceAll('.', '');
+                            price = parseInt(price) * value;
+                            price = price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                            total.innerHTML = price;
+                        }
+                    }
+                });            
             } else {
                 value = 100;
             }
