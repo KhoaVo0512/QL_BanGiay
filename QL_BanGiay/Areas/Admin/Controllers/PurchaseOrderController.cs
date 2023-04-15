@@ -48,6 +48,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             TempData["CurrentPage"] = pg;
             return View(items);
         }
+
         [Route("purchaseorder/create")]
         [HttpGet]
         [NoDirectAccess]
