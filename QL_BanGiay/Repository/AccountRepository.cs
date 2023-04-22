@@ -165,6 +165,7 @@ namespace QL_BanGiay.Repository
                 TrangThai = 0,
                 GhiChu = note,
                 MaVnpay = "0",
+                DaThanhToan = false,
                 DiaChiNhan = model.DiaChi + ", " + getWard.TenXa + ", " + getCommune.TenHuyen +", " + getProvide.TenTinh
             };
             await _context.NguoiDungs.AddAsync(user);

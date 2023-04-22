@@ -34,6 +34,13 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.MaNhapHang).ToList();
             }
+            else if (SortProperty.ToLower() == "name")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaDonViNhapNavigation.TenDonViNhap).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaDonViNhapNavigation.TenDonViNhap).ToList();
+            }
             else if (SortProperty.ToLower() == "idbill")
             {
                 if (sortOrder == SortOrder.Ascending)
@@ -162,7 +169,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<NhapHang> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.NhapHangs.Include(s => s.MaDonViNhapNavigation).ToList();
+                items = _context.NhapHangs.Where(s=> s.MaNhapHang.ToString().Contains(SearchText)
+                || s.SoHoaDon.ToString().Contains(SearchText)
+                || s.MaDonViNhapNavigation.TenDonViNhap.ToLower().Contains(SearchText.ToLower()))
+                    .Include(s => s.MaDonViNhapNavigation).ToList();
             }
             else
                 items = _context.NhapHangs.Include(s => s.MaDonViNhapNavigation).ToList();

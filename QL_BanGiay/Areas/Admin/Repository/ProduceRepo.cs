@@ -36,7 +36,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<NoiSanXuat> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.NoiSanXuats.Where(ut=>ut.TenNhaSanXuat.Contains(SearchText)).ToList();
+                items = _context.NoiSanXuats.Where(ut=>ut.TenNhaSanXuat.Contains(SearchText.ToLower())).ToList();
             }
             else
                 items = _context.NoiSanXuats.ToList();

@@ -93,7 +93,8 @@ namespace QL_BanGiay.Repository
                 TrangThai = 0,
                 GhiChu = note,
                 MaVnpay = IdVNpay,
-                DiaChiNhan = getAddress
+                DiaChiNhan = getAddress,
+                DaThanhToan = false
             };
             dondat.DonDatCts = new List<DonDatCt>();
             for (int i = 0; i < items.Length; i++)
@@ -139,7 +140,7 @@ namespace QL_BanGiay.Repository
             try
             {
                 var item = _context.DonDats.Where(s => s.MaDonDat == id).Include(s=>s.DonDatCts).FirstOrDefault();
-                item.TrangThai = 1;
+                item.DaThanhToan = true;
                 item.MaVnpay = IdVNPay.ToString();
                 _context.DonDats.Update(item);
                 _context.SaveChanges();

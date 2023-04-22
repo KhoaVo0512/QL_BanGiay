@@ -22,7 +22,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.MaGiayNavigation.TenGiay).ToList();
             }
-            else if (SortProperty.ToLower() == "magiay")
+            else if (SortProperty.ToLower() == "idshoe")
             {
                 if (sortOrder == SortOrder.Ascending)
                     items = items.OrderBy(n => n.MaGiay).ToList();
@@ -60,21 +60,13 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
             if (SearchText != "" && SearchText != null)
             {
-                bool blt = int.TryParse(SearchText, out SL);
-                if (blt)
-                {
-                    items = _context.KhoGiays.Where(ut => ut.SoLuong == SL)
-                   .Include(s => s.MaGiayNavigation)
-                   .Include(s => s.MaSizeNavigation)
-                   .ToList();
-                }
-                else
-                {
-                    items = _context.KhoGiays.Where(ut => ut.MaGiayNavigation.TenGiay.ToLower().Contains(SearchText.ToLower()))
+                items = _context.KhoGiays.Where(ut => ut.MaGiayNavigation.TenGiay.ToLower().Contains(SearchText.ToLower())
+                || ut.MaGiay.Contains(SearchText)
+                || ut.MaSizeNavigation.TenSize.Contains(SearchText)
+                || ut.SoLuong.ToString().Contains(SearchText))
                                        .Include(s => s.MaGiayNavigation)
                                        .Include(s => s.MaSizeNavigation)
                                        .ToList();
-                }
             }
             else
                 items = _context.KhoGiays

@@ -34,9 +34,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             else
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderByDescending(d => d.MaDongSanPham).ToList();
+                    items = items.OrderBy(d => d.TenDongSanPham).ToList();
                 else
-                    items = items.OrderBy(d => d.MaDongSanPham).ToList();
+                    items = items.OrderByDescending(d => d.TenDongSanPham).ToList();
             }
 
             return items;
@@ -46,7 +46,8 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<DongSanPham> items;
             if (SearchText != null && SearchText != "")
             {
-                items = _context.DongSanPhams.Where(ut => ut.TenDongSanPham.Contains(SearchText)).Include(s=>s.MaNhanHieuNavigation).ToList();
+                items = _context.DongSanPhams.Where(ut => ut.TenDongSanPham.Contains(SearchText.ToLower())
+                || ut.MaNhanHieuNavigation.TenNhanHieu.ToLower().Contains(SearchText.ToLower())).Include(s=>s.MaNhanHieuNavigation).ToList();
             }
             else
             {

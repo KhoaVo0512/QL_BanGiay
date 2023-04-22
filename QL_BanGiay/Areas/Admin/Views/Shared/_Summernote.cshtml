@@ -21,7 +21,7 @@
                 data.append("image", value);
             });
             $.ajax({
-                url: '/admin/shoedetails/UploadImage',
+                url: '/admin/shoe/UploadImage',
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -32,6 +32,7 @@
                         var image = $('<img>').attr('src', url['url'][i]);
                         $('@Model.IdEditor').summernote("insertNode", image[0]);
                     });
+                    console.log('Save thành công');
                 },
                 error: function (data) {
                     console.log(data);

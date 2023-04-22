@@ -30,7 +30,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("Id");
             sortModel.AddColumn("NameCollection");
             sortModel.AddColumn("NameBrand");
             sortModel.ApplySort(sortExpression);
@@ -177,7 +176,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private void Sort()
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("Id");
             sortModel.AddColumn("NameCollection");
             sortModel.AddColumn("NameBrand");
             sortModel.ApplySort("");

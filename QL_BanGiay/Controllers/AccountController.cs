@@ -40,6 +40,7 @@ namespace QL_BanGiay.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [Authorize]
+
         public IActionResult Index()
         {
             var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)
@@ -147,14 +148,14 @@ namespace QL_BanGiay.Controllers
         [Route("edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Edit(EditAccountModel model, string id, int IdAddress)
+        public JsonResult Edit(EditAccountModel model)
         {
             var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)
                                         .Select(c => c.Value).SingleOrDefault();
 
             if (ModelState.IsValid)
             {
-                bool checkEmailNew = _accountRepository.IsEmailUser(model.Email, id);
+                bool checkEmailNew = _accountRepository.IsEmailUser(model.Email, model.MaNguoiDung);
                 if (!checkEmailNew)
                 {
                     bool checkMailUser = _accountRepository.IsEmailUserNoExites(model.Email);
@@ -172,7 +173,7 @@ namespace QL_BanGiay.Controllers
                         return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
                     }
                 }
-                bool blt = _accountRepository.EditAccount(model, id, IdAddress);
+                bool blt = _accountRepository.EditAccount(model, model.MaNguoiDung, (int)model.MaDiaChi);
                 if (blt)
                 {
                     var getuser = _accountRepository.GetUser(sId);
@@ -185,6 +186,7 @@ namespace QL_BanGiay.Controllers
             ViewBag.Tinh = GetTinhs();
             ViewBag.Huyen = GetHuyen(user.MaHuyen);
             ViewBag.Xa = GetXa(user.MaXa);
+            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
         }
         [HttpGet]
@@ -427,7 +429,7 @@ namespace QL_BanGiay.Controllers
         public async Task<IActionResult> Login(LoginModel loginModel, string? returnUrl)
         {
             returnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl;
-            ViewData["ReturnUrl"] = "index";
+            ViewData["ReturnUrl"] = "/";
 
             if (ModelState.IsValid)
             {
@@ -550,11 +552,12 @@ namespace QL_BanGiay.Controllers
             }
         }
         [Authorize]
-        [Route("account/sigout")]
+        [Route("sigout")]
         public async Task<IActionResult> SigOut()
         {
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync();
+            _toastNotification.AddSuccessToastMessage("Đăng xuất thành công");
             return Redirect("/");
         }
     }

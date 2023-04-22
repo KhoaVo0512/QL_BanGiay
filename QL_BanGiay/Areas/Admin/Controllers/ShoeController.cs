@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +20,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
     public class ShoeController : Controller
     {
         private readonly IShoe _ShoeRepo;
-        private readonly IShoeDetails _ShoeDetails;
         private readonly ICollection _CollectionRepo;
         private readonly IBrand _BrandRepo;
         private readonly ISupplier _SupplierRepo;
         private readonly IProduce _ProduceRepo;
         private readonly IToastNotification _toastNotification;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public ShoeController (IShoe shoe, ICollection collection, IBrand brandRepo, ISupplier supplier
-            , IProduce produce, IToastNotification toastNotification, IShoeDetails shoeDetails)
+            , IProduce produce, IToastNotification toastNotification, IWebHostEnvironment webHostEnvironment)
         {
             _toastNotification = toastNotification;
             _ProduceRepo = produce;
@@ -34,7 +35,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             _CollectionRepo = collection;
             _ShoeRepo = shoe;            
             _BrandRepo = brandRepo;
-            _ShoeDetails = shoeDetails;
+            _webHostEnvironment = webHostEnvironment;
 
         }
         [Route("shoe")]
@@ -42,10 +43,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
         {
             SortModel sortModel = new SortModel();
+            sortModel.AddColumn("Date");
             sortModel.AddColumn("IdShoe");
             sortModel.AddColumn("NameShoe");
             sortModel.AddColumn("Price");
-            sortModel.AddColumn("Date");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
@@ -76,7 +77,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 CheckMaGiay = _ShoeRepo.IsShoeNoExists(item.MaGiay);
                 if (CheckMaGiay)
                 {
-                    ModelState.AddModelError("NameShoe", "Mã giày này đã có rồi");
+                    ModelState.AddModelError("Date", "Mã giày này đã có rồi");
                     _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
                     ViewBag.BrandList = GetBrands();
                     ViewBag.ProduceList = GetProduce();
@@ -91,7 +92,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                var items = _ShoeRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -127,7 +128,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         {
             var shoe = _ShoeRepo.Delete(id);
             Sort();
-            var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+            var items = _ShoeRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
             var pager = new PagerModel(items.TotalRecords, 1, 5);
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;
@@ -166,7 +167,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "Edit", item, null, "") });
                 }
                 Sort();
-                var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                var items = _ShoeRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -189,7 +190,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
 
         public IActionResult Information(string id)
         {
-            var item = _ShoeDetails.GetItem(id);
+            var item = _ShoeRepo.GetItemInformation(id);
             return View(item);
         }
         [Route("shoe/information")]
@@ -202,11 +203,11 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             {
                 try
                 {
-                    bln = _ShoeDetails.Edit(model);
+                    bln = _ShoeRepo.EditInformation(model);
                     if (bln)
                     {
                         Sort();
-                        var items = _ShoeRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 5);
+                        var items = _ShoeRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
                         var pager = new PagerModel(items.TotalRecords, 1, 5);
                         pager.SortExpression = "";
                         this.ViewBag.Pager = pager;
@@ -279,6 +280,24 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             sortModel.ApplySort("");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";
+        }
+        [Route("shoe/UploadImage")]
+        [HttpPost]
+        public IActionResult UploadImage(List<IFormFile> image)
+        {
+            List<string> filepath = new List<string>();
+
+            foreach (IFormFile item in Request.Form.Files)
+            {
+                string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Image", item.FileName);
+                using (var stream = new FileStream(serverFolder, FileMode.Create))
+                {
+                    item.CopyTo(stream);
+
+                }
+                filepath.Add("/Image/" + item.FileName);
+            }
+            return Json(new { url = filepath });
         }
 
     }

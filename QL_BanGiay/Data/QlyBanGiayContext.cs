@@ -136,7 +136,7 @@ public partial class QlyBanGiayContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("MaVNPay");
             entity.Property(e => e.NgayDat).HasColumnType("datetime");
-
+            entity.Property(e => e.DaThanhToan);
             entity.HasOne(d => d.MaNguoiDungNavigation).WithMany(p => p.DonDats)
                 .HasForeignKey(d => d.MaNguoiDung)
                 .HasConstraintName("FK__DonDat__MaNguoiD__54CB950F");

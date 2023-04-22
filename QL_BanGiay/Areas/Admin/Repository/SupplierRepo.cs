@@ -37,7 +37,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<DonViNhapHang> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.DonViNhapHangs.Where(ut=>ut.TenDonViNhap.Contains(SearchText)).ToList();
+                items = _context.DonViNhapHangs.Where(ut=>ut.TenDonViNhap.ToLower().Contains(SearchText)
+                || ut.Email.Contains(SearchText)
+                || ut.DiaChi.ToLower().Contains(SearchText)
+                || ut.SoDienThai.Contains(SearchText)).ToList();
             }
             else
                 items = _context.DonViNhapHangs.ToList();
@@ -46,6 +49,38 @@ namespace QL_BanGiay.Areas.Admin.Repository
             PaginatedList<DonViNhapHang> retItems = new PaginatedList<DonViNhapHang>(items, pageIndex, pageSize);
 
             return retItems;
+        }
+
+        public bool CreateSupplier(DonViNhapHang model)
+        {
+            try
+            {
+                _context.DonViNhapHangs.Add(model);
+                _context.SaveChanges();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DonViNhapHang GetItem(int id)
+        {
+            var item = _context.DonViNhapHangs.Where(s=>s.MaDonViNhap == id).FirstOrDefault();
+            return item;
+        }
+
+        public bool EditSupplier(DonViNhapHang model)
+        {
+            try
+            {
+                _context.DonViNhapHangs.Update(model);
+                _context.SaveChanges();
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

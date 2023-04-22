@@ -2,7 +2,7 @@
 @using System.Globalization;
 @model IEnumerable<QL_BanGiay.Data.DonDat>
 @{
-    ViewData["Title"] = "Quản lí đơn đặt";
+    ViewData["Title"] = "QuUẢN LÍ ĐƠN ĐẶT";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
     PagerModel pager = ViewBag.Pager;
     int stt = 0;
@@ -91,14 +91,14 @@
                                 <td>
                                     @Html.DisplayFor(modelitem=> item.MaNguoiDungNavigation.Sdt)
                                 </td>
-                                <td style="width: 350px;">
-                                    <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayDat" class="form-control" />
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NgayDat)
                                 </td>
                                 <td>
-                                    @if (item.TrangThai == 0 || item.TrangThai == 2)
+                                    @if (item.DaThanhToan == false)
                                     {
                                         <span>Chưa thanh toán</span>
-                                    }else if (item.TrangThai == 1)
+                                    }else
                                     {
                                         <span>Đã thanh toán</span>
                                     }
@@ -114,7 +114,7 @@
                                     }
                                 </td>
                                 <td>
-                                    <a onclick="showInPopup('@Url.Action("Details", "order",new {id = item.MaDonDat},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
+                                    <a onclick="showInPopup('@Url.Action("Details", "order",new {id = item.MaDonDat},Context.Request.Scheme)','THÔNG TIN CHI TIẾT ĐƠN ĐẶT')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
                                 </td>
                             </tr>
                         }

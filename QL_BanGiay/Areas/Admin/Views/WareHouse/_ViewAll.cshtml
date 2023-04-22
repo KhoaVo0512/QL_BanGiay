@@ -1,7 +1,7 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
 @model IEnumerable<QL_BanGiay.Data.KhoGiay>
 @{
-    ViewData["Title"] = "Quản lí kho giày";
+    ViewData["Title"] = "QUẢN LÍ KHO GIÀY";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
     PagerModel pager = ViewBag.Pager;
     int stt = 0;
@@ -32,8 +32,8 @@
                                 STT
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("MaGiay").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("MaGiay").SortExpression">
+                                <i class="@sortModel.GetColumn("IdShoe").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdShoe").SortExpression">
                                     Mã giày
                                 </a>
                             </th>

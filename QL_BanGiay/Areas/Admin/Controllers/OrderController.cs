@@ -72,11 +72,11 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [Route("order/delete")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComfirm(int id)
+        public async Task<IActionResult> DeleteComfirm(string id)
         {
             var dondat = _OrderRepo.Delete(id);
             Sort();
-            var items = _OrderRepo.GetItems("IdOrder", SortOrder.Descending, "", 1, 10);
+            var items = _OrderRepo.GetItems("Date", SortOrder.Descending, "", 1, 10);
             var pager = new PagerModel(items.TotalRecords, 1, 5);
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;
@@ -90,7 +90,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Details(string id)
         {
             DonDat item = _OrderRepo.GetItem(id);
-            if (item.TrangThai == 0 || item.TrangThai == 2)
+            if (item.DaThanhToan == false)
             {
                 ViewBag.TrangThai = "Chưa thanh toán";
             }
@@ -148,7 +148,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             sortModel.AddColumn("Name");
             sortModel.AddColumn("Phone");
             sortModel.AddColumn("Date");
-            sortModel.ApplySort("Date");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";
         }

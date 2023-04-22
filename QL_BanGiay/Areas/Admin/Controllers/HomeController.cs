@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
 using System.Globalization;
 using Windows.UI.Xaml.Controls;
@@ -16,12 +18,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private readonly IUser _UserRepo;
         private readonly IPurchaseOrder _PurchaseOrderRepo;
         private readonly IChart _ChartRepo;
-        public HomeController(IOrder order, IUser user, IPurchaseOrder purchaseOrder, IChart chartRepo)
+        private readonly IToastNotification _toastNotification;
+        public HomeController(IOrder order, IUser user, IPurchaseOrder purchaseOrder, IChart chartRepo, IToastNotification toastNotification)
         {
             _OrderRepo = order;
             _UserRepo = user;
             _PurchaseOrderRepo = purchaseOrder;
             _ChartRepo = chartRepo;
+            _toastNotification = toastNotification;
         }
         public IActionResult Index()
         {
@@ -48,6 +52,15 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             ViewBag.ChartPoints = ChartPoints;
 
             return View();
+        }
+        [Authorize]
+        [Route("admin/sigout")]
+        public async Task<IActionResult> SigOut()
+        {
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync();
+            _toastNotification.AddSuccessToastMessage("Đăng xuất thành công");
+            return Redirect("/");
         }
         private class DoughnutChartData
         {

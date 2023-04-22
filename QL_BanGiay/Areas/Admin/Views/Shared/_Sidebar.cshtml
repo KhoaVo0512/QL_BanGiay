@@ -17,23 +17,10 @@
             <img src="@image" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">@User.Identity.Name</a>
+            <a href="/account" class="d-block">@User.Identity.Name</a>
 
         </div>
     </div>
-
-    <!-- SidebarSearch Form -->
-    <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                    <i class="fas fa-search fa-fw"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -70,6 +57,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Supplier" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-chart-pie"></i>
+                    <p>
+                        Quản lí đơn vị nhập hàng
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link">
                     <i class="nav-icon fas fa-file"></i>
                     <p>Quản lí đơn đặt</p>
@@ -88,33 +83,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-table"></i>
+                <a asp-area="Admin" asp-controller="Home" asp-action="Sigout" class="nav-link">
+                    <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                     <p>
-                        Tables
-                        <i class="fas fa-angle-left right"></i>
+                       Đăng xuất
                     </p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="pages/tables/simple.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Simple Tables</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/tables/data.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>DataTables</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/tables/jsgrid.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>jsGrid</p>
-                        </a>
-                    </li>
-                </ul>
             </li>   
         </ul>
     </nav>

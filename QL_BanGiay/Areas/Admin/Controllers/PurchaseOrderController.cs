@@ -96,7 +96,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _PurchaseOrderRepo.GetItems("SuppliersId", SortOrder.Ascending, "", 1, 5);
+                var items = _PurchaseOrderRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -163,7 +163,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 ModelState.AddModelError("", errMessage);
             }
             Sort();
-            var items = _PurchaseOrderRepo.GetItems("SuppliersId", SortOrder.Ascending, "", 1, 5);
+            var items = _PurchaseOrderRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
             var pager = new PagerModel(items.TotalRecords, 1, 5);
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;

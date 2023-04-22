@@ -8,11 +8,13 @@ namespace QL_BanGiay.Areas.Admin.Interface
     {
         Task<ShoeContext> Create(ShoeContext item);
         Task<EditShoeModel> Edit(EditShoeModel item);
+        bool EditInformation(ShoeDetails context);
         bool Delete(string id);
         EditShoeModel GetItem(string id);
         Giay GetItemCart(string id);
         List<Giay> GetItemsVans();
         List<Giay> GetItemsConverse();
+        ShoeDetails GetItemInformation(string shoeId);
         List<Giay> GetItemsNike();
         List<Giay> GetItemsAdidas();
         Giay GetItemWareHouse(string id);

@@ -37,7 +37,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<NhanHieu> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.NhanHieus.Where(n => n.TenNhanHieu.Contains(SearchText))
+                items = _context.NhanHieus.Where(n => n.TenNhanHieu.Contains(SearchText.ToLower()))
                     .Include(u => u.DongSanPhams).ToList();
             }
             else

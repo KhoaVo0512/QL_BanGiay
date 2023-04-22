@@ -1,0 +1,102 @@
+﻿@using QL_BanGiay.Areas.Admin.Models;
+@model IEnumerable<QL_BanGiay.Data.DonViNhapHang>
+@{
+    ViewData["Title"] = "QUẢN LÝ ĐƠN VỊ NHẬP HÀNG";
+    SortModel sortModel = (SortModel)ViewData["sortModel"];
+    PagerModel pager = ViewBag.Pager;
+    int stt = 0;
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <a onclick="showInPopup('@Url.Action("create","supplier",null,Context.Request.Scheme)','THÊM ĐƠN VỊ NHẬP MỚI')" class="breadcrumb float-sm-right">
+                    <p class="btn btn-success">Thêm đơn vị nhập</p>
+                </a>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <partial name="_topBar" model="@pager" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                STT
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("NameSupplier").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("NameSupplier").SortExpression">
+                                    Tên đơn vị nhập
+                                </a>
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("Email").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Email").SortExpression">
+                                    Email
+                                </a>
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("Address").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Address").SortExpression">
+                                    Địa chỉ
+                                </a>
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("Phone").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Phone").SortExpression">
+                                    Số điện thoại
+                                </a>
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            stt = stt + 1;
+                            <tr>
+                                <td>
+                                    @stt
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenDonViNhap)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DiaChi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SoDienThai)
+                                </td>
+                                <td>
+                                    <a onclick="showInPopup('@Url.Action("edit", "supplier",new {id = item.MaDonViNhap},Context.Request.Scheme)','CHỈNH SỬA ĐƠN VỊ NHẬP HÀNG')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <partial name="_bottomBar" model="@pager" />
+            </div>
+        </div>
+    </div>
+</div>

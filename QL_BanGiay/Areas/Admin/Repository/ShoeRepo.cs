@@ -61,7 +61,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.Giays.Where(ut=>ut.TenGiay.ToLower().Contains(SearchText.ToLower()))
+                items = _context.Giays.Where(ut=>ut.TenGiay.ToLower().Contains(SearchText.ToLower())
+                || ut.MaGiay.Contains(SearchText)
+                || ut.GiaBan.ToString().Contains(SearchText)
+                )
                     .Include(s=>s.MaDongSanPhamNavigation)
                     .Include(s=>s.MaNhaSanXuatNavigation)
                     .ToList();
@@ -338,6 +341,51 @@ namespace QL_BanGiay.Areas.Admin.Repository
         {
             var item = _context.Giays.Where(s=>s.MaGiay == id).FirstOrDefault();
             return item;
+        }
+
+        public ShoeDetails GetItemInformation(string shoeId)
+        {
+            var getShoe = _context.Giays.Where(s => s.MaGiay == shoeId)
+                .Include(e => e.AnhGiays)
+                .FirstOrDefault();
+            ShoeDetails item = new ShoeDetails();
+            if (getShoe.NoiDung == null)
+            {
+                item.MaGiay = getShoe.MaGiay;
+                item.TenGiay = getShoe.TenGiay;
+                item.content = "";
+                item.tomtat = "";
+            }
+            else
+            {
+                item.MaGiay = getShoe.MaGiay;
+                item.TenGiay = getShoe.TenGiay;
+                item.content = getShoe.NoiDung;
+                item.tomtat = getShoe.TomTat;
+            }
+            return item;
+        }
+
+        public bool EditInformation(ShoeDetails context)
+        {
+            try
+            {
+                var item = _context.Giays.Where(s => s.MaGiay == context.MaGiay).FirstOrDefault();
+                if (item != null)
+                {
+                    item.NoiDung = context.content;
+                    item.TomTat = context.tomtat;
+                    _context.Update(item);
+                    _context.SaveChanges();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -63,9 +63,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<DonDat> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.DonDats.Where(ut => (ut.GhiChu.ToLower().Contains(SearchText.ToLower()) || ut.MaNguoiDungNavigation.TenNguoiDung.ToLower().Contains(SearchText) ||
+                items = _context.DonDats.Where(ut => (ut.GhiChu.ToLower().Contains(SearchText.ToLower()) || ut.MaNguoiDungNavigation.TenNguoiDung.ToLower().Contains(SearchText.ToLower()) ||
                 ut.MaNguoiDungNavigation.Sdt.Contains(SearchText) ||
-                ut.MaDonDat.Contains(SearchText)) && (ut.TrangThai == 0) || ut.TrangThai == 1 || ut.TrangThai == 2)
+                ut.MaDonDat.Contains(SearchText)) && (ut.TrangThai == 0) || ut.TrangThai == 2)
                     .Include(s => s.MaNguoiDungNavigation)
                     .Include(s => s.DonDatCts)
                     .ToList();
@@ -73,7 +73,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             }
             else
             {
-                items = _context.DonDats.Where(ut =>ut.TrangThai == 0 || ut.TrangThai == 1 || ut.TrangThai == 2)
+                items = _context.DonDats.Where(ut =>ut.TrangThai == 0 || ut.TrangThai == 2)
                    .Include(s => s.MaNguoiDungNavigation)
                    .ToList();
             }
@@ -103,10 +103,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             return item;
         }
 
-        public DonDat Delete(int id)
+        public DonDat Delete(string id)
         {
-            var getDonDat = _context.DonDats.Where(s => int.Parse(s.MaDonDat) == id).FirstOrDefault();
-            var getDonDatCts = _context.DonDatCts.Where(s => int.Parse(s.MaDonDat) == id).ToList();
+            var getDonDat = _context.DonDats.Where(s => s.MaDonDat == id).FirstOrDefault();
+            var getDonDatCts = _context.DonDatCts.Where(s => s.MaDonDat == id).ToList();
             foreach (var item in getDonDatCts)
             {
                 var getKho = _context.KhoGiays.Where(s=>s.MaGiay == item.MaGiay && s.MaSize == item.MaSize).FirstOrDefault();
@@ -114,7 +114,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 _context.KhoGiays.Update(getKho);
                 _context.SaveChanges();
             }
-            getDonDat.TrangThai = 2;
+            getDonDat.TrangThai = 1;
             _context.DonDats.Update(getDonDat);
             _context.SaveChanges();
             return getDonDat;
@@ -129,10 +129,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 MaHd = item.MaDonDat,
                 MaNguoiDung = items.MaNguoiDung,
                 NgayLapDh = item.NgayDat,
-                IdVNPay = item.MaVnpay,
+                IdVNPay = items.MaVnpay,
                 NgayGiaoHd = DateTime.Now,
                 DiaChiNhan = item.DiaChiNhan,
-                GhiChu =item.GhiChu
+                GhiChu =item.GhiChu               
             };
             HoaDon.HoaDonCts = new List<HoaDonCt>();
             float tong = 0;
@@ -150,6 +150,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             }
             HoaDon.TongTien = tong;
             items.TrangThai = 4;
+            items.DaThanhToan = true;
             await _context.HoaDons.AddAsync(HoaDon);
             _context.DonDats.Update(items);
             await _context.SaveChangesAsync();

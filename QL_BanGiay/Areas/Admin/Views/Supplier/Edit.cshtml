@@ -1,0 +1,60 @@
+﻿@model QL_BanGiay.Data.DonViNhapHang
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Tên đơn vị nhập<span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input asp-for="TenDonViNhap" class="form-control" />
+                        </div>
+                        <span asp-validation-for="TenDonViNhap" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email<span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Địa chỉ<span class="text-danger">*</span></label>
+                        <div class="form-input">
+                            <input asp-for="DiaChi" class="form-control" />
+                            <span asp-validation-for="DiaChi" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="single-form form-default form-border">
+                        <label>Số điện thoại<span class="text-danger">*</span></label>
+                        <div class="form-input">
+                            <input asp-for="SoDienThai" class="form-control" />
+                            <span asp-validation-for="SoDienThai" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3 mt-4">
+                    <input hidden asp-for="MaDonViNhap" class="form-control" />
+                    <input type="submit" value="Lưu" class="btn btn-primary btn-block px-5" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

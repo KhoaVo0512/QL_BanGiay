@@ -27,8 +27,8 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 10)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("MaGiay");
             sortModel.AddColumn("NameShoe");
+            sortModel.AddColumn("IdShoe");
             sortModel.AddColumn("Size");
             sortModel.AddColumn("Quantity");
             sortModel.ApplySort(sortExpression);

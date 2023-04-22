@@ -32,8 +32,6 @@ builder.Services.AddScoped<IProvince, ProvinceRepo>();
 builder.Services.AddScoped<IDistrict, DistrictRepo>();
 builder.Services.AddScoped<ICommune, CommuneRepo>();
 builder.Services.AddScoped<IWareHouse, WareHouseRepo>();
-builder.Services.AddScoped<IPrice, PriceRepo>();
-builder.Services.AddScoped<IShoeDetails, ShoeDetailsRepo>();
 builder.Services.AddScoped<ICheckout, CheckoutRepository>();
 builder.Services.AddScoped<IOrder, OrderRepo>();
 builder.Services.AddScoped<IBill, BillRepo>();
