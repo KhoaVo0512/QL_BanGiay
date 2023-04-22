@@ -37,8 +37,8 @@
                                 STT
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("MaGiay").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("MaGiay").SortExpression">
+                                <i class="@sortModel.GetColumn("IdShoe").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdShoe").SortExpression">
                                     Mã giày
                                 </a>
                             </th>
@@ -50,12 +50,16 @@
                             </th>
                             <th>
                                 <i class="@sortModel.GetColumn("Price").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("Price").SortExpression">
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Price").SortExpression">
                                     Giá bán
                                 </a>
                             </th>
                             <th>
-                                Ngày cập nhật
+                                 <i class="@sortModel.GetColumn("Date").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Date").SortExpression">
+                                    Ngày cập nhật
+                                </a>
+                                
                             </th>
                             <th>Ảnh đại diện</th>
                             <th>

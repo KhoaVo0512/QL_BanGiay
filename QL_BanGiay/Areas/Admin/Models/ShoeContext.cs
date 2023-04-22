@@ -20,8 +20,6 @@ namespace QL_BanGiay.Areas.Admin.Models
         public string? MauSac { get; set; }
         [Required(ErrorMessage = "Vui lòng chọn hình ảnh cho sản phẩm")]
         public IFormFile? MaAnhNen { get; set; }
-        [Required(ErrorMessage = "Vui lòng nhập giá bán")]
-        [Range(1, 10000000, ErrorMessage = "Giá mua phải lớn hơn 0")]
         public string? GiaBan { get;set; }
         public string? anhNenUrl { get; set; }
         [Required(ErrorMessage = "Vui lòng chọn hình ảnh chi tiết cho sản phẩm")]

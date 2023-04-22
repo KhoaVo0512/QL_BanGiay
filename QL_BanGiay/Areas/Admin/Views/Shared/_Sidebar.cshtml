@@ -1,9 +1,10 @@
-﻿<!-- Brand Logo -->
+﻿@using System.Security.Claims;
+<!-- Brand Logo -->
 @{
-    var location = ViewData["location"] + "dist/img/user2-160x160.jpg";
-    var abc = Context.Request.Scheme + "dist/img/user2-160x160.jpg";
+    var image = User.Claims.Where(c => c.Type == ClaimTypes.Actor)
+                                            .Select(c => c.Value).SingleOrDefault();
 }
-<a href="index3.html" class="brand-link">
+<a href="/admin" class="brand-link">
     <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light"></span>
 </a>
@@ -13,7 +14,7 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="~/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="@image" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
             <a href="#" class="d-block">@User.Identity.Name</a>
@@ -69,21 +70,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="pages/calendar.html" class="nav-link">
-                    <i class="nav-icon far fa-calendar-alt"></i>
-                    <p>
-                        Thay đổi giá sản phẩm
-                       
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a asp-area="Admin" asp-controller="ShoeDetails" asp-action="Index" class="nav-link">
-                    <i class="nav-icon fas fa-file"></i>
-                    <p>Quản lí nội dung sản phẩm</p>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link">
                     <i class="nav-icon fas fa-file"></i>
                     <p>Quản lí đơn đặt</p>
@@ -96,39 +82,10 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-edit"></i>
-                    <p>
-                        Forms
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
+                <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>Quản lí người dùng</p>
                 </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="pages/forms/general.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>General Elements</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/forms/advanced.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Advanced Elements</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/forms/editors.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Editors</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/forms/validation.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Validation</p>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">

@@ -77,7 +77,7 @@ namespace QL_BanGiay.Repository
 
         public NguoiDung GetUser(string id)
         {
-            var user = _context.NguoiDungs.Where(s=>s.MaNguoiDung == id).Include(s=>s.TaiKhoans).FirstOrDefault();
+            var user = _context.NguoiDungs.Where(s=>s.MaNguoiDung == id).Include(s=>s.TaiKhoans).Include(s=>s.DonDats).ThenInclude(s=>s.DonDatCts).FirstOrDefault();
             var address = _context.DiaChis.Where(s => s.MaNguoiDung == user.MaNguoiDung)
                 .Include(s=>s.MaXaNavigation)
                 .ThenInclude(s=>s.MaHuyenNavigation)
@@ -97,6 +97,15 @@ namespace QL_BanGiay.Repository
                     + ", " + getAddressAll[i].MaXaNavigation.MaHuyenNavigation.MaTinhNavigation.TenTinh + ".";
                 user.DiasChiUser.Add(addressAll);
                 user.IdDiaChi.Add(getAddressAll[i].MaDiaChi);
+            }
+            for (int i=0;i< user.DonDats.Count;i ++)
+            {
+                double? total = 0;
+                for (int j = 0; j < user.DonDats[i].DonDatCts.Count;j++)
+                {
+                    total += user.DonDats[i].DonDatCts[j].DonGia * user.DonDats[i].DonDatCts[j].SoLuong;
+                }
+                user.DonDats[i].Total = (int?)total;
             }
             return user;
 
@@ -327,6 +336,20 @@ namespace QL_BanGiay.Repository
         {
             var account = _context.TaiKhoans.Where(s => s.MaNguoiDung == id).FirstOrDefault();
             return account;
+        }
+
+        public bool UpdateImage(string url, string id)
+        {
+            var account = _context.TaiKhoans.Where(s => s.MaNguoiDung == id).FirstOrDefault();
+            if (account != null)
+            {
+                account.AnhTk = url;
+                _context.TaiKhoans.Update(account);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

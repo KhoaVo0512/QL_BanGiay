@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
@@ -12,6 +13,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class CollectionController : Controller
     {
         private readonly ICollection _Icollection;
@@ -66,7 +68,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _Icollection.GetItems("namecollection", SortOrder.Ascending, "", 1, 5);
+                var items = _Icollection.GetItems("namecollectio", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -76,6 +78,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             }
             ViewBag.BrandList = GetBrands();
             _toastNotification.AddErrorToastMessage("Lỗi nhập dòng sản phẩm");
+            var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", dongsanpham,null,"") });
         }
         [Route("collection/delete")]

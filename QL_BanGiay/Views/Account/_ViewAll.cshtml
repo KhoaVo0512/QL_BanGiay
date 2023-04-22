@@ -23,7 +23,7 @@
                                     <img src="@Model.TaiKhoans[0].AnhTk" class="blur-up lazyload update_img" alt="">
                                     <div class="cover-icon">
                                         <i class="fa-solid fa-pen">
-                                            <input type="file" onchange="readURL(this,0)">
+                                            <input id="uploadFile" type="file" onchange="readURL(this,0)">
                                         </i>
                                     </div>
                                 </div>
@@ -60,16 +60,12 @@
             </div>
 
             <div class="col-xxl-9 col-lg-8">
-                <button class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none">
-                    Show
-                    Menu
-                </button>
                 <div class="dashboard-right-sidebar">
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
                             <div class="dashboard-order">
                                 <div class="title">
-                                    <h2>My Orders History</h2>
+                                    <h2>LỊCH SỬ ĐẶT HÀNG</h2>
                                     <span class="title-leaf title-leaf-gray">
                                         <svg class="icon-width bg-gray">
                                             <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
@@ -78,303 +74,43 @@
                                 </div>
 
                                 <div class="order-contain">
-                                    <div class="order-box dashboard-bg-box">
-                                        <div class="order-container">
-                                            <div class="order-icon">
-                                                <i data-feather="box"></i>
-                                            </div>
+                                    <table class="table">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col">Mã đơn đặt</th>
+                                                <th scope="col">Ngày</th>
+                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col">Tổng tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (var i = 0; i < Model.DonDats.Count; i++)
+                                            {
+                                                @if (i < 9)
+                                                {
+                                                    <tr>
+                                                        <th style="color: blue;" scope="row">#@Model.DonDats[i].MaDonDat</th>
+                                                        <td>@Model.DonDats[i].NgayDat</td>
+                                                        @if (Model.DonDats[i].TrangThai == 0)
+                                                        {
+                                                            <td>Đặt hàng thành công</td>
+                                                        }
+                                                        else if (Model.DonDats[i].TrangThai == 1)
+                                                        {
+                                                            <td>Đơn hàng đã giao thành công</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Đơn hàng đã bị hủy</td>
+                                                        }
+                                                        <td>@Model.DonDats[i].Total</td>
+                                                    </tr>
 
-                                            <div class="order-detail">
-                                                <h4>Delivere <span>Panding</span></h4>
-                                                <h6 class="text-content">Gouda parmesan caerphilly mozzarella cottage cheese cauliflower cheese taleggio gouda.</h6>
-                                            </div>
-                                        </div>
 
-                                        <div class="product-order-detail">
-                                            <a href="product-left-thumbnail.html" class="order-image">
-                                                <img src="../assets/images/vegetable/product/1.png"
-                                                     class="blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="order-wrap">
-                                                <a href="product-left-thumbnail.html">
-                                                    <h3>Fantasy Crunchy Choco Chip Cookies</h3>
-                                                </a>
-                                                <p class="text-content">Cheddar dolcelatte gouda. Macaroni cheese cheese strings feta halloumi cottage cheese jarlsberg cheese triangles say cheese.</p>
-                                                <ul class="product-size">
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Price : </h6>
-                                                            <h5>$20.68</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Rate : </h6>
-                                                            <div class="product-rating ms-2">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Sold By : </h6>
-                                                            <h5>Fresho</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Quantity : </h6>
-                                                            <h5>250 G</h5>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="order-box dashboard-bg-box">
-                                        <div class="order-container">
-                                            <div class="order-icon">
-                                                <i data-feather="box"></i>
-                                            </div>
-
-                                            <div class="order-detail">
-                                                <h4>Delivered <span class="success-bg">Success</span></h4>
-                                                <h6 class="text-content">
-                                                    Cheese on toast cheesy grin cheesy grin cottage cheese caerphilly everyone loves cottage cheese the big cheese.
-                                                </h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="product-order-detail">
-                                            <a href="product-left-thumbnail.html" class="order-image">
-                                                <img src="../assets/images/vegetable/product/2.png" alt=""
-                                                     class="blur-up lazyload">
-                                            </a>
-
-                                            <div class="order-wrap">
-                                                <a href="product-left-thumbnail.html">
-                                                    <h3>Cold Brew Coffee Instant Coffee 50 g</h3>
-                                                </a>
-                                                <p class="text-content">Pecorino paneer port-salut when the cheese comes out everybody's happy red leicester mascarpone blue castello cauliflower cheese.</p>
-                                                <ul class="product-size">
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Price : </h6>
-                                                            <h5>$20.68</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Rate : </h6>
-                                                            <div class="product-rating ms-2">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Sold By : </h6>
-                                                            <h5>Fresho</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Quantity : </h6>
-                                                            <h5>250 G</h5>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="order-box dashboard-bg-box">
-                                        <div class="order-container">
-                                            <div class="order-icon">
-                                                <i data-feather="box"></i>
-                                            </div>
-
-                                            <div class="order-detail">
-                                                <h4>Delivere <span>Panding</span></h4>
-                                                <h6 class="text-content">Cheesy grin boursin cheesy grin cheesecake blue castello cream cheese lancashire melted cheese.</h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="product-order-detail">
-                                            <a href="product-left-thumbnail.html" class="order-image">
-                                                <img src="../assets/images/vegetable/product/3.png" alt=""
-                                                     class="blur-up lazyload">
-                                            </a>
-
-                                            <div class="order-wrap">
-                                                <a href="product-left-thumbnail.html">
-                                                    <h3>Peanut Butter Bite Premium Butter Cookies 600 g</h3>
-                                                </a>
-                                                <p class="text-content">Cow bavarian bergkase mascarpone paneer squirty cheese fromage frais cheese slices when the cheese comes out everybody's happy.</p>
-                                                <ul class="product-size">
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Price : </h6>
-                                                            <h5>$20.68</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Rate : </h6>
-                                                            <div class="product-rating ms-2">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Sold By : </h6>
-                                                            <h5>Fresho</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Quantity : </h6>
-                                                            <h5>250 G</h5>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="order-box dashboard-bg-box">
-                                        <div class="order-container">
-                                            <div class="order-icon">
-                                                <i data-feather="box"></i>
-                                            </div>
-
-                                            <div class="order-detail">
-                                                <h4>Delivered <span class="success-bg">Success</span></h4>
-                                                <h6 class="text-content">Caerphilly port-salut parmesan pecorino croque monsieur dolcelatte melted cheese cheese and wine.</h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="product-order-detail">
-                                            <a href="product-left-thumbnail.html" class="order-image">
-                                                <img src="../assets/images/vegetable/product/4.png"
-                                                     class="blur-up lazyload" alt="">
-                                            </a>
-
-                                            <div class="order-wrap">
-                                                <a href="product-left-thumbnail.html">
-                                                    <h3>SnackAmor Combo Pack of Jowar Stick and Jowar Chips</h3>
-                                                </a>
-                                                <p class="text-content">The big cheese cream cheese pepper jack cheese slices danish fontina everyone loves cheese on toast bavarian bergkase.</p>
-                                                <ul class="product-size">
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Price : </h6>
-                                                            <h5>$20.68</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Rate : </h6>
-                                                            <div class="product-rating ms-2">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Sold By : </h6>
-                                                            <h5>Fresho</h5>
-                                                        </div>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="size-box">
-                                                            <h6 class="text-content">Quantity : </h6>
-                                                            <h5>250 G</h5>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -399,37 +135,41 @@
                                 <div class="row g-sm-4 g-3">
                                     @for (int i = 0; i < Model.DiasChiUser.Count; i++)
                                     {
-                                        <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6">
-                                            <div class="address-box">
-                                                <div>
-                                                    <div class="table-responsive address-table">
-                                                        <table class="table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Địa chỉ :</td>
-                                                                    <td>
-                                                                        <p>
-                                                                            @Model.DiasChiUser[i]
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                        if (i < 6)
+                                        {
+                                            <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6">
+                                                <div class="address-box">
+                                                    <div>
+                                                        <div class="table-responsive address-table">
+                                                            <table class="table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Địa chỉ :</td>
+                                                                        <td>
+                                                                            <p>
+                                                                                @Model.DiasChiUser[i]
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="button-group">
+                                                        <a onclick="showInPopup('@Url.Action("editaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Chỉnh sửa địa chỉ')" class="btn btn-sm add-button w-100">
+                                                            <i data-feather="edit"></i>
+                                                            Sửa
+                                                        </a>
+                                                        <a onclick="showInPopup('@Url.Action("deleteaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Xóa địa chỉ')" class="btn btn-sm add-button w-100">
+                                                            <i data-feather="trash-2"></i>
+                                                            Xóa
+                                                        </a>
                                                     </div>
                                                 </div>
-
-                                                <div class="button-group">
-                                                    <a onclick="showInPopup('@Url.Action("editaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Chỉnh sửa địa chỉ')" class="btn btn-sm add-button w-100">
-                                                        <i data-feather="edit"></i>
-                                                        Sửa
-                                                    </a>
-                                                    <a onclick="showInPopup('@Url.Action("deleteaddress", "account",new {id = Model.IdDiaChi[i]},Context.Request.Scheme)','Xóa địa chỉ')" class="btn btn-sm add-button w-100">
-                                                        <i data-feather="trash-2"></i>
-                                                        Xóa
-                                                    </a>
-                                                </div>
                                             </div>
-                                        </div>
+                                        }
+
                                     }
                                 </div>
                             </div>
@@ -523,184 +263,7 @@
     </div>
 </section>
 <!-- User Dashboard Section End -->
-<!-- Deal Box Modal Start -->
-<div class="modal fade theme-modal deal-modal" id="deal-box" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h5 class="modal-title w-100" id="deal_today">Deal Today</h5>
-                    <p class="mt-1 text-content">Recommended deals for you.</p>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="deal-offer-box">
-                    <ul class="deal-offer-list">
-                        <li class="list-1">
-                            <div class="deal-offer-contain">
-                                <a href="shop-left-sidebar.html" class="deal-image">
-                                    <img src="../assets/images/vegetable/product/10.png" class="blur-up lazyload"
-                                         alt="">
-                                </a>
-
-                                <a href="shop-left-sidebar.html" class="deal-contain">
-                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="list-2">
-                            <div class="deal-offer-contain">
-                                <a href="shop-left-sidebar.html" class="deal-image">
-                                    <img src="../assets/images/vegetable/product/11.png" class="blur-up lazyload"
-                                         alt="">
-                                </a>
-
-                                <a href="shop-left-sidebar.html" class="deal-contain">
-                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="list-3">
-                            <div class="deal-offer-contain">
-                                <a href="shop-left-sidebar.html" class="deal-image">
-                                    <img src="../assets/images/vegetable/product/12.png" class="blur-up lazyload"
-                                         alt="">
-                                </a>
-
-                                <a href="shop-left-sidebar.html" class="deal-contain">
-                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="list-1">
-                            <div class="deal-offer-contain">
-                                <a href="shop-left-sidebar.html" class="deal-image">
-                                    <img src="../assets/images/vegetable/product/13.png" class="blur-up lazyload"
-                                         alt="">
-                                </a>
-
-                                <a href="shop-left-sidebar.html" class="deal-contain">
-                                    <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                    <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Bg overlay Start -->
 <div class="bg-overlay"></div>
-<!-- Add address modal box end -->
-<!-- Location Modal Start -->
-<div class="modal location-modal fade theme-modal" id="locationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-hlog modal-dialog-centered modal-fullscreen-sm-down">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel1">Choose your Delivery Location</h5>
-                <p class="mt-1 text-content">Enter your address and we will specify the offer for your area.</p>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="location-list">
-                    <div class="search-input">
-                        <input type="search" class="form-control" placeholder="Search Your Area">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-
-                    <div class="disabled-box">
-                        <h6>Select a Location</h6>
-                    </div>
-
-                    <ul class="location-select custom-height">
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Alabama</h6>
-                                <span>Min: $130</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Arizona</h6>
-                                <span>Min: $150</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>California</h6>
-                                <span>Min: $110</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Colorado</h6>
-                                <span>Min: $140</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Florida</h6>
-                                <span>Min: $160</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Georgia</h6>
-                                <span>Min: $120</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Kansas</h6>
-                                <span>Min: $170</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Minnesota</h6>
-                                <span>Min: $120</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>New York</h6>
-                                <span>Min: $110</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="javascript:void(0)">
-                                <h6>Washington</h6>
-                                <span>Min: $130</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     showInPopup = (url, title) => {
         $.ajax({
@@ -717,5 +280,25 @@
             }
         })
     }
-
+    function readURL(uploader) {
+        $('.update_img').attr('src',
+            window.URL.createObjectURL(uploader.files[0]));
+        var data = new FormData();
+        data.append("formFile", uploader.files[0]);
+        console.log(uploader.files[0]);
+        console.log(data.get("formFile"));
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("fileupload", "account",null,Context.Request.Scheme)",
+            data: data,
+            processData: false,
+            contentType: false
+        }).done(function (result) {
+            if (result.status == "success") {
+                console.log("abc");
+            } else {
+                console.log("cba");
+            }
+        });
+    };
 </script>

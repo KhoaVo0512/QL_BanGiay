@@ -63,16 +63,16 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 bool blt = int.TryParse(SearchText, out SL);
                 if (blt)
                 {
-                    items = _context.KhoGiays.Where(ut => ut.SoLuong.ToString().Contains(SearchText))
-                   .Include(s => s.MaGiayNavigation.TenGiay)
-                   .Include(s => s.MaSizeNavigation.TenSize)
+                    items = _context.KhoGiays.Where(ut => ut.SoLuong == SL)
+                   .Include(s => s.MaGiayNavigation)
+                   .Include(s => s.MaSizeNavigation)
                    .ToList();
                 }
                 else
                 {
                     items = _context.KhoGiays.Where(ut => ut.MaGiayNavigation.TenGiay.ToLower().Contains(SearchText.ToLower()))
-                                       .Include(s => s.MaGiayNavigation.TenGiay)
-                                       .Include(s => s.MaSizeNavigation.TenSize)
+                                       .Include(s => s.MaGiayNavigation)
+                                       .Include(s => s.MaSizeNavigation)
                                        .ToList();
                 }
             }

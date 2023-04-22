@@ -39,8 +39,11 @@ builder.Services.AddScoped<IOrder, OrderRepo>();
 builder.Services.AddScoped<IBill, BillRepo>();
 builder.Services.AddScoped<IAddress, AddressRepo>();
 builder.Services.AddScoped<IUser, UserRepo>();
+builder.Services.AddScoped<IChart, ChartRepo>();
+builder.Services.AddScoped<IRole, RoleRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+
 builder.Services.AddDbContext<QlyBanGiayContext>(
     option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => 
@@ -64,7 +67,7 @@ builder.Services.AddAuthorization(options =>
          policy => policy.RequireRole("Admin"));
 });
 var app = builder.Build();
-
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBaFt+QHFqVkNrWU5GdkBAXWFKblB8RWtTe11gFChNYlxTR3ZbQF1iTH5bckZkWXZb;Mgo+DSMBPh8sVXJ1S0d+X1RPc0BAXXxLflF1VWBTf1Z6cFZWACFaRnZdQV1nS35Sc0VrXXxZcnFQ;ORg4AjUWIQA/Gnt2VFhhQlJBfVpdX2NWfFN0RnNadV54flFFcDwsT3RfQF5jTXxTd0BjUXtdd3BXQw==;MTc5MTgyNUAzMjMxMmUzMTJlMzMzNVgxUTlaU004dmlNdm1tNFh1OE1GTi9rZWJPTnhZdElQQW9oQnlxNXVWdVU9;MTc5MTgyNkAzMjMxMmUzMTJlMzMzNVZoMkJIT0w1UEk2dy80dkpaZWZNaTZERVRXSUZlZDNKN0RiVVFsb0NWSEk9;NRAiBiAaIQQuGjN/V0d+XU9Hc1RHQmFJYVF2R2BJfFRwfF9CY0wxOX1dQl9gSXpRdkRmWXdac3xWTmU=;MTc5MTgyOEAzMjMxMmUzMTJlMzMzNUgxY3NHRDl1L3BQZ0VNbmI2eVpLRUhYOCt0bTF1VVlhL1hiWmZqMWFDdDg9;MTc5MTgyOUAzMjMxMmUzMTJlMzMzNWkrR0pEN1VEZmJTZWEwUWNuNmRUSVhYNXJ1QTZrTzQ4b0pXUU1BUW5laTg9;Mgo+DSMBMAY9C3t2VFhhQlJBfVpdX2NWfFN0RnNadV54flFFcDwsT3RfQF5jTXxTd0BjUXtdeH1TQw==;MTc5MTgzMUAzMjMxMmUzMTJlMzMzNU8yM2NjT0tvM1BYUFRFRlFnaWVHYnA4MFh2T05SSEZWdkdycTBOcmd1MUk9;MTc5MTgzMkAzMjMxMmUzMTJlMzMzNUMvR2RWTUFMVG9hUjd1MEcvS0g2T29PTERlaUNKOU9JUDVQSk1Yd1M3MmM9;MTc5MTgzM0AzMjMxMmUzMTJlMzMzNUgxY3NHRDl1L3BQZ0VNbmI2eVpLRUhYOCt0bTF1VVlhL1hiWmZqMWFDdDg9");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

@@ -32,19 +32,30 @@
                                 STT
                             </th>
                             <th>
-                                Mã hóa đơn
+                                <i class="@sortModel.GetColumn("IdCheckout").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdCheckout").SortExpression">
+                                    Mã hóa đơn
+                                </a>
+                                
                             </th>
                             <th>
-                                Tên người đặt
+                                <i class="@sortModel.GetColumn("Name").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Name").SortExpression">
+                                    Tên người đặt
+                                </a>
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("NgayGiaoDH").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("NgayGiaoDH").SortExpression">
+                                <i class="@sortModel.GetColumn("Date").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Date").SortExpression">
                                     Ngày giao
                                 </a>
                             </th>
                             <th>
-                                Tổng tiền
+                                <i class="@sortModel.GetColumn("Price").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Price").SortExpression">
+                                    Tổng tiền
+                                </a>
+                                
                             </th>
                             <th>
                                 Chức năng

@@ -29,13 +29,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
         {
             SortModel sortModel = new SortModel();
+            sortModel.AddColumn("Date");
             sortModel.AddColumn("Price");
-            sortModel.AddColumn("NgayGiaoDH");
-            sortModel.AddColumn("ngaylapHD");
+            sortModel.AddColumn("IdCheckout");
+            sortModel.AddColumn("Name");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
-            PaginatedList<HoaDon> items = _BillRepo.GetItems("", sortModel.SortedOrder, SearchText, pg, pageSize);
+            PaginatedList<HoaDon> items = _BillRepo.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
             var pager = new PagerModel(items.TotalRecords, pg, pageSize);
             pager.SortExpression = sortExpression;
             this.ViewBag.Pager = pager;

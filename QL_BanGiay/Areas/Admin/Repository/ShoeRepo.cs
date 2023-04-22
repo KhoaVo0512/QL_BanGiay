@@ -25,7 +25,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.TenGiay).ToList();
             }
-            else if (SortProperty.ToLower() == "magiay")
+            else if (SortProperty.ToLower() == "idshoe")
             {
                 if (sortOrder == SortOrder.Ascending)
                     items = items.OrderBy(n => n.MaGiay).ToList();
@@ -38,12 +38,19 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.GiaBan).ToList();
             }
+            else if (SortProperty.ToLower() == "date")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderByDescending(n => n.NgayCn).ToList();
+                else
+                    items = items.OrderBy(n => n.NgayCn).ToList();
+            }
             else
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderByDescending(d => d.MaGiay).ToList();
+                    items = items.OrderByDescending(d => d.NgayCn).ToList();
                 else
-                    items = items.OrderBy(d => d.MaGiay).ToList();
+                    items = items.OrderBy(d => d.NgayCn).ToList();
             }
 
             return items;

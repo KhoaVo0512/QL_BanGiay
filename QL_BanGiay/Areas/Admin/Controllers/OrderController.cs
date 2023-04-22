@@ -40,8 +40,11 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 10)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("NgayDat");
-            sortModel.AddColumn("GhiChu");
+            sortModel.AddColumn("Date");
+            sortModel.AddColumn("IdOrder");
+            sortModel.AddColumn("Name");
+            sortModel.AddColumn("Phone");
+                    
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
@@ -73,7 +76,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         {
             var dondat = _OrderRepo.Delete(id);
             Sort();
-            var items = _OrderRepo.GetItems("NgayDat", SortOrder.Descending, "", 1, 10);
+            var items = _OrderRepo.GetItems("IdOrder", SortOrder.Descending, "", 1, 10);
             var pager = new PagerModel(items.TotalRecords, 1, 5);
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;
@@ -107,15 +110,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> Details(DonDat item)
         {
-            string contentCustomer = _webHostEnvironment.ContentRootPath;
             var MaHD = await _OrderRepo.CreateHoaDon(item);
             Sort();
-            var items = _OrderRepo.GetItems("NameShoe", SortOrder.Ascending, "", 1, 10);
+            var items = _OrderRepo.GetItems("Date", SortOrder.Ascending, "", 1, 10);
             var pager = new PagerModel(items.TotalRecords, 1, 10);
             pager.SortExpression = "";
             this.ViewBag.Pager = pager;
             TempData["CurrentPage"] = 1;
-            _toastNotification.AddSuccessToastMessage("Đơn hàng đã cập nhật thành công.");
+            _toastNotification.AddSuccessToastMessage("Đơn hàng đã giao thành công.");
             return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
         }
         private List<SelectListItem> GetSizes()
@@ -142,9 +144,11 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private void Sort()
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("NgayDat");
-            sortModel.AddColumn("GhiChu");
-            sortModel.ApplySort("");
+            sortModel.AddColumn("IdOrder");
+            sortModel.AddColumn("Name");
+            sortModel.AddColumn("Phone");
+            sortModel.AddColumn("Date");
+            sortModel.ApplySort("Date");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";
         }

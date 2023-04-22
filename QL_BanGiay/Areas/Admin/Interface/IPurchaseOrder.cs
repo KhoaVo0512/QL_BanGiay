@@ -13,5 +13,6 @@ namespace QL_BanGiay.Areas.Admin.Interface
         bool Edit(NhapHang nhapHang);
         bool Delete(int id);
         public int GetNewPONumber();
+        int? GetTotalExprense();
     }
 }

@@ -35,9 +35,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("Id");
-            sortModel.AddColumn("SuppliersId");
-            sortModel.AddColumn("OrderId");
+            sortModel.AddColumn("Date");
+            sortModel.AddColumn("IdOrder");
+            sortModel.AddColumn("IdBill");
+            sortModel.AddColumn("Name");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
@@ -194,13 +195,21 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 try
                 {
                     bolret = _PurchaseOrderRepo.Edit(item);
+                    if (!bolret)
+                    {
+                        ViewBag.SupplierList = GetSuppliers();
+                        ViewBag.ProductList = GetProducts();
+                        ViewBag.SizeList = GetSizes();
+                        _toastNotification.AddErrorToastMessage("Ngày sửa của bạn quá 10 ngày nên không được sửa");
+                        return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", item, null, "") });
+                    }
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _PurchaseOrderRepo.GetItems("SuppliersId", SortOrder.Ascending, "", 1, 5);
+                var items = _PurchaseOrderRepo.GetItems("Date", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -282,9 +291,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private void Sort()
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("Id");
-            sortModel.AddColumn("SuppliersId");
-            sortModel.AddColumn("OrderId");
+            sortModel.AddColumn("Date");
+            sortModel.AddColumn("IdOrder");
+            sortModel.AddColumn("IdBill");
+            sortModel.AddColumn("Name");
             sortModel.ApplySort("");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";

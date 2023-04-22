@@ -1,0 +1,71 @@
+﻿@model QL_BanGiay.Areas.Admin.Models.UserRoleModel
+@{
+    Layout = null;
+}
+<div class="card">
+    <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
+        <h6>Chi tiết người dùng </h6>
+    </div>
+
+    <form id="CodeSbyAnizForm" asp-action="details" onsubmit="return jQueryAjaxPost(this);">
+
+        <div class="row col-12">
+
+            <div class="row col-11 ml-5">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group col-2 ">
+                    <label class="control-label">Mã người dùng:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="MaNguoiDung" class="form-control" readonly />
+                </div>
+
+                <div class="form-group col-1">
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Tên tài khoản:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input readonly asp-for="UserName" class="form-control" />
+                </div>
+
+                <div class="form-group col-2 ">
+                    <label class="control-label">Tên người dùng:</label>
+                </div>
+                <div class="form-group col-3">
+                    <input asp-for="HoTen" class="form-control" readonly />
+                </div>
+                <div class="form-group col-1">
+                </div>
+                <div class="form-group col-2">
+                    <label class="control-label">Quyền người dùng:</label>
+                </div>
+                <div class="form-group col-3">
+                    <select class="form-select" multiple data-mdb-placeholder="Example placeholder" multiple>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                        <option value="4">Four</option>
+                        <option value="5">Five</option>
+                    </select>
+                </div>
+                <div class="form-group col-12">
+                </div>
+
+                <div class="form-group col-12">
+                </div>
+            </div>
+            <div class="form-group btn-group col-11 ml-5">
+                <div class="col-4 text-center" style="margin-left: 33%;">
+                    <a class="btn btn-secondary btn-block" asp-action="index"
+                       asp-route-pg="@TempData.Peek("CurrentPage")">Trở về</a>
+                </div>
+                <div class="col-1"></div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>

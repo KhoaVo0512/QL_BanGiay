@@ -15,7 +15,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <a onclick="showInPopup('@Url.Action("create","purchaseorder",null,Context.Request.Scheme)','Thêm hóa đơn mới')" class="breadcrumb float-sm-right">
-                    <p class="btn btn-success">Thêm hóa đơn mới</p>
+                    <p class="btn btn-success">Thêm hóa đơn nhập hàng</p>
                 </a>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -37,22 +37,30 @@
                                 STT
                             </th>
                             <th>
-                                Mã nhập hàng
-                            </th>
-                            <th>
-                                <i class="@sortModel.GetColumn("SuppliersId").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("SuppliersId").SortExpression">
-                                    Mã đơn vị nhập
+                                <i class="@sortModel.GetColumn("IdOrder").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdOrder").SortExpression">
+                                    Mã nhập hàng
                                 </a>
+                                
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("OrderId").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("OrderId").SortExpression">
+                                <i class="@sortModel.GetColumn("IdBill").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdBill").SortExpression">
                                     Số hóa đơn
                                 </a>
                             </th>
                             <th>
-                                Ngày nhập
+                                <i class="@sortModel.GetColumn("Name").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Name").SortExpression">
+                                    Tên đơn vị nhập
+                                </a>
+                            </th>
+                            <th>
+                                <i class="@sortModel.GetColumn("Date").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Date").SortExpression">
+                                    Ngày nhập
+                                </a>
+                                
                             </th>
                             <th>
                                 Chức năng
@@ -70,14 +78,15 @@
                                 <td>
                                      @Html.DisplayFor(modelItem => item.MaNhapHang)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.MaDonViNhap)
-                                </td>
+                               
                                 <td>
                                     @Html.DisplayFor(modelItem => item.SoHoaDon)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NgayNhap)
+                                    @Html.DisplayFor(modelItem => item.MaDonViNhapNavigation.TenDonViNhap)
+                                </td>
+                                <td style="width: 350px;">
+                                    <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayNhap" class="form-control" />
                                 </td>
                                 <td>
                                     <a onclick="showInPopup('@Url.Action("edit", "purchaseorder",new {id = item.MaNhapHang},Context.Request.Scheme)','Chỉnh sửa bộ sưu tập')" class="btn btn-success text-white"><i class="fa-regular fa-pen-to-square"></i></a>

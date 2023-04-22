@@ -23,12 +23,26 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 else
                     items = items.OrderByDescending(n => n.TongTien).ToList();
             }
-            else if (SortProperty.ToLower() == "ngaylapdh")
+            else if (SortProperty.ToLower() == "date")
             {
                 if (sortOrder == SortOrder.Ascending)
                     items = items.OrderBy(n => n.NgayLapDh).ToList();
                 else
                     items = items.OrderByDescending(n => n.NgayLapDh).ToList();
+            }
+            else if (SortProperty.ToLower() == "idcheckout")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaHd).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaHd).ToList();
+            }
+            else if (SortProperty.ToLower() == "name")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaNguoiDungNavigation.TenNguoiDung).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaNguoiDungNavigation.TenNguoiDung).ToList();
             }
             else
             {
@@ -47,7 +61,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             {
                 items = _context.HoaDons.Where(ut => ut.MaHd.ToLower().Contains(SearchText.ToLower()) ||
                 ut.MaNguoiDungNavigation.TenNguoiDung.ToLower().Contains(SearchText.ToLower()) || 
-                ut.MaNguoiDungNavigation.HoNguoiDung.ToLower().Contains(SearchText.ToLower()))
+                ut.MaNguoiDungNavigation.HoNguoiDung.ToLower().Contains(SearchText.ToLower()) ||
+                ut.MaHd.Contains(SearchText) ||
+                ut.TongTien.ToString().Contains(SearchText))
                 .Include(s => s.MaNguoiDungNavigation)
                 .ThenInclude(s=>s.DiaChis)
                 .ThenInclude(t=>t.MaXaNavigation)

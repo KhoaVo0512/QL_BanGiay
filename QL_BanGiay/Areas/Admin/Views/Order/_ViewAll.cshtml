@@ -37,17 +37,28 @@
                                 STT
                             </th>
                             <th>
-                                Mã đơn hàng
+                                <i class="@sortModel.GetColumn("IdOrder").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("IdOrder").SortExpression">
+                                    Mã đơn hàng
+                                </a>
                             </th>
                             <th>
-                                Tên người đặt
+                                <i class="@sortModel.GetColumn("Name").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Name").SortExpression">
+                                    Tên người đặt
+                                </a>
+                                
                             </th>
                             <th>
-                                Số điện thoại
+                                <i class="@sortModel.GetColumn("Phone").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Phone").SortExpression">
+                                    Số điện thoại
+                                </a>
+                                
                             </th>
                             <th>
-                                <i class="@sortModel.GetColumn("NgayDat").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("NgayDat").SortExpression">
+                                <i class="@sortModel.GetColumn("Date").SortIcon" arial-hidden="true"></i>
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("Date").SortExpression">
                                     Ngày đặt
                                 </a>
                             </th>
@@ -105,10 +116,7 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (item.TrangThai == 0)
-                                    {
-                                        <a onclick="showInPopup('@Url.Action("Details", "order",new {id = item.MaDonDat},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
-                                    }
+                                    <a onclick="showInPopup('@Url.Action("Details", "order",new {id = item.MaDonDat},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
                                 </td>
                             </tr>
                         }

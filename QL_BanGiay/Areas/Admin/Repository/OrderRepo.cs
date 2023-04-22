@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -19,19 +20,33 @@ namespace QL_BanGiay.Areas.Admin.Repository
         private List<DonDat> DoSort(List<DonDat> items, string SortProperty, SortOrder sortOrder)
         {
 
-            if (SortProperty.ToLower() == "GhiChu")
+            if (SortProperty.ToLower() == "idorder")
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderBy(n => n.GhiChu).ToList();
+                    items = items.OrderBy(n => n.MaDonDat).ToList();
                 else
-                    items = items.OrderByDescending(n => n.GhiChu).ToList();
+                    items = items.OrderByDescending(n => n.MaDonDat).ToList();
             }
-            else if (SortProperty.ToLower() == "ngaydat")
+            else if (SortProperty.ToLower() == "date")
             {
                 if (sortOrder == SortOrder.Ascending)
                     items = items.OrderByDescending(n => n.NgayDat).ToList();
                 else
                     items = items.OrderBy(n => n.NgayDat).ToList();
+            }
+            else if (SortProperty.ToLower() == "name")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaNguoiDungNavigation.TenNguoiDung).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaNguoiDungNavigation.TenNguoiDung).ToList();
+            }
+            else if (SortProperty.ToLower() == "phone")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaNguoiDungNavigation.Sdt).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaNguoiDungNavigation.Sdt).ToList();
             }
             else
             {
@@ -48,7 +63,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<DonDat> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.DonDats.Where(ut => ut.GhiChu.ToLower().Contains(SearchText.ToLower()) && ut.TrangThai == 0)
+                items = _context.DonDats.Where(ut => (ut.GhiChu.ToLower().Contains(SearchText.ToLower()) || ut.MaNguoiDungNavigation.TenNguoiDung.ToLower().Contains(SearchText) ||
+                ut.MaNguoiDungNavigation.Sdt.Contains(SearchText) ||
+                ut.MaDonDat.Contains(SearchText)) && (ut.TrangThai == 0 || ut.TrangThai == 2))
                     .Include(s => s.MaNguoiDungNavigation)
                     .Include(s => s.DonDatCts)
                     .ToList();
@@ -56,7 +73,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             }
             else
             {
-                items = _context.DonDats.Where(ut =>ut.TrangThai == 0)
+                items = _context.DonDats.Where(ut =>ut.TrangThai == 0 || ut.TrangThai == 2)
                    .Include(s => s.MaNguoiDungNavigation)
                    .ToList();
             }
@@ -79,6 +96,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             item.TenKH = item.MaNguoiDungNavigation.HoNguoiDung + " " + item.MaNguoiDungNavigation.TenNguoiDung;
             item.Sdt = item.MaNguoiDungNavigation.Sdt;
             item.Email = item.MaNguoiDungNavigation.Email;
+            var updateDonDat = _context.DonDats.Where(s=>s.MaDonDat == id).FirstOrDefault();
+            updateDonDat.TrangThai = 2;
+            _context.DonDats.Update(updateDonDat);
+            _context.SaveChanges();
             return item;
         }
 
@@ -151,6 +172,25 @@ namespace QL_BanGiay.Areas.Admin.Repository
             var getProducts = _context.DonDatCts.Where(s => s.MaDonDat == MaHD).Include(s=>s.MaGiayNavigation).Include(s=>s.MaSizeNavigation).ToList();
             sendEmail.DonDatCts = getProducts;
             return sendEmail;
+        }
+
+        public int GetCountDonDat()
+        {
+            int count = _context.DonDats.Where(s=>s.TrangThai == 0).Count();
+            return count;
+        }
+
+        public double GetTotalInCome()
+        {
+            DateTime StartDate = DateTime.Today.AddDays(-6);
+            DateTime EndDate = DateTime.Now;
+            var bill = _context.HoaDons.Where(s=>s.NgayLapDh >= StartDate && s.NgayLapDh <= EndDate).ToList();
+            double? total = 0;
+            foreach (var item in bill)
+            {
+                total += item.TongTien;
+            }
+            return (double)total;
         }
     }
 }

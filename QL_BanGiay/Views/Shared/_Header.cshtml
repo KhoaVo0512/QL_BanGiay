@@ -166,14 +166,17 @@
                         <!-- navbar menu Ends -->
                         <div class="navbar-search-cart d-none d-lg-flex">
                             <!-- navbar search start -->
-                            <div class="navbar-search search-style-5">
-                                <div class="search-input">
-                                    <input type="text" placeholder="Search">
+                            <form asp-action="Search" method="get">
+                                <div class="navbar-search search-style-5">
+                                    <div class="search-input">
+                                        <input name="SearchText" value="@ViewBag.SearchText" type="text" placeholder="Search">
+                                    </div>
+                                    <div class="search-btn">
+                                        <button type="submit"><i class="lni lni-search-alt"></i></button>
+                                    </div>
                                 </div>
-                                <div class="search-btn">
-                                    <button><i class="lni lni-search-alt"></i></button>
-                                </div>
-                            </div>
+                            </form>
+                            
                             <!-- navbar search Ends -->
                             <!-- navbar cart start -->
                             <div class="navbar-cart">

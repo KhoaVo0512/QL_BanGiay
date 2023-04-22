@@ -43,7 +43,7 @@
                             </th>
                             <th>
                                 <i class="@sortModel.GetColumn("NameBrand").SortIcon" arial-hidden="true"></i>
-                                <a asp-action="Index" asp-route-sortExpression="@sortModel.GetColumn("NameBrand").SortExpression">
+                                <a asp-action="Index" asp-route-SearchText="@ViewBag.SearchText" asp-route-sortExpression="@sortModel.GetColumn("NameBrand").SortExpression">
                                     Tên nhãn hiệu
                                 </a>
                             </th>

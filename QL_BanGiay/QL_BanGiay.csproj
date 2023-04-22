@@ -22,10 +22,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
     <PackageReference Include="MimeKit" Version="3.6.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="NToastNotify" Version="8.0.0" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="21.1.41" />
     <PackageReference Include="toastr" Version="2.1.1" />
     <PackageReference Include="Uno.UI" Version="4.8.15" />
   </ItemGroup>

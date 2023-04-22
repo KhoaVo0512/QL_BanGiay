@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using elFinder.NetCore.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
@@ -295,6 +296,22 @@ namespace QL_BanGiay.Controllers
 
             return lstProducts;
         }
+        [Route("search")]
+        [HttpGet]
+        public IActionResult Search(string sortExpression = "",string SearchText="", int pg = 1, int pageSize = 10)
+        {
+            SortModel sortModel = new SortModel();
+            sortModel.AddColumn("NameShoe");
+            sortModel.ApplySort(sortExpression);
+            ViewData["sortModel"] = sortModel;
+            ViewBag.SearchText = SearchText;
+            PaginatedList<Giay> items = _ShoeRepo.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
+            var pager = new PagerModel( items.TotalRecords,pg, pageSize);
+            pager.Action = "Search";
+            this.ViewBag.Pager = pager;
+            TempData["CurrentPage"] = pg;
+            return View(items);
+        }
         private void SendMail(EmailModel model)
         {
             CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
@@ -324,11 +341,12 @@ namespace QL_BanGiay.Controllers
                 contentCustomer = contentCustomer.Replace("{{Phone}}", model.Sdt);
                 contentCustomer = contentCustomer.Replace("{{Email}}", model.Email);
                 contentCustomer = contentCustomer.Replace("{{DiaChiNhanHang}}", model.DiaChi);
-                contentCustomer = contentCustomer.Replace("{{ThanhTien}}", thanhtien.ToString());
-                contentCustomer = contentCustomer.Replace("{{TongTien}}", tongtien.ToString());
+                contentCustomer = contentCustomer.Replace("{{ThanhTien}}", String.Format(elGR, "{0:0,0}",thanhtien));
+                contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(elGR, "{0:0,0}", tongtien));
                 bool btl = SendMails.SendMail("BanGiay", "Đơn hàng #" + model.MaHoaDon, contentCustomer, model.Email);
             }
 
         }
+        
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
@@ -26,15 +27,17 @@ namespace QL_BanGiay.Controllers
         private readonly IProvince _ProviceRepo;
         private readonly IDistrict _DistrictRepo;
         private readonly ICommune _CommuneRepo;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public AccountController(IToastNotification toastNotification, IAccount accountRepository
-            , IProvince proviceRepo, IDistrict district, ICommune commune)
+            , IProvince proviceRepo, IDistrict district, ICommune commune, IWebHostEnvironment webHostEnvironment)
         {
             _DistrictRepo = district;
             _CommuneRepo = commune;
             _toastNotification = toastNotification;
             _accountRepository = accountRepository;
             _ProviceRepo = proviceRepo;
+            _webHostEnvironment = webHostEnvironment;
         }
         [Authorize]
         public IActionResult Index()
@@ -68,9 +71,14 @@ namespace QL_BanGiay.Controllers
                 {
                     var username = _accountRepository.GetTaiKhoan(sId);
                     var check_pw = EncodeManager.VerifyHashedPassword(username.Password, model.Password);
+                    var check_newpw = EncodeManager.VerifyHashedPassword(username.Password, model.New_Password);
                     if (check_pw == PasswordVerificationResult.Failed)
                     {
-                        _toastNotification.AddErrorToastMessage("Thay đổi mật khẩu không thành công");
+                        _toastNotification.AddErrorToastMessage("Mật khẩu nhập không chính xác vui lòng thử lại.");
+                        return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "ChangePassword", model, null, "") });
+                    }else if (check_newpw == PasswordVerificationResult.Success)
+                    {
+                        _toastNotification.AddErrorToastMessage("Mật khẩu mới không được giống mật khẩu cũ.");
                         return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "ChangePassword", model, null, "") });
                     }
                     else
@@ -79,14 +87,14 @@ namespace QL_BanGiay.Controllers
                         if (blt)
                         {
                             var user = _accountRepository.GetUser(sId);
-                            _toastNotification.AddSuccessToastMessage("Thêm địa chỉ thành công");
+                            _toastNotification.AddSuccessToastMessage("Thay đổi mật khẩu thành công thành công");
                             return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", user, null, "") });
                         }
                     }
 
                 }
             }
-            _toastNotification.AddErrorToastMessage("Thêm địa chỉ không thành công");
+            _toastNotification.AddErrorToastMessage("Thay đổi mật khẩu không thành công");
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "ChangePassword", model, null, "") });
         }
 
@@ -154,10 +162,10 @@ namespace QL_BanGiay.Controllers
                     {
                         if (sId != null)
                         {
-                            var user = _accountRepository.GetAccountModel(sId);
+                            var users = _accountRepository.GetAccountModel(sId);
                             ViewBag.Tinh = GetTinhs();
-                            ViewBag.Huyen = GetHuyens(user.MaHuyen);
-                            ViewBag.Xa = GetXas(user.MaXa);
+                            ViewBag.Huyen = GetHuyen(users.MaHuyen);
+                            ViewBag.Xa = GetXa(users.MaXa);
                         }
                         ModelState.AddModelError("Email", "Địa chỉ email này đã có rồi");
                         _toastNotification.AddErrorToastMessage("Cập nhật tài khoản không thành công");
@@ -167,19 +175,16 @@ namespace QL_BanGiay.Controllers
                 bool blt = _accountRepository.EditAccount(model, id, IdAddress);
                 if (blt)
                 {
-                    var user = _accountRepository.GetUser(sId);
+                    var getuser = _accountRepository.GetUser(sId);
                     _toastNotification.AddSuccessToastMessage("Tài khoản cập nhật thành công");
-                    return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", user, null, "") });
+                    return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", getuser, null, "") });
                 }
 
             }
-            if (sId != null)
-            {
-                var user = _accountRepository.GetAccountModel(sId);
-                ViewBag.Tinh = GetTinhs();
-                ViewBag.Huyen = GetHuyens(user.MaHuyen);
-                ViewBag.Xa = GetXas(user.MaXa);
-            }
+            var user = _accountRepository.GetAccountModel(sId);
+            ViewBag.Tinh = GetTinhs();
+            ViewBag.Huyen = GetHuyen(user.MaHuyen);
+            ViewBag.Xa = GetXa(user.MaXa);
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
         }
         [HttpGet]
@@ -214,8 +219,8 @@ namespace QL_BanGiay.Controllers
             }
             _toastNotification.AddErrorToastMessage("Chỉnh sửa địa chỉ không thành công");
             ViewBag.Tinh = GetTinhs();
-            ViewBag.Huyen = GetHuyens(model.MaTinh);
-            ViewBag.Xa = GetXas(model.MaHuyen);
+            ViewBag.Huyen = GetHuyens(model.MaHuyen);
+            ViewBag.Xa = GetXa(model.MaXa);
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "EditAddress", model, null, "") });
         }
         [HttpGet]
@@ -450,6 +455,7 @@ namespace QL_BanGiay.Controllers
                         var claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.Name, user.HoNguoiDung + " " + user.TenNguoiDung));
                         claims.Add(new Claim(ClaimTypes.Sid, account.MaNguoiDung));
+                        claims.Add(new Claim(ClaimTypes.Actor, account.AnhTk));
                         foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
@@ -489,6 +495,7 @@ namespace QL_BanGiay.Controllers
                         var claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.Name, user.HoNguoiDung + " " + user.TenNguoiDung));
                         claims.Add(new Claim(ClaimTypes.Sid, account.MaNguoiDung));
+                        claims.Add(new Claim(ClaimTypes.Actor, account.AnhTk));
                         foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
@@ -522,6 +529,25 @@ namespace QL_BanGiay.Controllers
                 }
             }
             return View(loginModel);
+        }
+        [HttpPost]
+        [Route("account/fileupload")]
+        public async Task<JsonResult> FileUpload(IFormFile formFile)
+        {
+            try
+            {
+                var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)
+                                            .Select(c => c.Value).SingleOrDefault();
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "assets/images/imagesUser", formFile.FileName);
+                using var strem = new FileStream(filePath, FileMode.Create);
+                await formFile.CopyToAsync(strem);
+                bool blt = _accountRepository.UpdateImage("/assets/images/imagesUser/" + formFile.FileName, sId);
+                return Json(new { status = "success" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error" });
+            }
         }
         [Authorize]
         [Route("account/sigout")]

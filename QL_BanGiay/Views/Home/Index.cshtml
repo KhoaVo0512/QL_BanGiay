@@ -74,31 +74,32 @@
                                     <div class="product-item active">
                                         <a href="@item.TenGiay">
                                             <img src="@item.AnhDd" alt="product" style="cursor: pointer">
-                                        </a>                          
+                                        </a>
                                     </div>
-                                    
+
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
                         <div style="position: relative; text-align: center;">
                             <h4 class="view-name">@item.TenGiay </h4>
-                            <div style="font-size: 12px;">#@item.MaGiay
+                            <div style="font-size: 12px;">
+                                #@item.MaGiay
                             </div>
                             <div>
                                 <span class="view-text-price">Giá: </span>
                                 <span class="view-price">@String.Format(elGR, "{0:0,0}", item.GiaBan) VND</span>
-     
+
                             </div>
-                            
+
                         </div>
-                        
-                    
+
+
                     </div>
                 }
 
-            }  
+            }
         </div>
     </div>
 </section>
@@ -116,38 +117,41 @@
         <div class="row">
             @foreach (var item in ViewBag.ItemsConverse)
             {
-                 @if (item.GiaBan != null)
+                @if (item.GiaBan != null)
                 {
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                         <div class="product-style-7 mt-20" style="width: 16,66667%; position: relative;">
                             <div class="product-image">
                                 <div class="product-active">
                                     <div class="product-item active">
-                                        <img src="@item.AnhDd" alt="product" style="cursor: pointer">
+                                        <a href="@item.TenGiay">
+                                            <img src="@item.AnhDd" alt="product" style="cursor: pointer">
+                                        </a>
                                     </div>
-                                    
+
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
                         <div style="position: relative; text-align: center;">
                             <h4 class="view-name">@item.TenGiay </h4>
-                            <div style="font-size: 12px;">#@item.MaGiay
+                            <div style="font-size: 12px;">
+                                #@item.MaGiay
                             </div>
                             <div>
                                 <span class="view-text-price">Giá: </span>
                                 <span class="view-price">@String.Format(elGR, "{0:0,0}", item.GiaBan) VND</span>
-     
+
                             </div>
-                            
+
                         </div>
-                        
-                    
+
+
                     </div>
                 }
-                  
-            }   
+
+            }
         </div>
     </div>
 </section>
@@ -166,34 +170,38 @@
         <div class="row">
             @foreach (var item in ViewBag.ItemsAdidas)
             {
-                 @if (item.GiaBan != null)
+                @if (item.GiaBan != null)
                 {
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
                         <div class="product-style-7 mt-20" style="width: 16,66667%; position: relative;">
                             <div class="product-image">
                                 <div class="product-active">
                                     <div class="product-item active">
-                                        <img src="@item.AnhDd" alt="product" style="cursor: pointer">
+
+                                        <a href="@item.TenGiay">
+                                            <img src="@item.AnhDd" alt="product" style="cursor: pointer">
+                                        </a>
                                     </div>
-                                    
+
                                 </div>
-                                
+
                             </div>
-                            
+
                         </div>
                         <div style="position: relative; text-align: center;">
                             <h4 class="view-name">@item.TenGiay </h4>
-                            <div style="font-size: 12px;">#@item.MaGiay
+                            <div style="font-size: 12px;">
+                                #@item.MaGiay
                             </div>
                             <div>
                                 <span class="view-text-price">Giá: </span>
                                 <span class="view-price">@String.Format(elGR, "{0:0,0}", item.GiaBan) VND</span>
-     
+
                             </div>
-                            
+
                         </div>
-                        
-                    
+
+
                     </div>
                 }
             }
@@ -216,35 +224,37 @@
             {
                 @if (item.GiaBan != null)
                 {
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
-                                <div class="product-style-7 mt-20" style="width: 16,66667%; position: relative;">
-                                    <div class="product-image">
-                                        <div class="product-active">
-                                            <div class="product-item active">
-                                        <img src="@item.AnhDd" alt="product" style="cursor: pointer">
-                                    </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <div style="position: relative; text-align: center;">
-                                    <h4 class="view-name">@item.TenGiay </h4>
-                                    <div style="font-size: 12px;">#@item.MaGiay
-                                    </div>
-                                    <div>
-                                        <span class="view-text-price">Giá: </span>
-                                        <span class="view-price">@String.Format(elGR, "{0:0,0}", item.GiaBan) VND</span>
-
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+                        <div class="product-style-7 mt-20" style="width: 16,66667%; position: relative;">
+                            <div class="product-image">
+                                <div class="product-active">
+                                    <div class="product-item active">
+                                        <a href="@item.TenGiay">
+                                            <img src="@item.AnhDd" alt="product" style="cursor: pointer">
+                                        </a>
                                     </div>
 
                                 </div>
+                            </div>
 
+                        </div>
+                        <div style="position: relative; text-align: center;">
+                            <h4 class="view-name">@item.TenGiay </h4>
+                            <div style="font-size: 12px;">
+                                #@item.MaGiay
+                            </div>
+                            <div>
+                                <span class="view-text-price">Giá: </span>
+                                <span class="view-price">@String.Format(elGR, "{0:0,0}", item.GiaBan) VND</span>
 
                             </div>
+
+                        </div>
+
+
+                    </div>
                 }
-                                        
+
             }
         </div>
     </div>
@@ -257,13 +267,14 @@
 {
     <script type="text/javascript">toastr.success("@TempData["Message"]");</script>
 }
-@if (TempData["ClearStogare"] != null){
+@if (TempData["ClearStogare"] != null)
+{
     <script type="text/javascript">cart.clearItems();</script>
 }
 @if (blt)
 {
     <script type="text/javascript">
         window.location.replace("/admin");
-        
+
     </script>
 }

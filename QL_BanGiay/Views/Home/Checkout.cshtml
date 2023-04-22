@@ -87,13 +87,25 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label>Họ<span class="required">*</span></label>
-                                            <input asp-for="Ho" id="Ho" type="text" class="form-control">
+                                            <input readonly asp-for="Ho" type="text" class="form-control">
                                             <span class="text-danger" asp-validation-for="Ho"></span>
                                         </div>
                                         <div class="col-sm-6">
                                             <label>Tên<span class="required">*</span></label>
-                                            <input asp-for="Ten" id="Ten" type="text" class="form-control">
+                                            <input readonly asp-for="Ten" id="Ten" type="text" class="form-control">
                                             <span class="text-danger" asp-validation-for="Ten"></span>
+                                        </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Email<span class="required">*</span></label>
+                                            <input readonly asp-for="Email" id="Ho" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Ho"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Số điện thoại<span class="required">*</span></label>
+                                            <input readonly asp-for="Sdt" type="text" class="form-control">
+                                            <span class="text-danger" asp-validation-for="Sdt"></span>
                                         </div>
                                     </div>
                                     <label>Địa chỉ<span class="required">*</span></label>

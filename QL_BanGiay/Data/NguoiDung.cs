@@ -20,7 +20,7 @@ public partial class NguoiDung
 
     public virtual List<DiaChi> DiaChis { get; } = new List<DiaChi>();
 
-    public virtual ICollection<DonDat> DonDats { get; } = new List<DonDat>();
+    public virtual List<DonDat> DonDats { get; } = new List<DonDat>();
 
     public virtual ICollection<HoaDon> HoaDons { get; } = new List<HoaDon>();
 

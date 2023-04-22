@@ -13,5 +13,5 @@ public partial class DongSanPham
 
     public virtual ICollection<Giay> Giays { get; } = new List<Giay>();
 
-    public virtual NhanHieu MaNhanHieuNavigation { get; set; } = null!;
+    public virtual NhanHieu? MaNhanHieuNavigation { get; set; }
 }

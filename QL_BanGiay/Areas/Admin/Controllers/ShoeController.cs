@@ -42,9 +42,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 5)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("MaGiay");
+            sortModel.AddColumn("IdShoe");
             sortModel.AddColumn("NameShoe");
             sortModel.AddColumn("Price");
+            sortModel.AddColumn("Date");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
@@ -75,7 +76,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 CheckMaGiay = _ShoeRepo.IsShoeNoExists(item.MaGiay);
                 if (CheckMaGiay)
                 {
-                    ModelState.AddModelError("MaGiay", "Mã giày này đã có rồi");
+                    ModelState.AddModelError("NameShoe", "Mã giày này đã có rồi");
                     _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
                     ViewBag.BrandList = GetBrands();
                     ViewBag.ProduceList = GetProduce();
@@ -271,9 +272,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private void Sort()
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("MaGiay");
+            sortModel.AddColumn("IdShoe");
             sortModel.AddColumn("NameShoe");
             sortModel.AddColumn("Price");
+            sortModel.AddColumn("Date");
             sortModel.ApplySort("");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";

@@ -22,6 +22,7 @@ namespace QL_BanGiay.Interface
         List<Quyen> GetRoles(string Id);
         bool DeleteAddressUser(int id);
         bool ChangePassword(ChangePasswordModel model, string id);
+        bool UpdateImage(string url, string id);
         TaiKhoan GetTaiKhoan(string id);
 
     }

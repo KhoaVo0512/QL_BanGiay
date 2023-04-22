@@ -20,14 +20,21 @@ namespace QL_BanGiay.Areas.Admin.Repository
         private List<NhapHang> DoSort(List<NhapHang> items, string SortProperty, SortOrder sortOrder)
         {
 
-            if (SortProperty.ToLower() == "SuppliersId")
+            if (SortProperty.ToLower() == "date")
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderBy(n => n.MaDonViNhap).ToList();
+                    items = items.OrderByDescending(n => n.NgayNhap).ToList();
                 else
-                    items = items.OrderByDescending(n => n.MaDonViNhap).ToList();
+                    items = items.OrderBy(n => n.NgayNhap).ToList();
             }
-            else if (SortProperty.ToLower() == "OrderId")
+            else if (SortProperty.ToLower() == "idorder")
+            {
+                if (sortOrder == SortOrder.Ascending)
+                    items = items.OrderBy(n => n.MaNhapHang).ToList();
+                else
+                    items = items.OrderByDescending(n => n.MaNhapHang).ToList();
+            }
+            else if (SortProperty.ToLower() == "idbill")
             {
                 if (sortOrder == SortOrder.Ascending)
                     items = items.OrderBy(n => n.SoHoaDon).ToList();
@@ -37,9 +44,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             else
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderByDescending(d => d.MaNhapHang).ToList();
+                    items = items.OrderByDescending(d => d.NgayNhap).ToList();
                 else
-                    items = items.OrderBy(d => d.MaNhapHang).ToList();
+                    items = items.OrderBy(d => d.NgayNhap).ToList();
             }
 
             return items;
@@ -81,7 +88,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             {
                 var item = _context.NhapHangs.Where(s => s.MaNhapHang == id).FirstOrDefault();
                 var nhapHangCT = _context.NhapHangCts.Where(s => s.MaNhapHang == id).ToList();
-                foreach(var items in nhapHangCT)
+                foreach (var items in nhapHangCT)
                 {
                     _context.Remove(items);
                     _context.SaveChanges();
@@ -100,16 +107,43 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public bool Edit(NhapHang nhapHang)
         {
             bool retVal = false;
-            List<NhapHangCt> nhapHangCts = _context.NhapHangCts.Where(s => s.MaNhapHang == nhapHang.MaNhapHang).ToList();
-            _context.NhapHangCts.RemoveRange(nhapHangCts);
-            _context.SaveChanges();
-            _context.Attach(nhapHang);
-            _context.Entry(nhapHang).State = EntityState.Modified;
-            _context.NhapHangCts.AddRange(nhapHang.NhapHangCts);
-            _context.SaveChanges();
-            retVal = true;
+            DateTime NgayNhap = Convert.ToDateTime(nhapHang.NgayNhap);
+            DateTime NgayEidt = Convert.ToDateTime(DateTime.Now);
+            TimeSpan Time = NgayEidt - NgayNhap;
+            int soNgay = Time.Days;
+            if (soNgay < 10)
+            {
+                List<NhapHangCt> nhapHangCts = _context.NhapHangCts.Where(s => s.MaNhapHang == nhapHang.MaNhapHang).ToList();
+                for (int i = 0; i < nhapHangCts.Count; i++)
+                {
+                    var getWareHouse = _context.KhoGiays.Where(s => s.MaGiay == nhapHangCts[i].MaGiay && s.MaSize == nhapHangCts[i].MaSize).FirstOrDefault();
+
+                    if (getWareHouse != null)
+                    {
+                        if (nhapHangCts[i].SoLuong < nhapHang.NhapHangCts[i].SoLuong)
+                        {
+                            getWareHouse.SoLuong += (nhapHang.NhapHangCts[i].SoLuong - nhapHangCts[i].SoLuong);
+                            _context.KhoGiays.Update(getWareHouse);
+                            _context.SaveChanges();
+                        }
+                        else if (nhapHangCts[i].SoLuong > nhapHang.NhapHangCts[i].SoLuong)
+                        {
+                            getWareHouse.SoLuong -= (nhapHangCts[i].SoLuong - nhapHang.NhapHangCts[i].SoLuong);
+                            _context.KhoGiays.Update(getWareHouse);
+                            _context.SaveChanges();
+                        }
+                    }
+                }
+                _context.NhapHangCts.RemoveRange(nhapHangCts);
+                _context.SaveChanges();
+                _context.Attach(nhapHang);
+                _context.Entry(nhapHang).State = EntityState.Modified;
+                _context.NhapHangCts.AddRange(nhapHang.NhapHangCts);
+                _context.SaveChanges();
+                retVal = true;
+            }
             return retVal;
-           
+
         }
 
         public NhapHang GetItem(int id)
@@ -128,10 +162,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             List<NhapHang> items;
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.NhapHangs.ToList();
+                items = _context.NhapHangs.Include(s => s.MaDonViNhapNavigation).ToList();
             }
             else
-                items = _context.NhapHangs.ToList();
+                items = _context.NhapHangs.Include(s => s.MaDonViNhapNavigation).ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
             PaginatedList<NhapHang> retItems = new PaginatedList<NhapHang>(items, pageIndex, pageSize);
@@ -146,7 +180,8 @@ namespace QL_BanGiay.Areas.Admin.Repository
             if (LastNumber == 0)
             {
                 number = 1;
-            }else
+            }
+            else
             {
                 number = LastNumber + 1;
             }
@@ -156,6 +191,25 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public string GetErrors()
         {
             return _errors;
+        }
+
+        public int? GetTotalExprense()
+        {
+            DateTime StartDate = DateTime.Today.AddDays(-6);
+            DateTime EndDate = DateTime.Now;
+            var get = _context.NhapHangs.Where(s=>s.NgayNhap >= StartDate && s.NgayNhap <= EndDate)
+                .Include(s => s.NhapHangCts).ToList();
+            int? total = 0;
+            foreach (var item in get)
+            {
+                int? total2 = 0;
+                foreach (var item2 in item.NhapHangCts)
+                {
+                    total2 += item2.GiaMua;
+                }
+                total += total2;
+            }
+            return total;
         }
     }
 }

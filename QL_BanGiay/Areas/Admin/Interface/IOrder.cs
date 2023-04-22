@@ -9,7 +9,9 @@ namespace QL_BanGiay.Areas.Admin.Interface
         PaginatedList<DonDat> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5);
 
         DonDat Delete(int id);
-         Task<string> CreateHoaDon(DonDat item);
+        Task<string> CreateHoaDon(DonDat item);
         EmailModel GetMail(string MaHD);
+        int GetCountDonDat();
+        double GetTotalInCome();
     }
 }
