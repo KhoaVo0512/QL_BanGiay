@@ -1,13 +1,14 @@
 ﻿@model QL_BanGiay.Areas.Admin.Models.UserRoleModel
 @{
     Layout = null;
+    var data = ViewData["CategoryID"];
 }
 <div class="card">
     <div class="card-header bg-danger text-uppercase text-white text-center mb-2 pt-0" style="height:25px;">
-        <h6>Chi tiết người dùng </h6>
+        <h6>Chỉnh sửa quyền</h6>
     </div>
 
-    <form id="CodeSbyAnizForm" asp-action="details" onsubmit="return jQueryAjaxPost(this);">
+    <form id="CodeSbyAnizForm" asp-route-id="@Model.UserName" asp-action="edit" onsubmit="return jQueryAjaxPost(this);">
 
         <div class="row col-12">
 
@@ -42,13 +43,15 @@
                     <label class="control-label">Quyền người dùng:</label>
                 </div>
                 <div class="form-group col-3">
-                    <select class="form-select" multiple data-mdb-placeholder="Example placeholder" multiple>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
-                        <option value="5">Five</option>
-                    </select>
+                    @for(int i=0; i < Model.manageUserRoles.Count; i++)
+                    {
+                        <div class="form-check m-1">
+                            <input type="hidden" asp-for="@Model.manageUserRoles[i].RoleId" />
+                            <input type="hidden" asp-for="@Model.manageUserRoles[i].RoleName" />
+                            <input asp-for="@Model.manageUserRoles[i].Selected" type="checkbox" />  @Model.manageUserRoles[i].RoleName
+                          
+                        </div>
+                    }
                 </div>
                 <div class="form-group col-12">
                 </div>
@@ -57,6 +60,9 @@
                 </div>
             </div>
             <div class="form-group btn-group col-11 ml-5">
+                <div class="col-4 text-center">
+                    <input type="submit" value="Lưu" class="btn btn-primary btn-block px-5" />
+                </div>
                 <div class="col-4 text-center" style="margin-left: 33%;">
                     <a class="btn btn-secondary btn-block" asp-action="index"
                        asp-route-pg="@TempData.Peek("CurrentPage")">Trở về</a>
@@ -65,7 +71,6 @@
             </div>
 
         </div>
-
     </form>
 
 </div>

@@ -147,7 +147,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public UserRoleModel UserRole(string maND)
         {
             var getAccount = _context.TaiKhoans.Where(s=>s.MaNguoiDung == maND).Include(s=>s.MaNguoiDungNavigation).FirstOrDefault();
-            var getRole = _context.QuyenCts.Where(s=>s.UserName == getAccount.Username).ToList();
+            var getRole = _context.QuyenCts.Where(s=>s.UserName == getAccount.Username).Include(s=>s.MaQuyenNavigation).ToList();
             var model = new UserRoleModel
             {
                 MaNguoiDung = getAccount.MaNguoiDung,

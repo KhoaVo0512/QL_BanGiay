@@ -65,7 +65,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             {
                 items = _context.DonDats.Where(ut => (ut.GhiChu.ToLower().Contains(SearchText.ToLower()) || ut.MaNguoiDungNavigation.TenNguoiDung.ToLower().Contains(SearchText) ||
                 ut.MaNguoiDungNavigation.Sdt.Contains(SearchText) ||
-                ut.MaDonDat.Contains(SearchText)) && (ut.TrangThai == 0 || ut.TrangThai == 2))
+                ut.MaDonDat.Contains(SearchText)) && (ut.TrangThai == 0) || ut.TrangThai == 1 || ut.TrangThai == 2)
                     .Include(s => s.MaNguoiDungNavigation)
                     .Include(s => s.DonDatCts)
                     .ToList();
@@ -73,7 +73,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             }
             else
             {
-                items = _context.DonDats.Where(ut =>ut.TrangThai == 0 || ut.TrangThai == 2)
+                items = _context.DonDats.Where(ut =>ut.TrangThai == 0 || ut.TrangThai == 1 || ut.TrangThai == 2)
                    .Include(s => s.MaNguoiDungNavigation)
                    .ToList();
             }
@@ -149,7 +149,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 tong += (float)(hoadon.SoLuong * hoadon.DonGia);
             }
             HoaDon.TongTien = tong;
-            items.TrangThai = 1;
+            items.TrangThai = 4;
             await _context.HoaDons.AddAsync(HoaDon);
             _context.DonDats.Update(items);
             await _context.SaveChangesAsync();

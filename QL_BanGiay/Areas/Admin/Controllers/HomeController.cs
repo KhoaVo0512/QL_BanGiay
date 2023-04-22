@@ -40,10 +40,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var totalNike = _OrderRepo.GetTotalInCome() - (totalConverse + totalAdidas + totalVans);
             List<DoughnutChartData> ChartPoints = new List<DoughnutChartData>
             {
-                new DoughnutChartData { Browser= "Adidas", Total= totalAdidas, DataLabelMappingName= "Adidas: " + totalAdidas +" VND" },
-                new DoughnutChartData { Browser= "Converse", Total=totalConverse, DataLabelMappingName= "Converse: "+ totalConverse+" VND" },
-                new DoughnutChartData { Browser= "Nike", Total= totalNike, DataLabelMappingName= "Nike: "+ totalNike+" VND" },
-                new DoughnutChartData { Browser= "vans", Total= totalVans, DataLabelMappingName= "Vans:" + totalVans +" VND"},
+                new DoughnutChartData { Browser= "Adidas", Total= totalAdidas, DataLabelMappingName= "Adidas: " + String.Format(elGR, "{0:0,0}", totalAdidas) +" VND" },
+                new DoughnutChartData { Browser= "Converse", Total=totalConverse, DataLabelMappingName= "Converse: "+ String.Format(elGR, "{0:0,0}", totalConverse)+" VND" },
+                new DoughnutChartData { Browser= "Nike", Total= totalNike, DataLabelMappingName= "Nike: "+ String.Format(elGR, "{0:0,0}", totalNike)+" VND" },
+                new DoughnutChartData { Browser= "vans", Total= totalVans, DataLabelMappingName= "Vans:" + String.Format(elGR, "{0:0,0}", totalVans) +" VND"},
             };
             ViewBag.ChartPoints = ChartPoints;
 

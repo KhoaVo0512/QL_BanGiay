@@ -90,7 +90,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Details(string id)
         {
             DonDat item = _OrderRepo.GetItem(id);
-            if (item.TrangThai == 0)
+            if (item.TrangThai == 0 || item.TrangThai == 2)
             {
                 ViewBag.TrangThai = "Chưa thanh toán";
             }

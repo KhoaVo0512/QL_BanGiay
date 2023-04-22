@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Areas.Admin.Repository;
 using QL_BanGiay.Data;
+using QL_BanGiay.Helps;
+using Windows.System;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -15,10 +19,12 @@ namespace QL_BanGiay.Areas.Admin.Controllers
     {
         private readonly IUser _UserRepo;
         private readonly IRole _RoleRepo;
-        public UserController (IUser userRepo, IRole roleRepo)
+        private readonly IToastNotification _toastNotification;
+        public UserController (IUser userRepo, IRole roleRepo, IToastNotification toastNotification)
         {
             _UserRepo = userRepo;
             _RoleRepo = roleRepo;
+            _toastNotification = toastNotification;
         }
         [Route("user")]
         [Route("user/index")]
@@ -52,8 +58,56 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Edit(string id)
         {
             var role = _UserRepo.UserRole(id);
-            ViewBag.Role = GetRole();
+            var model = new List<ManageUserRolesViewModel>();
+            foreach (var item in GetRole())
+            {
+                var userRolesViewModel = new ManageUserRolesViewModel
+                {
+                    RoleId = item.Value,
+                    RoleName = item.Text
+                };
+                if ( _RoleRepo.IsInRole(item.Value, role.UserName))
+                {
+                    userRolesViewModel.Selected = true;
+                }
+                else
+                {
+                    userRolesViewModel.Selected = false;
+                }
+                model.Add(userRolesViewModel);
+            }
+            role.manageUserRoles = model;
             return View(role);
+        }
+        [HttpPost]
+        [Route("user/edit")]
+        public JsonResult Edit(UserRoleModel model, string id)
+        {
+            bool blt = false;
+            try
+            {
+                blt = _RoleRepo.UpdateRepo(id, model);
+                if (blt)
+                {
+                    Sort();
+                    var items = _UserRepo.GetItems("NameUsername", SortOrder.Ascending, "", 1, 5);
+                    var pager = new PagerModel(items.TotalRecords, 1, 5);
+                    pager.SortExpression = "";
+                    this.ViewBag.Pager = pager;
+                    TempData["CurrentPage"] = 1;
+                    _toastNotification.AddSuccessToastMessage("Cập nhật quyền người dùng thành công");
+                    return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+                }
+                else
+                {
+                    _toastNotification.AddErrorToastMessage("Lỗi cập nhật quyền người dùng");
+                    return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
+                }
+            }catch (Exception ex)
+            {
+                _toastNotification.AddErrorToastMessage("Lỗi cập nhật quyền người dùng");
+                return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
+            }
         }
         private List<SelectListItem> GetRole()
         {
@@ -64,13 +118,18 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 Value = ut.MaQuyen.ToString(),
                 Text = ut.TenQuyen
             }).ToList();
-            var defItem = new SelectListItem()
-            {
-                Value = "",
-                Text = "----Chọn nhà sản xuất----"
-            };
-            lstRole.Insert(0, defItem);
             return lstRole;
+        }
+        private void Sort()
+        {
+            SortModel sortModel = new SortModel();
+            sortModel.AddColumn("NameUsername");
+            sortModel.AddColumn("IdUser");
+            sortModel.AddColumn("NameUser");
+            sortModel.AddColumn("Date");
+            sortModel.ApplySort("");
+            ViewData["sortModel"] = sortModel;
+            ViewBag.SearchText = "";
         }
     }
 }

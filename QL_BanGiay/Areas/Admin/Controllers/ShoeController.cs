@@ -211,7 +211,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                         pager.SortExpression = "";
                         this.ViewBag.Pager = pager;
                         TempData["CurrentPage"] = 1;
-                        _toastNotification.AddSuccessToastMessage("Sản phẩm được sửa nội dung thành công thành công");
+                        _toastNotification.AddSuccessToastMessage("Sản phẩm được sửa nội dung thành công");
                         return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
                     }
                     else

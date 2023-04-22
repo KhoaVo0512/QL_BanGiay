@@ -500,7 +500,7 @@ namespace QL_BanGiay.Controllers
                         {
                             if (t.TenQuyen == "Admin")
                                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-                            if (t.TenQuyen == "Emloyee")
+                            if (t.TenQuyen == "Employee")
                                 claims.Add(new Claim(ClaimTypes.Role, "Emloyee"));
                             if (t.TenQuyen == "User")
                                 claims.Add(new Claim(ClaimTypes.Role, "User"));
@@ -512,7 +512,7 @@ namespace QL_BanGiay.Controllers
                         {
                             if (t.TenQuyen == "Admin")
                                 return Redirect("/admin");
-                            if (t.TenQuyen == "Emloyee")
+                            if (t.TenQuyen == "Employee")
                                 return Redirect("/admin");
                             if (t.TenQuyen == "User")
                                 return Redirect(returnUrl);

@@ -76,6 +76,7 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            
                             stt = stt + 1;
                             <tr>
                                 <td>
@@ -94,15 +95,12 @@
                                     <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayDat" class="form-control" />
                                 </td>
                                 <td>
-                                    @if (item.TrangThai == 0)
+                                    @if (item.TrangThai == 0 || item.TrangThai == 2)
                                     {
                                         <span>Chưa thanh toán</span>
                                     }else if (item.TrangThai == 1)
                                     {
                                         <span>Đã thanh toán</span>
-                                    }else
-                                    {
-                                        <span>Đơn hàng đã hủy</span>
                                     }
                                 </td>
                                 <td>

@@ -8,6 +8,7 @@ namespace QL_BanGiay.Areas.Admin.Models
         public string? UserName { get; set; }
         public string? HoTen { get; set; }
         public List<QuyenCt>? RoleName { get; set;}
+        public List<ManageUserRolesViewModel> manageUserRoles { get; set; }
 
     }
 }
