@@ -14,18 +14,23 @@ namespace QL_BanGiay.Areas.Admin.Repository
         }
         public List<SplineChartData> IncomeSummary()
         {
-            List<SplineChartData> data = _context.HoaDons.GroupBy(s=>s.NgayGiaoHd).Select(k=> new SplineChartData()
+            DateTime StartDate = DateTime.Today.AddDays(-6);
+            List<SplineChartData> data = _context.HoaDons.Where(s=>s.NgayGiaoHd >= StartDate)
+                .GroupBy(s=>s.NgayGiaoHd.Value.Date)
+                .Select(k=> new SplineChartData()
             {
-                day = @Convert.ToDateTime(k.First().NgayLapDh).ToString("dd--MM"),
+                day = @Convert.ToDateTime(k.First().NgayGiaoHd).ToString("dd-MM"),
                 income = (int)k.Sum(l=>l.TongTien)
             }).ToList();
             return data;
         }
         public List<SplineChartData> ExpenseSummary()
         {
-            List<SplineChartData> data = _context.NhapHangs.GroupBy(s => s.NgayNhap).Select(k => new SplineChartData()
+            DateTime StartDate = DateTime.Today.AddDays(-6);
+            List<SplineChartData> data = _context.NhapHangs.Where(s=>s.NgayNhap >= StartDate)
+                .GroupBy(s => s.NgayNhap.Value.Date).Select(k => new SplineChartData()
             {
-                day = @Convert.ToDateTime(k.First().NgayNhap).ToString("dd--MM"),
+                day = @Convert.ToDateTime(k.First().NgayNhap).ToString("dd-MM"),
                 expense = (int)k.Sum(l => l.TongTien)
             }).ToList();
             return data;

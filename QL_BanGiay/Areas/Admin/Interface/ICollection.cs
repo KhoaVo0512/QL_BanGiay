@@ -12,5 +12,9 @@ namespace QL_BanGiay.Areas.Admin.Interface
         DongSanPham GetItem(int? id);
         Task<DongSanPham> Edit(DongSanPham dongsanpham);
         List<DongSanPham> GetCollections(int id);
+        List<DongSanPham> GetCollectionAdidas();
+        List<DongSanPham> GetCollectionConverse();
+        List<DongSanPham> GetCollectionNike();
+        List<DongSanPham> GetCollectionVans();
     }
 }

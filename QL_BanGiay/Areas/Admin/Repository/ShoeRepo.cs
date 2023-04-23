@@ -279,7 +279,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                          join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
                          where b.MaNhanHieu == 2
                          where g.TrangThai == true
-                         select g).ToList();
+                         select g).OrderByDescending(s => s.NgayCn).ToList();
             return items;
         }
 
@@ -289,7 +289,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                          join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
                          where b.MaNhanHieu == 1
                          where g.TrangThai == true
-                         select g).ToList();
+                         select g).OrderByDescending(s => s.NgayCn).ToList();
             return items;
         }
 
@@ -299,7 +299,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                          join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
                          where b.MaNhanHieu == 4
                          where g.TrangThai == true
-                         select g).ToList();
+                         select g).OrderByDescending(s => s.NgayCn).ToList();
             return items;
         }
 
@@ -309,7 +309,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                          join b in _context.DongSanPhams on g.MaDongSanPham equals b.MaDongSanPham
                          where b.MaNhanHieu == 3
                          where g.TrangThai == true
-                         select g).ToList();
+                         select g).OrderByDescending(s=>s.NgayCn).ToList();
             return items;
         }
 

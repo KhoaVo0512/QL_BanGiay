@@ -148,7 +148,7 @@
                                     <!-- sub menu Ends -->
                                 </li>
                                 <li class="menu-item-has-children">
-                                    <a href="#">Adidas</a>
+                                    <a href="/adidas">Adidas</a>
                                     <!-- sub menu Start -->
                                     <ul class="sub-menu" id="Adidas">
                                     </ul>
@@ -241,64 +241,3 @@
                                                     </tr>
     <% }); %>
 </script>
-@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-     $(document).ready(function (){
-         getVans();
-         getConverse();
-         getNike();
-         getAdidas();
-        function getVans() {
-            $.ajax({
-                url: '/Home/Vans',
-                success: function (result) {
-                    $.each(result, function (i, data) {
-                        $('#Vans').append(' <li><a href="#">'+data['tenBoSuuTap']+'</a></li>');
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-        function getConverse() {
-            $.ajax({
-                url: '/Home/Converse',
-                success: function (result) {
-                    $.each(result, function (i, data) {
-                        $('#Converse').append(' <li><a href="#">'+data['tenBoSuuTap']+'</a></li>');
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-        function getNike() {
-            $.ajax({
-                url: '/Home/Nike',
-                success: function (result) {
-                    $.each(result, function (i, data) {
-                        $('#Nike').append(' <li><a href="#">'+data['tenBoSuuTap']+'</a></li>');
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-        function getAdidas() {
-            $.ajax({
-                url: '/Home/Adidas',
-                success: function (result) {
-                    $.each(result, function (i, data) {
-                        $('#Adidas').append(' <li><a href="#">'+data['tenBoSuuTap']+'</a></li>');
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-    });
-</script>*@

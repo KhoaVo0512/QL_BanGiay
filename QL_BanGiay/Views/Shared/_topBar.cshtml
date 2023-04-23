@@ -13,7 +13,7 @@
     }
 </style>
 <div class="container btn-group">
-    <div class="container mt-1">
+    <div class="container mt-1" style="margin-left: 150px;">
 
         <ul class="pagination">
 
@@ -25,7 +25,7 @@
                    asp-route-pageSize="@Model.PageSize"
                    asp-route-SearchText="@ViewBag.SearchText"
                    asp-route-sortExpression="@Model.SortExpression">
-                        Đầu
+                        &lt;&lt;
                     </a>
                 </li>
                 <li class="page-item">
@@ -34,7 +34,7 @@
                    asp-route-pageSize="@Model.PageSize"
                    asp-route-SearchText="@ViewBag.SearchText"
                    asp-route-sortExpression="@Model.SortExpression">
-                        Trước
+                        &lt;
                     </a>
                 </li>
             }
@@ -72,7 +72,7 @@
                    asp-route-pageSize="@Model.PageSize"
                    asp-route-SearchText="@ViewBag.SearchText"
                    asp-route-sortExpression="@Model.SortExpression">
-                        Tiếp
+                       &gt;
                     </a>
                 </li>
                 <li class="page-item">
@@ -81,7 +81,7 @@
                    asp-route-pageSize="@Model.PageSize"
                    asp-route-SearchText="@ViewBag.SearchText"
                    asp-route-sortExpression="@Model.SortExpression">
-                        Cuối
+                        &gt;&gt;
                     </a>
                 </li>
             }

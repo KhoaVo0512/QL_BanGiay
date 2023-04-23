@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
+using QL_BanGiay.Areas.Admin.Models;
 using System.Globalization;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
@@ -55,14 +56,14 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var Income = _ChartRepo.IncomeSummary();
             var Expense = _ChartRepo.ExpenseSummary();
             string[] Last7Days = Enumerable.Range(0, 7)
-              .Select(i => StartDate.AddDays(i).ToString("dd--MM"))
+              .Select(i => StartDate.AddDays(i).ToString("dd-MM"))
               .ToArray();
             ViewBag.SplineChartData = from day in Last7Days
                                       join income in Income on day equals income.day into dayIncomeJoined
                                       from income in dayIncomeJoined.DefaultIfEmpty()
                                       join expense in Expense on day equals expense.day into expenseJoined
                                       from expense in expenseJoined.DefaultIfEmpty()
-                                      select new
+                                      select new SplineChartData
                                       {
                                           day = day,
                                           income = income == null ? 0 : income.income,

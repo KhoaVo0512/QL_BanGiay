@@ -294,3 +294,56 @@ function ShowSearchableList(event) {
     objDiv.scrollTop = objDiv.scrollHeight - 200;
 }
 document.addEventListener('keydown', ShowSearchableList);
+//get collection adidas
+$.ajax({
+    url: '/adidas/GetCollection',
+    success: function (result) {
+        $('#Adidas').append('<li><a href="/adidas">' + "TẤT CẢ ADIDAS" + '</a></li>');
+        $.each(result, function (i, data) {
+            var item = data['tenDongSanPham'];
+            $('#Adidas').append('<li><a href="/adidas/' + item +'">' + data['tenDongSanPham'] + '</a></li>');
+        });
+    },
+    error: function (err) {
+        console.log(err);
+    }
+});
+//Get collection Converse
+$.ajax({
+    url: '/Converse/GetCollection',
+    success: function (result) {
+        $('#Converse').append(' <li><a href="#">' + "TẤT CẢ CONVERSE" + '</a></li>');
+        $.each(result, function (i, data) {
+            $('#Converse').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+        });
+    },
+    error: function (err) {
+        console.log(err);
+    }
+});
+//Get collection Nike
+$.ajax({
+    url: '/Nike/GetCollection',
+    success: function (result) {
+        $('#Nike').append(' <li><a href="#">' + "TẤT CẢ NIKE" + '</a></li>');
+        $.each(result, function (i, data) {
+            $('#Nike').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+        });
+    },
+    error: function (err) {
+        console.log(err);
+    }
+});
+//Get Collection Vans
+$.ajax({
+    url: '/Vans/GetCollection',
+    success: function (result) {
+        $('#Vans').append(' <li><a href="#">' + "TẤT CẢ VANS" + '</a></li>');
+        $.each(result, function (i, data) {
+            $('#Vans').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+        });
+    },
+    error: function (err) {
+        console.log(err);
+    }
+});

@@ -39,6 +39,7 @@ builder.Services.AddScoped<IAddress, AddressRepo>();
 builder.Services.AddScoped<IUser, UserRepo>();
 builder.Services.AddScoped<IChart, ChartRepo>();
 builder.Services.AddScoped<IRole, RoleRepo>();
+builder.Services.AddScoped<IAdidas, AdidasRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 

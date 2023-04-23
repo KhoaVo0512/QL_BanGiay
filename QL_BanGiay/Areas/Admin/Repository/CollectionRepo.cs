@@ -94,5 +94,29 @@ namespace QL_BanGiay.Areas.Admin.Repository
             var lstCollection = _context.DongSanPhams.OrderBy(e=>e.TenDongSanPham).Where(e=>e.MaNhanHieu == id).ToList();
             return lstCollection;
         }
+
+        public List<DongSanPham> GetCollectionAdidas()
+        {
+            var items = _context.DongSanPhams.Where(s=>s.MaNhanHieuNavigation.MaNhanHieu == 3).OrderBy(s=>s.TenDongSanPham).ToList();
+            return items;
+        }
+
+        public List<DongSanPham> GetCollectionConverse()
+        {
+            var items = _context.DongSanPhams.Where(s => s.MaNhanHieuNavigation.MaNhanHieu == 1).OrderBy(s => s.TenDongSanPham).ToList();
+            return items;
+        }
+
+        public List<DongSanPham> GetCollectionNike()
+        {
+            var items = _context.DongSanPhams.Where(s => s.MaNhanHieuNavigation.MaNhanHieu == 4).OrderBy(s => s.TenDongSanPham).ToList();
+            return items;
+        }
+
+        public List<DongSanPham> GetCollectionVans()
+        {
+            var items = _context.DongSanPhams.Where(s => s.MaNhanHieuNavigation.MaNhanHieu == 2).OrderBy(s => s.TenDongSanPham).ToList();
+            return items;
+        }
     }
 }
