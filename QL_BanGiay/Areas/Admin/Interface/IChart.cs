@@ -1,4 +1,5 @@
-﻿using QL_BanGiay.Data;
+﻿using QL_BanGiay.Areas.Admin.Models;
+using QL_BanGiay.Data;
 
 namespace QL_BanGiay.Areas.Admin.Interface
 {
@@ -6,6 +7,8 @@ namespace QL_BanGiay.Areas.Admin.Interface
     {
         double? TotalVans();
         double? TotalConverse();
+        List<SplineChartData> IncomeSummary();
+        List<SplineChartData> ExpenseSummary();
         double? TotalAdidas();
         double? Total();
     }

@@ -80,7 +80,7 @@
                                     @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.HoNguoiDung) @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.TenNguoiDung)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.CreateAt)
+                                    @Convert.ToDateTime(item.MaNguoiDungNavigation.CreateAt).ToString("dd/MM/yyyy hh:mm:ss tt")
                                 </td>
                                 <td>
                                     <img src="@Url.Content(item.AnhTk)" style="width:45px; height:45px" />

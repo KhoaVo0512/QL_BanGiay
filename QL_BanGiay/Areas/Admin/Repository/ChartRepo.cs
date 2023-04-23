@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QL_BanGiay.Areas.Admin.Interface;
+using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 
 namespace QL_BanGiay.Areas.Admin.Repository
@@ -10,6 +11,24 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public ChartRepo(QlyBanGiayContext context)
         {
             _context = context;
+        }
+        public List<SplineChartData> IncomeSummary()
+        {
+            List<SplineChartData> data = _context.HoaDons.GroupBy(s=>s.NgayGiaoHd).Select(k=> new SplineChartData()
+            {
+                day = @Convert.ToDateTime(k.First().NgayLapDh).ToString("dd--MM"),
+                income = (int)k.Sum(l=>l.TongTien)
+            }).ToList();
+            return data;
+        }
+        public List<SplineChartData> ExpenseSummary()
+        {
+            List<SplineChartData> data = _context.NhapHangs.GroupBy(s => s.NgayNhap).Select(k => new SplineChartData()
+            {
+                day = @Convert.ToDateTime(k.First().NgayNhap).ToString("dd--MM"),
+                expense = (int)k.Sum(l => l.TongTien)
+            }).ToList();
+            return data;
         }
 
         public double? Total()

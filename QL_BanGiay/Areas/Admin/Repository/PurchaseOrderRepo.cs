@@ -61,6 +61,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
         public async Task<NhapHang> Create(NhapHang nhaphang)
         {
             var items = nhaphang.NhapHangCts.ToArray();
+            int total = 0;
             for (int i = 0; i < nhaphang.NhapHangCts.Count; i++)
             {
                 bool checkShoeSize = _WareHouseRepo.IsShoeSizeNoExists(items[i].MaGiay, items[i].MaSize);
@@ -80,7 +81,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
                     };
                     _context.KhoGiays.Add(newWareHouse);
                 }
+                total += (int)(items[i].SoLuong * items[i].GiaMua);
             }
+            nhaphang.TongTien = total;
             _context.Add(nhaphang);
             await _context.SaveChangesAsync();
             return nhaphang;
@@ -118,6 +121,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             DateTime NgayEidt = Convert.ToDateTime(DateTime.Now);
             TimeSpan Time = NgayEidt - NgayNhap;
             int soNgay = Time.Days;
+            int total = 0;
             if (soNgay < 10)
             {
                 List<NhapHangCt> nhapHangCts = _context.NhapHangCts.Where(s => s.MaNhapHang == nhapHang.MaNhapHang).ToList();
@@ -140,7 +144,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
                             _context.SaveChanges();
                         }
                     }
+                    total += (int)(nhapHangCts[i].SoLuong * nhapHangCts[i].GiaMua);
                 }
+                nhapHang.TongTien = total;
                 _context.NhapHangCts.RemoveRange(nhapHangCts);
                 _context.SaveChanges();
                 _context.Attach(nhapHang);
@@ -207,17 +213,11 @@ namespace QL_BanGiay.Areas.Admin.Repository
         {
             DateTime StartDate = DateTime.Today.AddDays(-6);
             DateTime EndDate = DateTime.Now;
-            var get = _context.NhapHangs.Where(s=>s.NgayNhap >= StartDate && s.NgayNhap <= EndDate)
-                .Include(s => s.NhapHangCts).ToList();
+            var get = _context.NhapHangs.Where(s=>s.NgayNhap >= StartDate && s.NgayNhap <= EndDate).ToList();
             int? total = 0;
             foreach (var item in get)
             {
-                int? total2 = 0;
-                foreach (var item2 in item.NhapHangCts)
-                {
-                    total2 += item2.GiaMua;
-                }
-                total += total2;
+                total += item.TongTien;
             }
             return total;
         }

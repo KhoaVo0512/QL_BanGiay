@@ -85,7 +85,7 @@
                                     @Html.DisplayFor(modelItem => item.GiaBan)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NgayCn)
+                                    @Convert.ToDateTime(item.NgayCn).ToString("dd/MM/yyyy hh:mm:ss tt")
                                 </td>
                                 <td>
                                     <img src="@Url.Content(item.AnhDd)" style="width:45px; height:45px" />

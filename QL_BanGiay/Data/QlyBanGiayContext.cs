@@ -409,6 +409,7 @@ public partial class QlyBanGiayContext : DbContext
             entity.HasIndex(e => e.MaDonViNhap, "IX_NhapHang_MaDonViNhap");
 
             entity.Property(e => e.NgayNhap).HasColumnType("datetime");
+            entity.Property(e => e.TongTien);
 
             entity.HasOne(d => d.MaDonViNhapNavigation).WithMany(p => p.NhapHangs)
                 .HasForeignKey(d => d.MaDonViNhap)

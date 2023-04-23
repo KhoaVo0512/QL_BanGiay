@@ -13,7 +13,7 @@ public partial class NhapHang
     public int? SoHoaDon { get; set; }
     [DataType(DataType.Date)]
     public DateTime? NgayNhap { get; set; } = DateTime.Now.Date;
-
+    public int? TongTien { get; set; }
     public virtual DonViNhapHang? MaDonViNhapNavigation { get; set; }
 
     public virtual List<NhapHangCt> NhapHangCts { get; } = new List<NhapHangCt>();

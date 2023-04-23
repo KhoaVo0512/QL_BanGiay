@@ -92,7 +92,8 @@
                                     @Html.DisplayFor(modelitem=> item.MaNguoiDungNavigation.Sdt)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NgayDat)
+                                    @Convert.ToDateTime(item.NgayDat).ToString("dd/MM/yyyy hh:mm:ss tt")
+
                                 </td>
                                 <td>
                                     @if (item.DaThanhToan == false)

@@ -77,7 +77,7 @@
                                     @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.HoNguoiDung) @Html.DisplayFor(modelItem => item.MaNguoiDungNavigation.TenNguoiDung)
                                 </td>
                                 <td style="width: 350px;">
-                                    <input style="border: 0;background-color: #f7f7f7;" readonly asp-for="@item.NgayGiaoHd" class="form-control" />
+                                    @Convert.ToDateTime(item.NgayGiaoHd).ToString("dd/MM/yyyy hh:mm:ss tt")
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.TongTien)

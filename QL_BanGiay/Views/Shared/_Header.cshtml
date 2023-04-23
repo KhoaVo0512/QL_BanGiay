@@ -166,7 +166,7 @@
                         <!-- navbar menu Ends -->
                         <div class="navbar-search-cart d-none d-lg-flex">
                             <!-- navbar search start -->
-                            <form asp-action="Search" method="get">
+                            <form asp-action="Search" asp-controller="Home" method="get">
                                 <div class="navbar-search search-style-5">
                                     <div class="search-input">
                                         <input name="SearchText" value="@ViewBag.SearchText" type="text" placeholder="Search">
