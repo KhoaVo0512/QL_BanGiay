@@ -200,7 +200,7 @@ var cart = {
     addItem: function (item) {
 
         if (this.containsItem(item.id, item.size) === false) {
-
+            const now = new Date();
             this.items.push({
                 id: item.id,
                 name: item.name,
@@ -209,7 +209,8 @@ var cart = {
                 price: item.price,
                 image: item.image,
                 count: item.count,
-                total: item.price * item.count
+                total: item.price * item.count,
+                expiry: now.getTime() + 1200000
             });
 
             storage.saveCart(this.items);
@@ -247,11 +248,12 @@ var cart = {
         for (var i = 0; i < this.items.length; i++) {
 
             var _item = this.items[i];
-
+            const now = new Date();
             if (object.id === _item.id && object.size === _item.size) {
 
                 _item.count = parseInt(object.count) + parseInt(_item.count);
                 _item.total = parseInt(object.total) + parseInt(_item.total);
+                _item.expiry = now.getTime() + 1200000;
                 this.items[i] = _item;
                 storage.saveCart(this.items);
 
@@ -262,10 +264,11 @@ var cart = {
         for (var i = 0; i < this.items.length; i++) {
 
             var _item = this.items[i];
-
+            const now = new Date();
             if (object.id === _item.id && object.size === _item.size) {
                 _item.count = object.count;
                 _item.total = parseInt(object.total);
+                _item.expiry = now.getTime() + 1200000;
                 this.items[i] = _item;
                 storage.saveCart(this.items);
             }

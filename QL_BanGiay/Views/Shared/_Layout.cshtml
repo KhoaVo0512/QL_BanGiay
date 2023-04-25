@@ -59,6 +59,15 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Cart.js"></script>
+    <script>
+        var item = storage.getCart();
+        const now = new Date()
+        for(var i = 0; i < item.length;i++){
+            if (now.getTime() > item[i].expiry){
+                storage.removeCart(item[i].id, item[i].idsize);
+            }
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")
 </body>

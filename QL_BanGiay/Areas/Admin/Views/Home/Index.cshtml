@@ -1,7 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Trang quản trị";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int stt = 0;
 }
 
 <ul>
@@ -137,10 +137,10 @@
             <div class="col-md-8">
                 <div class="widget chart">
                     <div class="p-4">
-                        <h5 class="fw-bold">TỔNG THU NHẬP VÀ CHI TIÊU TRONG 7 NGÀY GẦN NHẤT</h5>
+                        <h5 class="fw-bold">TỔNG DOANH SỐ TRONG 7 NGÀY GẦN NHẤT</h5>
                     </div>
                     <ejs-chart id="spline-chart" background="#f4f4f4"
-                               palettes=@(new string[]{"#54ffa9","#ffe91a"})>
+                               palettes=@(new string[]{"#54ffa9"})>
                         <e-chart-primaryxaxis valueType="Category">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
@@ -153,20 +153,127 @@
                         <e-chart-chartarea>
                             <e-chartarea-border width="0"></e-chartarea-border>
                         </e-chart-chartarea>
-                        <e-series-collection >
+                        <e-series-collection>
                             <e-series dataSource="@ViewBag.SplineChartData" xName="day" width="3"
-                                      yName="income" name="Tổng thu nhập" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
-                            <e-series dataSource="@ViewBag.SplineChartData" xName="day" width="3"
-                                      yName="expense" name="Tổng chi phí" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
+                                      yName="income" name="Tổng doanh số" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Spline"></e-series>
                         </e-series-collection>
                         <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
                             <e-legendsettings-textstyle color="#000000" size="1rem"></e-legendsettings-textstyle>
                         </e-chart-legendsettings>
                         <e-chart-tooltipsettings enable shared></e-chart-tooltipsettings>
                     </ejs-chart>
+
                 </div>
             </div>
         </div>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="widget chart">
+                    <div class="title p-4">
+                        <h5 class="fw-blod">DOANH SỐ CỦA NHÃN HIỆU TRONG 7 NGÀY GẦN NHẤT</h5>
+
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã giày</th>
+                                <th scope="col">Size giày</th>
+                                <th scope="col">Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@@fat</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col-md-8">
+                <div class="widget chart">
+                    <div class="p-4">
+                        <h5 style="color: blue;" class="fw-bold text-center">TOP 7 SẢN PHẨM THUỘC SIZE BÁN NHIỀU NHẤT TRONG 7 NGÀY GẦN NHẤT</h5>
+                    </div>
+                    <table class="table">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã giày</th>
+                                <th scope="col">Tên giày</th>
+                                <th scope="col">Size giày</th>
+                                <th scope="col">Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.ListQuantity)
+                            {
+                                stt = stt + 1;
+                                <tr>
+                                    <th scope="row">@stt</th>
+                                    <td>@item.MaGiay</td>
+                                    <td>@item.TenGiay</td>
+                                    <td>@item.TenSize</td>
+                                    <td>@item.SoLuong</td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        
         <!-- /.row (main row) -->
     </div><!-- /.container-fluid -->
 </section>

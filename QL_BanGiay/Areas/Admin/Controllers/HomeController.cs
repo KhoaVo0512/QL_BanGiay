@@ -47,7 +47,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var totalConverse = _ChartRepo.TotalConverse();
             var totalAdidas = _ChartRepo.TotalAdidas();
             var totalVans = _ChartRepo.TotalVans();
-
+            ViewBag.ListQuantity = _ChartRepo.ListQuantityInCome().OrderByDescending(S=>S.SoLuong).Take(7);
             var totalNike = _OrderRepo.GetTotalInComeSevenDay() - (totalConverse + totalAdidas + totalVans);
             List<DoughnutChartData> ChartPoints = new List<DoughnutChartData>
             {
@@ -61,20 +61,16 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             //LineChart 
             DateTime StartDate = DateTime.Today.AddDays(-6);
             var Income = _ChartRepo.IncomeSummary();
-            var Expense = _ChartRepo.ExpenseSummary();
             string[] Last7Days = Enumerable.Range(0, 7)
               .Select(i => StartDate.AddDays(i).ToString("dd-MM"))
               .ToArray();
             ViewBag.SplineChartData = from day in Last7Days
                                       join income in Income on day equals income.day into dayIncomeJoined
                                       from income in dayIncomeJoined.DefaultIfEmpty()
-                                      join expense in Expense on day equals expense.day into expenseJoined
-                                      from expense in expenseJoined.DefaultIfEmpty()
                                       select new SplineChartData
                                       {
                                           day = day,
                                           income = income == null ? 0 : income.income,
-                                          expense = expense == null ? 0 : expense.expense,
                                       };
             return View();
         }

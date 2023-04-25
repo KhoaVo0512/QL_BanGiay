@@ -11,5 +11,6 @@ namespace QL_BanGiay.Areas.Admin.Interface
         List<SplineChartData> ExpenseSummary();
         double? TotalAdidas();
         double? Total();
+        IQueryable<QuantityModel> ListQuantityInCome();
     }
 }
