@@ -1,7 +1,7 @@
 ﻿@using System.Globalization;
 @model QL_BanGiay.Data.Giay
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.TenGiay;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var data = 0;
     CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");

@@ -40,6 +40,9 @@ builder.Services.AddScoped<IUser, UserRepo>();
 builder.Services.AddScoped<IChart, ChartRepo>();
 builder.Services.AddScoped<IRole, RoleRepo>();
 builder.Services.AddScoped<IAdidas, AdidasRepo>();
+builder.Services.AddScoped<IConverse, ConverseRepo>();
+builder.Services.AddScoped<INike, NikeRepo>();
+builder.Services.AddScoped<IVans, VansRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 

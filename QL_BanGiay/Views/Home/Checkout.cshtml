@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims;
 @model QL_BanGiay.Models.CheckOutModel
 @{
-    ViewData["Title"] = "Checkout";
+    ViewData["Title"] = "Thanh Toán";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var idNd = Context.Session.GetString("IdNguoiDungLogin");
     var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)

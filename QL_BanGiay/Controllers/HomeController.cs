@@ -51,10 +51,10 @@ namespace QL_BanGiay.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.ItemsVans = _ShoeRepo.GetItemsVans();
-            ViewBag.ItemsConverse = _ShoeRepo.GetItemsConverse();
-            ViewBag.ItemsAdidas = _ShoeRepo.GetItemsAdidas();
-            ViewBag.ItemsNike = _ShoeRepo.GetItemsNike();
+            ViewBag.ItemsVans = _ShoeRepo.GetItemsVans().OrderByDescending(s=>s.NgayCn).Take(12);
+            ViewBag.ItemsConverse = _ShoeRepo.GetItemsConverse().OrderByDescending(s => s.NgayCn).Take(12);
+            ViewBag.ItemsAdidas = _ShoeRepo.GetItemsAdidas().OrderByDescending(s => s.NgayCn).Take(12);
+            ViewBag.ItemsNike = _ShoeRepo.GetItemsNike().OrderByDescending(s => s.NgayCn).Take(12);
             return View();
         }
 

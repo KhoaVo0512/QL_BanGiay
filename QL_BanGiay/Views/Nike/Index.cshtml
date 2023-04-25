@@ -2,10 +2,9 @@
 @using System.Globalization;
 @model IEnumerable<QL_BanGiay.Data.Giay>
 @{
-    
+    ViewData["Title"] = "Tất cả Nike";
     Layout = "~/Views/Shared/_Layout.cshtml";
     PagerModel pager = ViewBag.Pager;
-    ViewData["Title"] = pager.Action;
     CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
     int stt = 0;
 }
@@ -16,14 +15,14 @@
             <div class="container">
                 <ul class="breadcrumbs">
                     <li><a href="/">Trang Chủ</a></li>
-                    <li>/<span>@pager.Action</span></li>
+                    <li>/<span>Tất cả Nike</span></li>
                 </ul>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="mb-50">
-                    <img src="https://localhost:7180/assets/images/client-logo/adidas.png" alt="">
+                    <img style="width: 1200px" src="assets/images/client-logo/nike.png" alt="">
                 </div>
             </div>
         </div>

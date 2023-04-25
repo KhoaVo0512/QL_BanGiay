@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Trang quản trị";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -48,9 +48,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>@ViewBag.TotalIncome VND</h3>
+                        <h3>@ViewBag.TotalIncomeOneDay VND</h3>
 
-                        <p>Tổng thu nhập</p>
+                        <p>Doanh số trong ngày hôm nay</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -63,10 +63,10 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>@ViewBag.Exprense VND</h3>
+                        <h3>@ViewBag.TotalIncomeSevenDay VND</h3>
 
                         <p>
-                            Tổng chi phí
+                            Doanh số 7 ngày gần nhất
                         </p>
                     </div>
                     <div class="icon">
@@ -79,9 +79,9 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                     <div class="inner">
-                        <h3>@ViewBag.Balance VND</h3>
+                        <h3>@ViewBag.TotalIncomeOneMonth VND</h3>
 
-                        <p>Trung bình</p>
+                        <p>Doanh số tháng @ViewBag.Month</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-cash"></i>
@@ -96,9 +96,9 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>@ViewBag.TotalIncomeOneQuarter VND</h3>
 
-                        <p>Unique Visitors</p>
+                        <p>Doanh số quý @ViewBag.Quarter</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
@@ -114,7 +114,7 @@
             <div class="col-md-4">
                 <div class="widget chart">
                     <div class="title p-4">
-                        <h5 class="fw-blod">THU NHẬP CỦA TUẦN LOẠI TRONG 7 NGÀY GẦN NHẤT</h5>
+                        <h5 class="fw-blod">DOANH SỐ CỦA NHÃN HIỆU TRONG 7 NGÀY GẦN NHẤT</h5>
                         <ejs-accumulationchart id="doughnutchart" enableSmartLabels background="#f4f4f4">
                             <e-accumulation-series-collection>
                                 <e-accumulation-series dataSource="@ViewBag.ChartPoints"

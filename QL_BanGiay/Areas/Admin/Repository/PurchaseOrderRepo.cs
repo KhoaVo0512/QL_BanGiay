@@ -82,6 +82,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
                     _context.KhoGiays.Add(newWareHouse);
                 }
                 total += (int)(items[i].SoLuong * items[i].GiaMua);
+                var shoe = _context.Giays.Where(s => s.MaGiay == items[i].MaGiay).FirstOrDefault();
+                shoe.GiaBan = (int?)Math.Round((double)(items[i].GiaMua * 1.3));
+                _context.Giays.Update(shoe);
             }
             nhaphang.TongTien = total;
             _context.Add(nhaphang);
@@ -145,6 +148,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
                         }
                     }
                     total += (int)(nhapHangCts[i].SoLuong * nhapHangCts[i].GiaMua);
+                    var shoe = _context.Giays.Where(s => s.MaGiay == nhapHangCts[i].MaGiay).FirstOrDefault();
+                    shoe.GiaBan = (int?)Math.Round((double)(nhapHangCts[i].GiaMua * 1.3));
+                    _context.Giays.Update(shoe);
                 }
                 nhapHang.TongTien = total;
                 _context.NhapHangCts.RemoveRange(nhapHangCts);

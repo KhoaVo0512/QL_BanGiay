@@ -184,8 +184,8 @@ namespace QL_BanGiay.Controllers
             }
             var user = _accountRepository.GetAccountModel(sId);
             ViewBag.Tinh = GetTinhs();
-            ViewBag.Huyen = GetHuyen(user.MaHuyen);
-            ViewBag.Xa = GetXa(user.MaXa);
+            ViewBag.Huyen = GetHuyens(model.MaTinh);
+            ViewBag.Xa = GetXas(model.MaHuyen);
             var message = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "edit", model, null, "") });
         }
@@ -221,7 +221,7 @@ namespace QL_BanGiay.Controllers
             }
             _toastNotification.AddErrorToastMessage("Chỉnh sửa địa chỉ không thành công");
             ViewBag.Tinh = GetTinhs();
-            ViewBag.Huyen = GetHuyens(model.MaHuyen);
+            ViewBag.Huyen = GetHuyens(model.MaTinh);
             ViewBag.Xa = GetXa(model.MaXa);
             return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "EditAddress", model, null, "") });
         }
@@ -448,10 +448,6 @@ namespace QL_BanGiay.Controllers
 
                     if (check_pw == PasswordVerificationResult.Success)
                     {
-                        //CookieOptions options = new CookieOptions();
-                        //options.Expires = DateTime.Now.AddMinutes(5);
-                        ////options.MaxAge = TimeSpan.FromMinutes(5);
-                        //options.IsEssential = true;
                         HttpContext.Session.SetString("IdNguoiDungLogin", account.MaNguoiDung);
                         var getRole = _accountRepository.GetRoles(account.Username);
                         var claims = new List<Claim>();

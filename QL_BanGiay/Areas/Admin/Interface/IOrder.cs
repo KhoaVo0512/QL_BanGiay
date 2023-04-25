@@ -12,6 +12,11 @@ namespace QL_BanGiay.Areas.Admin.Interface
         Task<string> CreateHoaDon(DonDat item);
         EmailModel GetMail(string MaHD);
         int GetCountDonDat();
-        double GetTotalInCome();
+        double GetTotalInComeSevenDay();
+        double GetTotalInComeOneDay();
+        double GetTotalInComeOneMonth();
+        double GetTotalInComeOneQuarter(string quarter);
+        string GetQuarter();
+
     }
 }

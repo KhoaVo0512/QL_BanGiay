@@ -20,7 +20,7 @@ namespace QL_BanGiay.Controllers
         }
         [Route("index")]
         [Route("")]
-        public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 6)
+        public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 12)
         {
             SortModel sortModel = new SortModel();
             sortModel.AddColumn("NameShoe");
@@ -42,7 +42,7 @@ namespace QL_BanGiay.Controllers
         }
         [HttpGet]
         [Route("{namecollection}")]
-        public IActionResult Collection(string namecollection, string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 6)
+        public IActionResult Collection(string namecollection, string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 12)
         {
             SortModel sortModel = new SortModel();
             sortModel.AddColumn("NameShoe");

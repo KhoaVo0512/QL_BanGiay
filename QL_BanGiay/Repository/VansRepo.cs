@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QL_BanGiay.Areas.Admin.Models;
+﻿using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 using QL_BanGiay.Interface;
 
 namespace QL_BanGiay.Repository
 {
-    public class AdidasRepo : IAdidas
+    public class VansRepo : IVans
     {
         private readonly QlyBanGiayContext _context;
-        public AdidasRepo(QlyBanGiayContext context) 
+        public VansRepo(QlyBanGiayContext context)
         {
             _context = context;
         }
@@ -32,7 +31,7 @@ namespace QL_BanGiay.Repository
 
             return items;
         }
-        public PaginatedList<Giay> GetItemsAdidas(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 12)
+        public PaginatedList<Giay> GetItemsVans(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 12)
         {
             List<Giay> items;
 
@@ -44,7 +43,7 @@ namespace QL_BanGiay.Repository
                 ).ToList();
             }
             else
-                items = _context.Giays.Where(s=>s.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 3).ToList();
+                items = _context.Giays.Where(s => s.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 2).ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
             PaginatedList<Giay> retItems = new PaginatedList<Giay>(items, pageIndex, pageSize);
@@ -52,7 +51,7 @@ namespace QL_BanGiay.Repository
             return retItems;
         }
 
-        public PaginatedList<Giay> GetItemsAdidasCollection(string namecollection,string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 12)
+        public PaginatedList<Giay> GetItemsVansCollection(string namecollection, string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 12)
         {
             List<Giay> items;
 

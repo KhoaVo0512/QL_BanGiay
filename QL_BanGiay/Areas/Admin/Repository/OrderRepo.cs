@@ -3,9 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
+using System.Globalization;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.Security.Cryptography;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QL_BanGiay.Areas.Admin.Repository
 {
@@ -181,17 +183,82 @@ namespace QL_BanGiay.Areas.Admin.Repository
             return count;
         }
 
-        public double GetTotalInCome()
+        public double GetTotalInComeSevenDay()
         {
             DateTime StartDate = DateTime.Today.AddDays(-6);
             DateTime EndDate = DateTime.Now;
-            var bill = _context.HoaDons.Where(s=>s.NgayLapDh >= StartDate && s.NgayLapDh <= EndDate).ToList();
+            var bill = _context.HoaDons.Where(s=>s.NgayGiaoHd >= StartDate && s.NgayGiaoHd <= EndDate).ToList();
             double? total = 0;
             foreach (var item in bill)
             {
                 total += item.TongTien;
             }
             return (double)total;
+        }
+
+        public double GetTotalInComeOneDay()
+        {
+            DateTime StartDate = DateTime.Now.Date;
+            DateTime EndDate = DateTime.Now;
+            var bill = _context.HoaDons.Where(s => s.NgayGiaoHd >= StartDate && s.NgayGiaoHd <= EndDate).ToList();
+            double? total = 0;
+            foreach (var item in bill)
+            {
+                total += item.TongTien;
+            }
+            return (double)total;
+        }
+
+        public double GetTotalInComeOneMonth()
+        {
+            DateTime EndDate = DateTime.Now;
+            var firstDayOfMonth = new DateTime(EndDate.Year, EndDate.Month, 1);
+            var bill = _context.HoaDons.Where(s => s.NgayGiaoHd >= firstDayOfMonth && s.NgayGiaoHd <= EndDate).ToList();
+            double? total = 0;
+            foreach (var item in bill)
+            {
+                total += item.TongTien;
+            }
+            return (double)total;
+        }
+
+        public double GetTotalInComeOneQuarter(string quarter)
+        {
+            DateTime EndDate = DateTime.Now;
+            var firstDayOfMonth = new DateTime();
+            if (quarter == "I")
+            {
+                firstDayOfMonth = new DateTime(EndDate.Year, 1, 1);
+            }else if (quarter == "II")
+            {
+                firstDayOfMonth = new DateTime(EndDate.Year, 4, 1);
+            }else if (quarter == "III")
+            {
+                firstDayOfMonth = new DateTime(EndDate.Year, 7, 1);
+            }else
+                firstDayOfMonth = new DateTime(EndDate.Year, 10, 1);
+
+            var bill = _context.HoaDons.Where(s => s.NgayGiaoHd >= firstDayOfMonth && s.NgayGiaoHd <= EndDate).ToList();
+            double? total = 0;
+            foreach (var item in bill)
+            {
+                total += item.TongTien;
+            }
+            return (double)total;
+        }
+
+        public string GetQuarter()
+        {
+            DateTime EndDate = DateTime.Now;
+            var i = (EndDate.Month - 1) / 3 + 1;
+            if (i == 1)
+                return "I";
+            else if (i == 2)
+                return "II";
+            else if (i == 3)
+                return "III";
+            else
+                return "IV";
         }
     }
 }

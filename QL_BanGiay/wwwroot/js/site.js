@@ -310,11 +310,12 @@ $.ajax({
 });
 //Get collection Converse
 $.ajax({
-    url: '/Converse/GetCollection',
+    url: '/converse/GetCollection',
     success: function (result) {
-        $('#Converse').append(' <li><a href="#">' + "TẤT CẢ CONVERSE" + '</a></li>');
+        $('#Converse').append(' <li><a href="/converse">' + "TẤT CẢ CONVERSE" + '</a></li>');
         $.each(result, function (i, data) {
-            $('#Converse').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+            var item = data['tenDongSanPham'];
+            $('#Converse').append('<li><a href="/converse/' + item + '">' + data['tenDongSanPham'] + '</a></li>');
         });
     },
     error: function (err) {
@@ -323,11 +324,12 @@ $.ajax({
 });
 //Get collection Nike
 $.ajax({
-    url: '/Nike/GetCollection',
+    url: '/nike/GetCollection',
     success: function (result) {
-        $('#Nike').append(' <li><a href="#">' + "TẤT CẢ NIKE" + '</a></li>');
+        $('#Nike').append(' <li><a href="/nike">' + "TẤT CẢ NIKE" + '</a></li>');
         $.each(result, function (i, data) {
-            $('#Nike').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+            var item = data['tenDongSanPham'];
+            $('#Nike').append('<li><a href="/nike/' + item + '">' + data['tenDongSanPham'] + '</a></li>');
         });
     },
     error: function (err) {
@@ -336,11 +338,12 @@ $.ajax({
 });
 //Get Collection Vans
 $.ajax({
-    url: '/Vans/GetCollection',
+    url: '/vans/GetCollection',
     success: function (result) {
-        $('#Vans').append(' <li><a href="#">' + "TẤT CẢ VANS" + '</a></li>');
+        $('#Vans').append(' <li><a href="/vans">' + "TẤT CẢ VANS" + '</a></li>');
         $.each(result, function (i, data) {
-            $('#Vans').append(' <li><a href="#">' + data['tenDongSanPham'] + '</a></li>');
+            var item = data['tenDongSanPham'];
+            $('#Vans').append('<li><a href="/vans/' + item + '">' + data['tenDongSanPham'] + '</a></li>');
         });
     },
     error: function (err) {

@@ -5,6 +5,7 @@ using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using System.Globalization;
+using Windows.UI.Xaml.Controls;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -29,19 +30,25 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
+
             ViewBag.CountDonDat = _OrderRepo.GetCountDonDat();
             ViewBag.CountUser = _UserRepo.GetUserCount();
             CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
-            ViewBag.TotalIncome = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInCome());
-            ViewBag.Exprense = String.Format(elGR, "{0:0,0}", _PurchaseOrderRepo.GetTotalExprense());
-            var Balance = _OrderRepo.GetTotalInCome() - _PurchaseOrderRepo.GetTotalExprense();
-            ViewBag.Balance = String.Format(elGR, "{0:0,0}", Balance);
-
+            ViewBag.TotalIncomeSevenDay = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeSevenDay());
+            //var Balance = _OrderRepo.GetTotalInCome() - _PurchaseOrderRepo.GetTotalExprense();
+            //ViewBag.Balance = String.Format(elGR, "{0:0,0}", Balance);
+            var Quarter = _OrderRepo.GetQuarter();
+            var EndDate = DateTime.Now;
+            ViewBag.TotalIncomeOneDay = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeOneDay());
+            ViewBag.TotalIncomeOneMonth = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeOneMonth());
+            ViewBag.TotalIncomeOneQuarter = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeOneQuarter(Quarter));
+            ViewBag.Quarter = Quarter;
+            ViewBag.Month = EndDate.Month;
             var totalConverse = _ChartRepo.TotalConverse();
             var totalAdidas = _ChartRepo.TotalAdidas();
             var totalVans = _ChartRepo.TotalVans();
 
-            var totalNike = _OrderRepo.GetTotalInCome() - (totalConverse + totalAdidas + totalVans);
+            var totalNike = _OrderRepo.GetTotalInComeSevenDay() - (totalConverse + totalAdidas + totalVans);
             List<DoughnutChartData> ChartPoints = new List<DoughnutChartData>
             {
                 new DoughnutChartData { Browser= "Adidas", Total= totalAdidas, DataLabelMappingName= "Adidas: " + String.Format(elGR, "{0:0,0}", totalAdidas) +" VND" },
