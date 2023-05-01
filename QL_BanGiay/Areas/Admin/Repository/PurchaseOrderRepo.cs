@@ -227,5 +227,11 @@ namespace QL_BanGiay.Areas.Admin.Repository
             }
             return total;
         }
+
+        public bool IsHoaDonNoExits(int? id)
+        {
+            var check = _context.NhapHangs.Where(s => s.SoHoaDon == id).Count();
+            if (check > 0) return true; else return false;
+        }
     }
 }

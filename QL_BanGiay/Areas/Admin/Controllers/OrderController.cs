@@ -16,11 +16,13 @@ using System.Net;
 using System.Text.RegularExpressions;
 using static QL_BanGiay.Helps.RenderRazorView;
 using Windows.Media.Protection.PlayReady;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class OrderController : Controller
     {
         private readonly IOrder _OrderRepo;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
@@ -10,6 +11,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class WareHouseController : Controller
     {
         private readonly IShoe _ShoeRepo;
@@ -27,10 +29,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         public IActionResult Index(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 10)
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("NameShoe");
+            sortModel.AddColumn("Quantity");
             sortModel.AddColumn("IdShoe");
             sortModel.AddColumn("Size");
-            sortModel.AddColumn("Quantity");
+            sortModel.AddColumn("NameShoe");
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;

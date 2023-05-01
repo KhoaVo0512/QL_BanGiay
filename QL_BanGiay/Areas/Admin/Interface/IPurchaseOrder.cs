@@ -12,6 +12,7 @@ namespace QL_BanGiay.Areas.Admin.Interface
         Task<NhapHang> Create(NhapHang nhaphang);
         bool Edit(NhapHang nhapHang);
         bool Delete(int id);
+        bool IsHoaDonNoExits(int? id);
         public int GetNewPONumber();
         int? GetTotalExprense();
     }

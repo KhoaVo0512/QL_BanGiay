@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class SupplierController : Controller
     {
         private readonly ISupplier _SuppilerRepo;
@@ -40,6 +43,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [HttpGet]
         [Route("supplier/create")]
+        [NoDirectAccess]
         public IActionResult Create()
         {
             return View();
@@ -81,6 +85,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [HttpGet]
         [Route("supplier/edit")]
+        [NoDirectAccess]
         public IActionResult Edit(int id)
         {
             DonViNhapHang item = _SuppilerRepo.GetItem(id);

@@ -268,7 +268,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
         {
             var getShoe = _context.Giays.Where(s => s.MaGiay == id).FirstOrDefault();
             getShoe.TrangThai = false;
-            _context.Update(getShoe);
+            _context.Giays.Update(getShoe);
             _context.SaveChanges();
             return true;
         }

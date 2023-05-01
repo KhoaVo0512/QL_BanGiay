@@ -45,7 +45,7 @@ namespace QL_BanGiay.Helps
             {
                 if (filterContext.HttpContext.Request.GetTypedHeaders().Referer == null || filterContext.HttpContext.Request.GetTypedHeaders().Host.Host.ToString() != filterContext.HttpContext.Request.GetTypedHeaders().Referer.Host.ToString())
                 {
-                    filterContext.HttpContext.Response.Redirect("/Admin");
+                    filterContext.HttpContext.Response.Redirect("/admin");
                 }
             }
         }

@@ -11,7 +11,7 @@ public partial class DongSanPham
     public int MaDongSanPham { get; set; }
     [Required(ErrorMessage = "Vui lòng chọn nhãn hiệu")]
     public int? MaNhanHieu { get; set; }
-    [Required(ErrorMessage = "Vui lòng chọn nhãn hiệu")]
+    [Required(ErrorMessage = "Vui lòng nhập tên dòng sản phẩm")]
     public string? TenDongSanPham { get; set; }
 
     public virtual ICollection<Giay> Giays { get; } = new List<Giay>();

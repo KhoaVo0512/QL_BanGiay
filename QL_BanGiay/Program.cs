@@ -51,11 +51,11 @@ builder.Services.AddDbContext<QlyBanGiayContext>(
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => 
 { 
     options.LoginPath = "/account/login";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-
-    options.Cookie.MaxAge = options.ExpireTimeSpan;
-    options.SlidingExpiration = true;
-    options.Cookie.HttpOnly = false;
+    //options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    
+    //options.Cookie.MaxAge = options.ExpireTimeSpan;
+    //options.SlidingExpiration = true;
+    //options.Cookie.HttpOnly = false;
 });
 builder.Services.AddSession(options =>
 {

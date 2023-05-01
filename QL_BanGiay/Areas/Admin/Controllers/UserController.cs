@@ -9,6 +9,7 @@ using QL_BanGiay.Areas.Admin.Repository;
 using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
 using Windows.System;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
@@ -48,6 +49,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("user/details")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Details(string id)
         {
             var user = _UserRepo.GetUserDetails(id);
@@ -55,6 +57,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("user/edit")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Edit(string id)
         {
             var role = _UserRepo.UserRole(id);

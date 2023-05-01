@@ -126,6 +126,9 @@ namespace QL_BanGiay.Repository
             var itemDDct = _context.DonDatCts.Where(s=> s.MaDonDat == idDonDat).ToList();
             foreach (var item in itemDDct )
             {
+                var khogiay = _context.KhoGiays.Where(s=>s.MaGiay == item.MaGiay && s.MaSize == item.MaSize).FirstOrDefault();
+                khogiay.SoLuong += item.SoLuong;
+                _context.KhoGiays.Update(khogiay);
                 _context.Remove(item);
                 await _context.SaveChangesAsync();
             }

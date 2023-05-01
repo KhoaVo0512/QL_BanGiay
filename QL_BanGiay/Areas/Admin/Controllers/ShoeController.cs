@@ -121,10 +121,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             }
             return View(shoe);
         }
-        [Route("shoe/delete")]
+        [Route("Shoe/DeleteConfirmed")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComfirm(string id)
+        public IActionResult DeleteConfirmed(string id)
         {
             var shoe = _ShoeRepo.Delete(id);
             Sort();
@@ -201,7 +201,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("shoe/information")]
         [HttpGet]
-
+        [NoDirectAccess]
         public IActionResult Information(string id)
         {
             var item = _ShoeRepo.GetItemInformation(id);

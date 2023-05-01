@@ -78,6 +78,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
             var item = _context.DongSanPhams.Where(s=>s.MaDongSanPham == dongsanpham.MaDongSanPham).FirstOrDefault();
             item.MaNhanHieu = dongsanpham.MaNhanHieu;
             item.TenDongSanPham = dongsanpham.TenDongSanPham;
+            _context.DongSanPhams.Update(item);
             await _context.SaveChangesAsync();
             return dongsanpham;
         }

@@ -465,11 +465,25 @@ namespace QL_BanGiay.Controllers
                         }
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                        await HttpContext.SignInAsync(claimsPrincipal);
+                        if (!loginModel.Remember)
+                        {
+                            await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
+                            {
+                                IsPersistent = false
+                            });
+                        }
+                        else
+                        {
+                            await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
+                            {
+                                IsPersistent = true,
+                                ExpiresUtc = DateTime.UtcNow.AddDays(3)
+                            });
+                        }
                         foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
-                                return Redirect("/admin");
+                                return Redirect(returnUrl);
                             if (t.TenQuyen == "User")
                                 return Redirect(returnUrl);
                             if (t.TenQuyen == "Emloyee")
@@ -505,7 +519,21 @@ namespace QL_BanGiay.Controllers
                         }
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                        await HttpContext.SignInAsync(claimsPrincipal);
+                        if (!loginModel.Remember)
+                        {
+                            await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
+                            {
+                                IsPersistent = false
+                            });
+                        }else
+                        {
+                            await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
+                            {
+                                IsPersistent = true,
+                                ExpiresUtc = DateTime.UtcNow.AddDays(3)
+                            });
+                        }
+                        
                         foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")

@@ -16,5 +16,5 @@ public partial class NhapHang
     public int? TongTien { get; set; }
     public virtual DonViNhapHang? MaDonViNhapNavigation { get; set; }
 
-    public virtual List<NhapHangCt> NhapHangCts { get; } = new List<NhapHangCt>();
+    public virtual List<NhapHangCt>? NhapHangCts { get; } = new List<NhapHangCt>();
 }

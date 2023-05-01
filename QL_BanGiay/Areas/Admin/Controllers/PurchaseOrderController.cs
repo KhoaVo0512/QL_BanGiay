@@ -9,12 +9,14 @@ using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
 using QL_BanGiay.Models;
 using System.Data;
+using Windows.Devices.Bluetooth;
 using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class PurchaseOrderController : Controller
     {
         private readonly IToastNotification _toastNotification;
@@ -67,8 +69,11 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> Create(NhapHang nhaphang)
         {
-            nhaphang.NhapHangCts.RemoveAll(a => a.SoLuong == 0);
+            //nhaphang.NhapHangCts.RemoveAll(a => a.SoLuong == 0);
             nhaphang.MaNhapHang = 0;
+            bool checkHoaDon = _PurchaseOrderRepo.IsHoaDonNoExits(nhaphang.SoHoaDon);
+            if (checkHoaDon)
+                ModelState.AddModelError("SoHoaDon", "Số hóa đơn này đã có rồi");
             if (ModelState.IsValid)
             {
                 var item = nhaphang.NhapHangCts.ToArray();
@@ -79,7 +84,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     {
                         if (item[i].MaGiay == item[j].MaGiay && item[i].MaSize == item[j].MaSize)
                         {
-                            ModelState.AddModelError("NhapHangCts["+j+"].MaGiay", "Errors occurred in the Model");
+                            ModelState.AddModelError("NhapHangCts["+j+"].MaGiay", "Mã giày và size giày đã có thêm ở trên.");
                             ViewBag.SupplierList = GetSuppliers();
                             ViewBag.ProductList = GetProducts();
                             ViewBag.SizeList = GetSizes();

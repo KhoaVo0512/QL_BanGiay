@@ -30,7 +30,7 @@ public partial class NhapHangCt
     [MaxLength(75)]
     [NotMapped]
     [Required(ErrorMessage = "Vui lòng chọn sản phẩm")]
-    public string Description { get; set; } = "";
+    public string? Description { get; set; } = "";
     [NotMapped]
     public decimal Total { get; set; }
 }

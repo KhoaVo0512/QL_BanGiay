@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
@@ -6,11 +7,13 @@ using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Areas.Admin.Repository;
 using QL_BanGiay.Data;
 using System.Drawing.Printing;
+using static QL_BanGiay.Helps.RenderRazorView;
 
 namespace QL_BanGiay.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin, Emloyee")]
     public class CheckOutController : Controller
     {
         private readonly IBill _BillRepo;
@@ -52,6 +55,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         }
         [Route("checkout/Details")]
         [HttpGet]
+        [NoDirectAccess]
         public IActionResult Details(string id)
         {
             List<SelectListItem> listChoose = new List<SelectListItem>();
