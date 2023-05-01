@@ -1,6 +1,7 @@
-﻿@model QL_BanGiay.Data.NguoiDung
+﻿@using System.Globalization;
+@model QL_BanGiay.Data.NguoiDung
 @{
-
+    CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
 }
 <section class="user-dashboard-section section-b-space">
     <div class="container-fluid-lg">
@@ -90,7 +91,7 @@
                                                 {
                                                     <tr>
                                                         <th style="color: blue;" scope="row">#@Model.DonDats[i].MaDonDat</th>
-                                                        <td>@Model.DonDats[i].NgayDat</td>
+                                                        <td>@Convert.ToDateTime(Model.DonDats[i].NgayDat).ToString("dd/MM/yyyy hh:mm:ss tt")</td>
                                                         @if (Model.DonDats[i].TrangThai == 0)
                                                         {
                                                             <td>Đặt hàng thành công</td>
@@ -103,7 +104,7 @@
                                                         {
                                                             <td>Đơn hàng đã bị hủy</td>
                                                         }
-                                                        <td>@Model.DonDats[i].Total</td>
+                                                        <td> @String.Format(elGR, "{0:0,0}", @Model.DonDats[i].Total) VND</td>
                                                     </tr>
 
 

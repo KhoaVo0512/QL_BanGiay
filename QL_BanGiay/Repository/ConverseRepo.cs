@@ -40,10 +40,10 @@ namespace QL_BanGiay.Repository
                 items = _context.Giays.Where(ut => ut.TenGiay.ToLower().Contains(SearchText.ToLower())
                 || ut.MaGiay.Contains(SearchText)
                 || ut.GiaBan.ToString().Contains(SearchText)
-                && ut.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 1 ).ToList();
+                && ut.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 1 && ut.GiaBan != null && ut.TrangThai == true).ToList();
             }
             else
-                items = _context.Giays.Where(s => s.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 1).ToList();
+                items = _context.Giays.Where(s => s.MaDongSanPhamNavigation.MaNhanHieuNavigation.MaNhanHieu == 1 && s.GiaBan != null && s.TrangThai == true).ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
             PaginatedList<Giay> retItems = new PaginatedList<Giay>(items, pageIndex, pageSize);
@@ -57,10 +57,10 @@ namespace QL_BanGiay.Repository
 
             if (SearchText != "" && SearchText != null)
             {
-                items = _context.Giays.Where(ut => ut.MaDongSanPhamNavigation.TenDongSanPham == namecollection).ToList();
+                items = _context.Giays.Where(ut => ut.MaDongSanPhamNavigation.TenDongSanPham == namecollection && ut.GiaBan != null && ut.TrangThai == true).ToList();
             }
             else
-                items = _context.Giays.Where(s => s.MaDongSanPhamNavigation.TenDongSanPham == namecollection).ToList();
+                items = _context.Giays.Where(s => s.MaDongSanPhamNavigation.TenDongSanPham == namecollection && s.GiaBan != null && s.TrangThai == true).ToList();
             items = DoSort(items, SortProperty, sortOrder);
 
             PaginatedList<Giay> retItems = new PaginatedList<Giay>(items, pageIndex, pageSize);

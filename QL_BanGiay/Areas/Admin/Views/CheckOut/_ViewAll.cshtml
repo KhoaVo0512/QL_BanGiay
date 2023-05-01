@@ -1,9 +1,11 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
+@using System.Globalization;
 @model IEnumerable<QL_BanGiay.Data.HoaDon>
 @{
     ViewData["Title"] = "QUẢN LÍ HÓA ĐƠN";
     SortModel sortModel = (SortModel)ViewData["sortModel"];
     PagerModel pager = ViewBag.Pager;
+    CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
     int stt = 0;
 }
 
@@ -80,7 +82,7 @@
                                     @Convert.ToDateTime(item.NgayGiaoHd).ToString("dd/MM/yyyy hh:mm:ss tt")
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.TongTien)
+                                    @String.Format(elGR, "{0:0,0}", item.TongTien) VND
                                 </td>
                                
                                 <td>

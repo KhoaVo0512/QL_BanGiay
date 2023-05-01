@@ -250,9 +250,20 @@ namespace QL_BanGiay.Controllers
                     }
                     else
                     {
-                        bool remove = await _CheckoutRepo.DeleteNguoiDungAndDonDat(idMaDonDat, idNguoiDung);
-                        TempData["Message"] = "Có lỗi xảy ra trong quá trình xử lý hóa đơn vui lòng thử lại";
-                        return View("Checkout", _model);
+                        var sId = User.Claims.Where(c => c.Type == ClaimTypes.Sid)
+                                            .Select(c => c.Value).SingleOrDefault();
+                        bool remove = await _CheckoutRepo.DeleteNguoiDungAndDonDat(idMaDonDat, sId);
+                        var item = new CheckOutModel();
+                        if (sId != null)
+                        {
+                            item = _UserRepo.GetUser(sId);
+                            TempData["Message"] = "Có lỗi xảy ra trong quá trình xử lý hóa đơn thanh toán VNPay vui lòng thử lại";
+                            return View("Checkout", item);
+                        }else
+                        {
+                            TempData["Message"] = "Có lỗi xảy ra trong quá trình xử lý hóa đơn thanh toán VNPay vui lòng thử lại";
+                            return View("Checkout", _model);
+                        }
                     }
                 }
                 else
@@ -298,7 +309,7 @@ namespace QL_BanGiay.Controllers
         }
         [Route("search")]
         [HttpGet]
-        public IActionResult Search(string sortExpression = "",string SearchText="", int pg = 1, int pageSize = 10)
+        public IActionResult Search(string sortExpression = "",string SearchText="", int pg = 1, int pageSize = 12)
         {
             SortModel sortModel = new SortModel();
             sortModel.AddColumn("NameShoe");

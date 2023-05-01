@@ -1,10 +1,10 @@
-﻿@model QL_BanGiay.Data.Giay
+﻿@model QL_BanGiay.Areas.Admin.Models.EditShoeModel
 @{
     Layout = null;
 }
 <h4>Bạn có muốn xóa sản phẩm này?</h4>
 <div>
-    <form asp-action="DeleteConfirmed" asp-route-id="@Model.MaDongSanPham" style="margin-bottom: 20px " onsubmit="return jQueryAjaxDelete(this);">
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.MaGiay" style="margin-bottom: 20px " onsubmit="return jQueryAjaxDelete(this);">
         <div class="modal-footer">
             <button type="submit" class="btn btn-danger">Xóa</button>
             <button type="button" class="btn btn-secondary" onclick="CloseModal();">Hủy</button>

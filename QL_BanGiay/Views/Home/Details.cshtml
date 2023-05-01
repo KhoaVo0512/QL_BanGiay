@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = Model.TenGiay;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var data = 0;
+    var data = 1;
     CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
 }
 <link rel="stylesheet" href="~/css/details.css" />
@@ -31,6 +31,11 @@
                         </div>
                     </div>
                     <div class="img-select">
+                        <div class="img-item">
+                            <a href="#" data-id="@data">
+                                <img src="@Model.AnhDd" alt="shoe image">
+                            </a>
+                        </div>
                         @foreach (var item in Model.AnhGiays)
                         {
                             data = data + 1;
@@ -45,7 +50,7 @@
                 </div>
                 <!-- card right -->
                 <div class="product-content">
-                    <h2 class="product-title">@Model.TenGiay-@Model.MaGiay</h2>
+                    <h2 class="product-title">@Model.TenGiay - @Model.MaGiay</h2>
                     <div class="product-price">
                         <p class="new-price">Giá: <span>@String.Format(elGR, "{0:0,0}", Model.GiaBan) VND</span></p>
                     </div>

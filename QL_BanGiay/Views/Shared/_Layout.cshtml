@@ -61,12 +61,15 @@
     <script src="~/js/Cart.js"></script>
     <script>
         var item = storage.getCart();
-        const now = new Date()
-        for(var i = 0; i < item.length;i++){
-            if (now.getTime() > item[i].expiry){
-                storage.removeCart(item[i].id, item[i].idsize);
+        const now = new Date();
+        if (item != null){
+            for (var i = 0; i < item.length; i++) {
+                if (now.getTime() > item[i].expiry) {
+                    storage.removeCart(item[i].id, item[i].idsize);
+                }
             }
         }
+       
     </script>
     @await RenderSectionAsync("Scripts", required: false)
     @await Component.InvokeAsync("NToastNotify")

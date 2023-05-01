@@ -8,7 +8,7 @@ namespace QL_BanGiay.Areas.Admin.Interface
         PaginatedList<DongSanPham> GetItems(string SortProperty, SortOrder sortOrder, string SearchText = "", int pageIndex = 1, int pageSize = 5);
         
         Task<DongSanPham> Create(DongSanPham dongsanpham);
-        Task<int> Delete(int id);
+        Task<bool> Delete(int id);
         DongSanPham GetItem(int? id);
         Task<DongSanPham> Edit(DongSanPham dongsanpham);
         List<DongSanPham> GetCollections(int id);

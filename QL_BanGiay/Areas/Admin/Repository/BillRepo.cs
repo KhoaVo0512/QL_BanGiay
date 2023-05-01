@@ -26,9 +26,9 @@ namespace QL_BanGiay.Areas.Admin.Repository
             else if (SortProperty.ToLower() == "date")
             {
                 if (sortOrder == SortOrder.Ascending)
-                    items = items.OrderBy(n => n.NgayLapDh).ToList();
+                    items = items.OrderByDescending(n => n.NgayGiaoHd).ToList();
                 else
-                    items = items.OrderByDescending(n => n.NgayLapDh).ToList();
+                    items = items.OrderBy(n => n.NgayGiaoHd).ToList();
             }
             else if (SortProperty.ToLower() == "idcheckout")
             {

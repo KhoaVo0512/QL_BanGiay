@@ -375,6 +375,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 {
                     item.NoiDung = context.content;
                     item.TomTat = context.tomtat;
+                    item.NgayCn = DateTime.Now;
                     _context.Update(item);
                     _context.SaveChanges();
                     return true;
@@ -387,5 +388,6 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 return false;
             }
         }
+
     }
 }

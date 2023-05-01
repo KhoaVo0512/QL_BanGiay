@@ -90,7 +90,7 @@ namespace QL_BanGiay.Repository
                 MaDonDat = madd,
                 MaNguoiDung = id,
                 NgayDat = DateTime.Now,
-                TrangThai = 0,
+                TrangThai = 4,
                 GhiChu = note,
                 MaVnpay = IdVNpay,
                 DiaChiNhan = getAddress,
@@ -130,7 +130,6 @@ namespace QL_BanGiay.Repository
                 await _context.SaveChangesAsync();
             }
             _context.DonDats.Remove(itemDD);
-            _context.NguoiDungs.Remove(itemND);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -142,6 +141,7 @@ namespace QL_BanGiay.Repository
                 var item = _context.DonDats.Where(s => s.MaDonDat == id).Include(s=>s.DonDatCts).FirstOrDefault();
                 item.DaThanhToan = true;
                 item.MaVnpay = IdVNPay.ToString();
+                item.TrangThai = 0;
                 _context.DonDats.Update(item);
                 _context.SaveChanges();
                 return true;

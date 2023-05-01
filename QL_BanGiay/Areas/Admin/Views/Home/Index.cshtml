@@ -2,14 +2,8 @@
     ViewData["Title"] = "Trang quản trị";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     int stt = 0;
+    int tts = 0;
 }
-
-<ul>
-    @foreach (var c in User.Claims)
-    {
-        <li>@c.Type: @c.Value</li>
-    }
-</ul>
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
@@ -167,78 +161,45 @@
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="widget chart">
-                    <div class="title p-4">
-                        <h5 class="fw-blod">DOANH SỐ CỦA NHÃN HIỆU TRONG 7 NGÀY GẦN NHẤT</h5>
+            @if (ViewBag.Count != 0)
+            {
+                <div class="col-md-6">
+                    <div class="widget chart">
+                        <div class="title p-4">
+                            <h5 style="color: red;" class="fw-blod text-center">CÁC MẶT HÀNG TRONG KHO DƯỚI 5 SẢN PHẨM</h5>
 
+                        </div>
+                        <table class="table">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Mã giày</th>
+                                    <th scope="col">Tên giày</th>
+                                    <th scope="col">Size giày</th>
+                                    <th scope="col">Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.ListQuantityWareHouse)
+                                {
+                                    tts += 1;
+                                    <tr>
+                                        <th scope="row">@tts</th>
+                                        <td>@item.MaGiay</td>
+                                        <td>@item.TenGiay</td>
+                                        <td>@item.TenSize</td>
+                                        <td>@item.SoLuong</td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Mã giày</th>
-                                <th scope="col">Size giày</th>
-                                <th scope="col">Số lượng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
 
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@@fat</td>
-                                <td>1</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
-
-            </div>
-            <div class="col-md-8">
+            }
+            <div class="col-md-6">
                 <div class="widget chart">
                     <div class="p-4">
                         <h5 style="color: blue;" class="fw-bold text-center">TOP 7 SẢN PHẨM THUỘC SIZE BÁN NHIỀU NHẤT TRONG 7 NGÀY GẦN NHẤT</h5>

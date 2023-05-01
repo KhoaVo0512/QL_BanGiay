@@ -198,7 +198,7 @@ function DeleteItem(btn) {
 
 }
 function setSameWidth(srcElement, desElement) {
-    desElement.style.width = "230px";
+    desElement.style.width = "360px";
 }
 function CalcTotals() {
     var x = document.getElementsByClassName('QtyTotal');
@@ -278,8 +278,11 @@ function ShowSearchableList(event) {
     txtValue.value = "";
     txtText.value = "";
     var items = lstbox.options;
+    for (var i = 0; i < items.length; i++) {
+        console.log(items[i].value);
+    }
     for (var i = items.length - 1; i >= 0; i--) {
-        if (items[i].text.toLowerCase().indexOf(txtSearch.value.toLowerCase()) > -1) {
+        if (items[i].value.toLowerCase().indexOf(txtSearch.value.toLowerCase()) > -1) {
             items[i].style.display = 'block';
             items[i].selected = true;
             txtValue.value = items[i].value;

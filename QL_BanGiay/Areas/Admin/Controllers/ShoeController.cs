@@ -77,8 +77,8 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                 CheckMaGiay = _ShoeRepo.IsShoeNoExists(item.MaGiay);
                 if (CheckMaGiay)
                 {
-                    ModelState.AddModelError("Date", "Mã giày này đã có rồi");
-                    _toastNotification.AddErrorToastMessage("Lỗi nhập sản phẩm");
+                    ModelState.AddModelError("MaGiay", "Mã giày này đã có rồi");
+                    _toastNotification.AddErrorToastMessage("Mã sản phẩm nầy có rồi");
                     ViewBag.BrandList = GetBrands();
                     ViewBag.ProduceList = GetProduce();
                     return Json(new { isValid = false, html = RenderRazorView.RenderRazorViewToString(this, "create", item, null, "") });
@@ -136,6 +136,20 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             _toastNotification.AddSuccessToastMessage("Sản phẩm đã xóa thành công");
             return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
         }
+        [Route("shoe/detail")]
+        [HttpGet]
+        [NoDirectAccess]
+        public IActionResult Detail(string id)
+        {
+            EditShoeModel item = _ShoeRepo.GetItem(id);
+            var collection = _CollectionRepo.GetItem(item.MaDongSanPham);
+            ViewBag.NameCollection = collection.TenDongSanPham;
+            ViewBag.IdCollection = collection.MaDongSanPham;
+            ViewBag.BrandList = GetBrands();
+            ViewBag.ProduceList = GetProduce();
+            return View(item);
+        }
+
         [Route("shoe/edit")]
         [HttpGet]
         [NoDirectAccess]
@@ -273,10 +287,10 @@ namespace QL_BanGiay.Areas.Admin.Controllers
         private void Sort()
         {
             SortModel sortModel = new SortModel();
-            sortModel.AddColumn("IdShoe");
+            sortModel.AddColumn("Date");
             sortModel.AddColumn("NameShoe");
             sortModel.AddColumn("Price");
-            sortModel.AddColumn("Date");
+            sortModel.AddColumn("IdShoe");
             sortModel.ApplySort("");
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = "";

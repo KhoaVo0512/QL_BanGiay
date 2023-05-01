@@ -12,5 +12,6 @@ namespace QL_BanGiay.Areas.Admin.Interface
         double? TotalAdidas();
         double? Total();
         IQueryable<QuantityModel> ListQuantityInCome();
+        IQueryable<QuantityModel> ListQuantityWareHouse();
     }
 }

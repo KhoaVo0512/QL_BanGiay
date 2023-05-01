@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
+using Org.BouncyCastle.Utilities;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
 using QL_BanGiay.Helps;
+using Syncfusion.EJ2.Grids;
 using System.Drawing.Printing;
 using static QL_BanGiay.Helps.RenderRazorView;
 
@@ -67,7 +69,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _Icollection.GetItems("namecollectio", SortOrder.Ascending, "", 1, 5);
+                var items = _Icollection.GetItems("NameCollection", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;
@@ -102,18 +104,40 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             try
             {
                 var collection = await _Icollection.Delete(id);
+                if (collection)
+                {
+                    Sort();
+                    var items = _Icollection.GetItems("NameCollection", SortOrder.Ascending, "", 1, 5);
+                    var pager = new PagerModel(items.TotalRecords, 1, 5);
+                    pager.SortExpression = "";
+                    this.ViewBag.Pager = pager;
+                    TempData["CurrentPage"] = 1;
+                    _toastNotification.AddSuccessToastMessage("Dòng sản phẩm đã xóa thành công");
+                    return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+                }
+                else
+                {
+                    Sort();
+                    var items = _Icollection.GetItems("NameCollection", SortOrder.Ascending, "", 1, 5);
+                    var pager = new PagerModel(items.TotalRecords, 1, 5);
+                    pager.SortExpression = "";
+                    this.ViewBag.Pager = pager;
+                    TempData["CurrentPage"] = 1;
+                    _toastNotification.AddErrorToastMessage("Xóa không thành công. Lỗi dính khóa ngoại");
+                    return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+                }
             }catch (Exception ex)
             {
-                ModelState.AddModelError(String.Empty, ex.ToString());
+                Sort();
+                var items = _Icollection.GetItems("NameCollection", SortOrder.Ascending, "", 1, 5);
+                var pager = new PagerModel(items.TotalRecords, 1, 5);
+                pager.SortExpression = "";
+                this.ViewBag.Pager = pager;
+                TempData["CurrentPage"] = 1;
+                _toastNotification.AddErrorToastMessage("Xóa không thành công. Lỗi dính khóa ngoại");
+                return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
             }
-            Sort();
-            var items = _Icollection.GetItems("namecollection", SortOrder.Ascending, "", 1, 5);
-            var pager = new PagerModel(items.TotalRecords, 1, 5);
-            pager.SortExpression = "";
-            this.ViewBag.Pager = pager;
-            TempData["CurrentPage"] = 1;
-            _toastNotification.AddSuccessToastMessage("Dòng sản phẩm đã xóa thành công");
-            return Json(new { isValid = true, html = RenderRazorView.RenderRazorViewToString(this, "_ViewAll", items, pager, "") });
+           
         }
         [Route("collection/edit")]
         [HttpGet]
@@ -139,7 +163,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
                     ModelState.AddModelError(String.Empty, ex.ToString());
                 }
                 Sort();
-                var items = _Icollection.GetItems("namecollection", SortOrder.Ascending, "", 1, 5);
+                var items = _Icollection.GetItems("NameCollection", SortOrder.Ascending, "", 1, 5);
                 var pager = new PagerModel(items.TotalRecords, 1, 5);
                 pager.SortExpression = "";
                 this.ViewBag.Pager = pager;

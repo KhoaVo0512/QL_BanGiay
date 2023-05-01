@@ -48,6 +48,8 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var totalAdidas = _ChartRepo.TotalAdidas();
             var totalVans = _ChartRepo.TotalVans();
             ViewBag.ListQuantity = _ChartRepo.ListQuantityInCome().OrderByDescending(S=>S.SoLuong).Take(7);
+            ViewBag.ListQuantityWareHouse = _ChartRepo.ListQuantityWareHouse().OrderBy(s => s.SoLuong);
+            ViewBag.Count = _ChartRepo.ListQuantityWareHouse().Count();
             var totalNike = _OrderRepo.GetTotalInComeSevenDay() - (totalConverse + totalAdidas + totalVans);
             List<DoughnutChartData> ChartPoints = new List<DoughnutChartData>
             {

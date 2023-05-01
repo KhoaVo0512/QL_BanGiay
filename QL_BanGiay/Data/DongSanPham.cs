@@ -1,15 +1,18 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace QL_BanGiay.Data;
 
 public partial class DongSanPham
 {
+    
     public int MaDongSanPham { get; set; }
-
-    public int MaNhanHieu { get; set; }
-
-    public string TenDongSanPham { get; set; } = null!;
+    [Required(ErrorMessage = "Vui lòng chọn nhãn hiệu")]
+    public int? MaNhanHieu { get; set; }
+    [Required(ErrorMessage = "Vui lòng chọn nhãn hiệu")]
+    public string? TenDongSanPham { get; set; }
 
     public virtual ICollection<Giay> Giays { get; } = new List<Giay>();
 

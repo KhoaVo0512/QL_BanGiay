@@ -60,6 +60,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
         public async Task<DongSanPham> Create(DongSanPham dongsanpham)
         {
+            dongsanpham.TenDongSanPham.Trim();
             _context.Add(dongsanpham);
             await _context.SaveChangesAsync();
             return dongsanpham;
@@ -81,12 +82,28 @@ namespace QL_BanGiay.Areas.Admin.Repository
             return dongsanpham;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var collection = await _context.DongSanPhams.FindAsync(id);
-            _context.Remove(collection);
-             await _context.SaveChangesAsync();
-            return collection.MaDongSanPham;
+            try
+            {
+                var shoe = _context.Giays.Where(s=>s.MaDongSanPham == id).FirstOrDefault();
+                if (shoe == null)
+                {
+                    var collection = await _context.DongSanPhams.FindAsync(id);
+
+                    _context.Remove(collection);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                    return false;
+               
+            }catch (Exception ex)
+            {
+                return false;
+            }
+           
+            
         }
 
         public List<DongSanPham> GetCollections(int id)

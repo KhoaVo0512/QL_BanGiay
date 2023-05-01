@@ -43,8 +43,7 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             sortModel.AddColumn("Date");
             sortModel.AddColumn("IdOrder");
             sortModel.AddColumn("Name");
-            sortModel.AddColumn("Phone");
-                    
+            sortModel.AddColumn("Phone");        
             sortModel.ApplySort(sortExpression);
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
