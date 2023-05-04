@@ -498,9 +498,6 @@ namespace QL_BanGiay.Controllers
                     var check_pw = EncodeManager.VerifyHashedPassword(account.Password, loginModel.Password);
                     if (check_pw == PasswordVerificationResult.Success)
                     {
-                        CookieOptions options = new CookieOptions();
-                        options.Expires = DateTime.Now.AddMinutes(5);
-                        options.IsEssential = true;
                         HttpContext.Session.SetString("IdNguoiDungLogin", account.MaNguoiDung);
                         var user = _accountRepository.GetUser(account.MaNguoiDung);
                         var getRole = _accountRepository.GetRoles(loginModel.Username);
@@ -508,6 +505,7 @@ namespace QL_BanGiay.Controllers
                         claims.Add(new Claim(ClaimTypes.Name, user.HoNguoiDung + " " + user.TenNguoiDung));
                         claims.Add(new Claim(ClaimTypes.Sid, account.MaNguoiDung));
                         claims.Add(new Claim(ClaimTypes.Actor, account.AnhTk));
+                        claims.Add(new Claim(ClaimTypes.Expired, loginModel.Remember.ToString()));
                         foreach (var t in getRole)
                         {
                             if (t.TenQuyen == "Admin")
@@ -521,6 +519,7 @@ namespace QL_BanGiay.Controllers
                         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                         if (!loginModel.Remember)
                         {
+                            
                             await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties
                             {
                                 IsPersistent = false

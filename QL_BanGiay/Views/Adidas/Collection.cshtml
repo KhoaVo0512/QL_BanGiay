@@ -1,8 +1,7 @@
 ﻿@using QL_BanGiay.Areas.Admin.Models;
 @using System.Globalization;
 @model IEnumerable<QL_BanGiay.Data.Giay>
-@{
-    
+@{   
     Layout = "~/Views/Shared/_Layout.cshtml";
     PagerModel pager = ViewBag.Pager;
     ViewData["Title"] = pager.Action;
