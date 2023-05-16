@@ -21,6 +21,7 @@ public partial class DonDat
     public string? DiaChiNhan { get; set; }
 
     public bool? DaThanhToan { get; set; }
+
     public virtual List<DonDatCt> DonDatCts { get; set; } = new List<DonDatCt>();
 
     public virtual NguoiDung? MaNguoiDungNavigation { get; set; }

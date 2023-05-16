@@ -90,7 +90,7 @@ namespace QL_BanGiay.Repository
                 MaDonDat = madd,
                 MaNguoiDung = id,
                 NgayDat = DateTime.Now,
-                TrangThai = 4,
+                TrangThai = 0,
                 GhiChu = note,
                 MaVnpay = IdVNpay,
                 DiaChiNhan = getAddress,

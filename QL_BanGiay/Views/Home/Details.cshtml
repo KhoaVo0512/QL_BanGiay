@@ -1,13 +1,26 @@
 ﻿@using System.Globalization;
+@using System.Security.Claims;
 @model QL_BanGiay.Data.Giay
 @{
     ViewData["Title"] = Model.TenGiay;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var data = 1;
+    var userName = User.Claims.Where(s => s.Type == ClaimTypes.Name).Select(s => s.Value).SingleOrDefault();
     CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
+    var stars = ViewBag.Stars;
+    var startsCount = ViewBag.StarsCount;
+    var starsTotal = 0.0;
+    if (stars != 0)
+    {
+        starsTotal = (float)stars / startsCount;
+        starsTotal = Math.Round(starsTotal, 1);
+    }
+    else
+        startsCount = 0;
+
 }
 <link rel="stylesheet" href="~/css/details.css" />
-<section class="product-wrapper pt-50 pb-50">
+<section class="product-wrapper pt-50">
     <div class="block">
         <div class="container">
             <ul class="breadcrumbs">
@@ -51,8 +64,42 @@
                 <!-- card right -->
                 <div class="product-content">
                     <h2 class="product-title">@Model.TenGiay - @Model.MaGiay</h2>
+                    <div>
+                        @if (stars == 0)
+                        {
+                            for (int i = 0; i < 5; i++)
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < stars / startsCount; i++)
+                            {
+                                <i class="product-rating fas fa-star"></i>
+                            }
+                            if ((stars % startsCount) != 0)
+                            {
+                                <i class="product-rating fas fa-star-half-alt"></i>
+                                for (int i = 0; i < 5 - (stars / startsCount) - 1; i++)
+                                {
+                                    <i class="fa-regular fa-star"></i>
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < 5 - (stars / startsCount); i++)
+                                {
+                                    <i class="fa-regular fa-star"></i>
+                                }
+                            }
+                        }
+
+
+                        <span>@starsTotal (@startsCount đánh giá)</span>
+                    </div>
+
                     <div class="product-price">
-                        
                         <p class="new-price">Chất liệu: @Model.ChatLieu</p>
                         <p class="new-price">Màu sắc: @Model.MauSac</p>
                         <p class="new-price">Giá: <span>@String.Format(elGR, "{0:0,0}", Model.GiaBan) VND</span></p>
@@ -90,11 +137,188 @@
                 </div>
             </div>
         </div>
-        @Html.Raw(Model.NoiDung)
-    </div>  
+        @*@Html.Raw(Model.NoiDung)*@
+    </div>
+</section>
+<section class="reviews-wrapper pt-50 pb-100">
+    <div class="container">
+        <div class="reviews-style">
+            <div class="reviews-menu" style="text-align: center;">
+                <ul class="breadcrumb-list-grid nav nav-tabs border-0" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a style="cursor: pointer;" class="active" id="details-tab" data-bs-toggle="tab" data-bs-target="#tab-details" role="tab" aria-controls="tab-details" aria-selected="false">
+                            Mô tả
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a style="cursor: pointer;" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">
+                            Đánh giá
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show fade active" id="tab-details" role="tabpanel" aria-labelledby="details-tab">
+                    <div class="details-wrapper">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <p class="mb-15 pt-30">
+                                    @Html.Raw(Model.NoiDung)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="tab-reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="review-wrapper">
+                        <div class="reviews-title">
+                            <h4 class="title">Nhận xét của khách hàng (@startsCount)</h4>
+                        </div>
+
+                        <div class="reviews-rating-wrapper flex-wrap">
+                            <div class="reviews-rating-star">
+                                <p class="rating-review"><i class="mdi mdi-star"></i> <span>@starsTotal</span> trên 5</p>
+                                <div class="reviews-rating-bar">
+                                    <div class="single-reviews-rating-bar">
+                                        <p class="value">5 Sao</p>
+                                        <div class="rating-bar-inner">
+                                            <div class="bar-inner" style="width: @ViewBag.Pecent5Stars%;"></div>
+                                        </div>
+                                        <p class="percent">@ViewBag.Pecent5Stars %</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-rating-bar">
+                                    <div class="single-reviews-rating-bar">
+                                        <p class="value">4 Sao</p>
+                                        <div class="rating-bar-inner">
+                                            <div class="bar-inner" style="width: @ViewBag.Pecent4Stars%;"></div>
+                                        </div>
+                                        <p class="percent">@ViewBag.Pecent4Stars %</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-rating-bar">
+                                    <div class="single-reviews-rating-bar">
+                                        <p class="value">3 Sao</p>
+                                        <div class="rating-bar-inner">
+                                            <div class="bar-inner" style="width: @ViewBag.Pecent3Stars%;"></div>
+                                        </div>
+                                        <p class="percent">@ViewBag.Pecent3Stars %</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-rating-bar">
+                                    <div class="single-reviews-rating-bar">
+                                        <p class="value">2 Sao</p>
+                                        <div class="rating-bar-inner">
+                                            <div class="bar-inner" style="width: @ViewBag.Pecent2Stars%;"></div>
+                                        </div>
+                                        <p class="percent">@ViewBag.Pecent2Stars%</p>
+                                    </div>
+                                </div>
+                                <div class="reviews-rating-bar">
+                                    <div class="single-reviews-rating-bar">
+                                        <p class="value">1 Sao</p>
+                                        <div class="rating-bar-inner">
+                                            <div class="bar-inner" style="width: @ViewBag.Pecent1Stars%;"></div>
+                                        </div>
+                                        <p class="percent">@ViewBag.Pecent1Stars%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="reviews-rating-form">
+                                <div class="rating-star">
+                                    <p>Đánh giá</p>
+                                    <ul id="stars" class="stars">
+                                        <li class="star" data-value='1'><i class="mdi mdi-star"></i></li>
+                                        <li class="star" data-value='2'><i class="mdi mdi-star"></i></li>
+                                        <li class="star" data-value='3'><i class="mdi mdi-star"></i></li>
+                                        <li class="star" data-value='4'><i class="mdi mdi-star"></i></li>
+                                        <li class="star" data-value='5'><i class="mdi mdi-star"></i></li>
+                                    </ul>
+                                    <div id="starsError"></div>
+                                </div>
+                                <div class="rating-form">
+                                    <div>
+                                        <div class="single-form form-default">
+                                            <label>Tên của bạn</label>
+                                            <div class="form-input">
+                                                @if(userName != null)
+                                                {
+                                                    <input id="nameComment" type="text" value="@userName" placeholder="Họ và tên" />
+                                                }else{
+                                                    <input id="nameComment" type="text" placeholder="Họ và tên" />
+                                                }
+                                                    
+                                            </div>
+                                            <div id="nameError"></div>
+                                        </div>
+
+                                        <div class="single-form form-default">
+                                            <label>Đánh giá của bạn</label>
+                                            <div class="form-input">
+                                                <textarea id="recomment" placeholder="Đánh giá"></textarea>
+                                                <i class="mdi mdi-message-text-outline"></i>
+                                            </div>
+                                            <div id="commentError"></div>
+                                        </div>
+                                        <div class="single-rating-form flex-wrap">
+                                            <div class="rating-form-file">
+                                            </div>
+                                            <div class="rating-form-btn">
+                                                <button id="comment" class="main-btn primary-btn">Gửi đánh giá</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reviews-comment">
+                            <ul class="comment-items">
+                                @foreach (var item in ViewBag.ListComment)
+                                {
+                                    <li>
+                                        <div class="single-review-comment">
+                                            <div class="comment-user-info">
+                                                <div class="comment-content">
+                                                    <h6 class="name">@item.HoTen</h6>
+                                                    <p>
+                                                        @for(int i=0;i< item.Sao; i++)
+                                                        {
+                                                            <i class="product-rating fas fa-star"></i>
+                                                        }
+                                                        @for(int i=0;i< 5 - item.Sao; i++)
+                                                        {
+                                                            <i class="fa-regular fa-star"></i>
+                                                        }
+                                                        <span class="date">@Convert.ToDateTime(item.NgayTao).ToString("dd/MM/yyyy hh:mm:ss tt")</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="comment-user-text">
+                                                <p>
+                                                    @item.NoiDung
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/toastr.min.js"></script>
+    @if (TempData["Message"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Message"]");</script>
+    }
     <script>
         const imgs = document.querySelectorAll('.img-select a');
         const number = /[a-z,A-Z]/;
@@ -110,8 +334,8 @@
             }
             else if (special.test(input.value)) {
                 input.value = 1;
-                input.innerHTML = 1;              
-            } 
+                input.innerHTML = 1;
+            }
         }
         const imgBtns = [...imgs];
         let imgId = 1;
@@ -144,42 +368,40 @@
                 var selectValue = select.options[select.selectedIndex].value;
                 var getdiv = document.querySelector('.quantity');
                 var input = document.getElementById('quanlity');
-                console.log(getdiv);
-                console.log(this.parentNode);
-                $.ajax ({
+                $.ajax({
                     url: "/Home/checkproduct?id=" + '@Model.MaGiay' + "&idSize=" + selectValue,
                     type: "GET",
-                    success: function (data){
+                    success: function (data) {
                         const parsed = parseInt(input.value);
                         if (data < parsed) {
                             if (selectValue != '') {
                                 helpers.setHtml('selectError', '');
                             }
-                            helpers.setHtml('inputError', '<p class="text-danger">Vui lòng chọn số lượng dưới ' + (data + 1) + ' đôi.</p>');
-                        }else {
+                            helpers.setHtml('inputError', '<p class="text-danger">Số lượng trong kho chỉ còn ' + data +' sản phẩm</p>');
+                        } else {
                             var items = storage.getCart();
                             var item = helpers.itemData(getdiv);
                             let blt = true;
-                            if (items != null){
-                                for (var i =0 ;i< items.length;i++){
-                                    if ((items[i].id == item.id) && (items[i].idsize == item.idsize)){
-                                        var quantity = parseInt(items[i].count)  + parseInt(item.count);
-                                        if (quantity > data){
+                            if (items != null) {
+                                for (var i = 0; i < items.length; i++) {
+                                    if ((items[i].id == item.id) && (items[i].idsize == item.idsize)) {
+                                        var quantity = parseInt(items[i].count) + parseInt(item.count);
+                                        if (quantity > data) {
                                             helpers.setHtml('inputError', '<p class="text-danger">Số lượng trong kho đã giới hạn vui lòng không mua thêm.</p>');
                                             blt = false;
                                         }
-                                        else{
-                                                helpers.setHtml('selectError', '');
-                                                helpers.setHtml('inputError', '');
-                                                cart.addItem(item);
-                                                if (storage.getCart()) {
-                                                    var checkout = document.getElementById('checkout-footer');
-                                                    checkout.innerHTML = "<div class='checkout-btn'><a href = '/cart' style = 'margin-top: 10px;margin-bottom: 10px;' class='main-btn primary-btn-border'>Xem giỏ hàng</a><a href='/checkout' style='float: right !important;margin-bottom: 10px;margin-top: 10px;' class='main-btn primary-btn'>Đặt hàng</a></div>";
-                                                }
-                                                document.getElementById("cartCount").textContent = storage.getCart().length;
-                                                toastr.success("Thêm giỏ hàng thành công");
-                                                blt = false;
-                                                break;
+                                        else {
+                                            helpers.setHtml('selectError', '');
+                                            helpers.setHtml('inputError', '');
+                                            cart.addItem(item);
+                                            if (storage.getCart()) {
+                                                var checkout = document.getElementById('checkout-footer');
+                                                checkout.innerHTML = "<div class='checkout-btn'><a href = '/cart' style = 'margin-top: 10px;margin-bottom: 10px;' class='main-btn primary-btn-border'>Xem giỏ hàng</a><a href='/checkout' style='float: right !important;margin-bottom: 10px;margin-top: 10px;' class='main-btn primary-btn'>Đặt hàng</a></div>";
+                                            }
+                                            document.getElementById("cartCount").textContent = storage.getCart().length;
+                                            toastr.success("Thêm giỏ hàng thành công");
+                                            blt = false;
+                                            break;
                                         }
 
                                     }
@@ -195,7 +417,7 @@
                                     document.getElementById("cartCount").textContent = storage.getCart().length;
                                     toastr.success("Thêm giỏ hàng thành công");
                                 }
-                            }else {
+                            } else {
                                 helpers.setHtml('selectError', '');
                                 helpers.setHtml('inputError', '');
                                 cart.addItem(item);
@@ -208,9 +430,65 @@
                             }
                         }
                     }
-                });      
+                });
             }
         });
+        $('#stars li').on('mouseover', function () {
+            var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
 
+            // Now highlight all the stars that's not after the current hovered star
+            $(this).parent().children('li.star').each(function (e) {
+                if (e < onStar) {
+                    $(this).addClass('hover');
+                }
+                else {
+                    $(this).removeClass('hover');
+                }
+            });
+
+        }).on('mouseout', function () {
+            $(this).parent().children('li.star').each(function (e) {
+                $(this).removeClass('hover');
+            });
+        });
+        var spansCounts = $('#stars li').length
+        $('#stars li').on('click', function (e) {
+            $('#stars li').removeClass('selected');
+
+            for (var i = 0; i < $(this).index() + 1; i++) {
+                $('#stars li').eq(i).addClass('selected')
+            }
+        });
+        var comment = document.querySelector('.rating-form-btn #comment');
+        comment.addEventListener('click', function (e) {
+            e.preventDefault();
+            let lis = document.getElementById('stars').getElementsByClassName('selected').length
+            const recomment = document.getElementById('recomment').value;
+            const name = document.getElementById('nameComment').value;
+            if (lis == 0) {
+                helpers.setHtml('starsError', '<p class="text-danger">Vui lòng chọn sao đánh giá</p>');
+            } else if (name == "") {
+                helpers.setHtml('starsError', '');
+                helpers.setHtml('nameError', '<p class="text-danger">Vui lòng nhập tên của bạn</p>');
+                if (recomment != "")
+                    helpers.setHtml('commentError', '');
+            }
+            else if (recomment == "") {
+
+                helpers.setHtml('nameError', '');
+                helpers.setHtml('commentError', '<p class="text-danger">Vui lòng nhập đánh giá của bạn</p>');
+            } else {
+                $.ajax({
+                    url: "/Home/comment?maGiay=" + '@Model.MaGiay' + "&stars=" + lis + "&comment=" + recomment + "&name=" + name,
+                    type: "GET",
+                    success: function (data) {
+                        if (data == "success") {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+        
     </script>
 }

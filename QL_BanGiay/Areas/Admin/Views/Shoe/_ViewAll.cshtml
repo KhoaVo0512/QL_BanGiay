@@ -107,7 +107,7 @@
                                     {
                                         <a onclick="showInPopup('@Url.Action("edit", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Chỉnh sửa sản phẩm')" class="btn btn-success text-white disabled" aria-disabled="true"><i class="fa-regular fa-pen-to-square"></i></a>
                                         <a onclick="showInPopup('@Url.Action("detail", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Thông tin chi tiết')" class="btn btn-primary text-white"><i class="fa-regular fa-eye"></i></a>
-                                        <a onclick="showInPopup('@Url.Action("Information", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Chỉnh sửa nội dung sản phẩm')" class="btn btn-info"><i class="fa-solid fa-circle-info"></i></a>
+                                        <a onclick="showInPopup('@Url.Action("Information", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Chỉnh sửa nội dung sản phẩm')" class="btn btn-info disabled" aria-disabled="true"><i class="fa-solid fa-circle-info"></i></a>
                                         @if ((await AuthorizationService.AuthorizeAsync(User, "Admin")).Succeeded)
                                         {
                                             <a onclick="showInPopup('@Url.Action("delete", "shoe",new {id = item.MaGiay},Context.Request.Scheme)','Xóa sản phẩm')" class="btn btn-danger text-white disabled" aria-disabled="true"><i class="fa-regular fa-trash-can"></i></a>

@@ -131,7 +131,7 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 MaHd = item.MaDonDat,
                 MaNguoiDung = items.MaNguoiDung,
                 NgayLapDh = item.NgayDat,
-                IdVNPay = items.MaVnpay,
+                IdVnpay = items.MaVnpay,
                 NgayGiaoHd = DateTime.Now,
                 DiaChiNhan = item.DiaChiNhan,
                 GhiChu =item.GhiChu               

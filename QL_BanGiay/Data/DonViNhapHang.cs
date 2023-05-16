@@ -9,7 +9,6 @@ public partial class DonViNhapHang
     public int MaDonViNhap { get; set; }
     [Required(ErrorMessage = "Vui lòng nhập tên đơn vị nhập")]
     public string? TenDonViNhap { get; set; }
-    [Required(ErrorMessage = "Vui lòng nhập địa chỉ Email")]
     [EmailAddress(ErrorMessage = "Email không hợp lệ")]
     public string? Email { get; set; }
     [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]

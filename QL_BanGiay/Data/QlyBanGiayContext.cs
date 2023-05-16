@@ -17,6 +17,8 @@ public partial class QlyBanGiayContext : DbContext
 
     public virtual DbSet<AnhGiay> AnhGiays { get; set; }
 
+    public virtual DbSet<DanhGium> DanhGia { get; set; }
+
     public virtual DbSet<DiaChi> DiaChis { get; set; }
 
     public virtual DbSet<DonDat> DonDats { get; set; }
@@ -92,6 +94,22 @@ public partial class QlyBanGiayContext : DbContext
                 .HasConstraintName("FK__AnhGiay__MaGiay__22751F6C");
         });
 
+        modelBuilder.Entity<DanhGium>(entity =>
+        {
+            entity.HasKey(e => e.MaDanhGia).HasName("PK__DanhGia__AA9515BF692ED12D");
+
+            entity.Property(e => e.HoTen).HasMaxLength(50);
+            entity.Property(e => e.MaGiay)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.NgayTao).HasColumnType("datetime");
+            entity.Property(e => e.NoiDung).HasMaxLength(2000);
+
+            entity.HasOne(d => d.MaGiayNavigation).WithMany(p => p.DanhGia)
+                .HasForeignKey(d => d.MaGiay)
+                .HasConstraintName("FK__DanhGia__MaGiay__67DE6983");
+        });
+
         modelBuilder.Entity<DiaChi>(entity =>
         {
             entity.HasKey(e => e.MaDiaChi).HasName("PK__DiaChi__EB61213EFBD5B0A6");
@@ -136,7 +154,7 @@ public partial class QlyBanGiayContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("MaVNPay");
             entity.Property(e => e.NgayDat).HasColumnType("datetime");
-            entity.Property(e => e.DaThanhToan);
+
             entity.HasOne(d => d.MaNguoiDungNavigation).WithMany(p => p.DonDats)
                 .HasForeignKey(d => d.MaNguoiDung)
                 .HasConstraintName("FK__DonDat__MaNguoiD__54CB950F");
@@ -239,7 +257,10 @@ public partial class QlyBanGiayContext : DbContext
                 .HasColumnName("MaHD");
             entity.Property(e => e.DiaChiNhan).HasMaxLength(200);
             entity.Property(e => e.GhiChu).HasMaxLength(1000);
-            entity.Property(e => e.IdVNPay).HasMaxLength(50);
+            entity.Property(e => e.IdVnpay)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IdVNPay");
             entity.Property(e => e.MaNguoiDung)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -386,8 +407,7 @@ public partial class QlyBanGiayContext : DbContext
             entity.Property(e => e.HoNguoiDung).HasMaxLength(50);
             entity.Property(e => e.Sdt)
                 .HasMaxLength(15)
-                .IsUnicode(false)
-                .IsFixedLength();
+                .IsUnicode(false);
             entity.Property(e => e.TenNguoiDung).HasMaxLength(50);
         });
 
@@ -409,7 +429,6 @@ public partial class QlyBanGiayContext : DbContext
             entity.HasIndex(e => e.MaDonViNhap, "IX_NhapHang_MaDonViNhap");
 
             entity.Property(e => e.NgayNhap).HasColumnType("datetime");
-            entity.Property(e => e.TongTien);
 
             entity.HasOne(d => d.MaDonViNhapNavigation).WithMany(p => p.NhapHangs)
                 .HasForeignKey(d => d.MaDonViNhap)

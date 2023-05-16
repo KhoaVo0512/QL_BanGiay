@@ -29,7 +29,11 @@ public partial class Giay
 
     public string? TomTat { get; set; }
 
+    public bool? NoiBat { get; set; }
+
     public virtual List<AnhGiay> AnhGiays { get; set; } = new List<AnhGiay>();
+
+    public virtual ICollection<DanhGium> DanhGia { get; } = new List<DanhGium>();
 
     public virtual ICollection<DonDatCt> DonDatCts { get; } = new List<DonDatCt>();
 
@@ -43,5 +47,5 @@ public partial class Giay
 
     public virtual NoiSanXuat? MaNhaSanXuatNavigation { get; set; }
 
-    public virtual List<NhapHangCt> NhapHangCts { get; set; } = new List<NhapHangCt>();
+    public virtual List<NhapHangCt> NhapHangCts { get;set; } = new List<NhapHangCt>();
 }

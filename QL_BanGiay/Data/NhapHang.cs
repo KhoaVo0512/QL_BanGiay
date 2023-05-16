@@ -12,8 +12,10 @@ public partial class NhapHang
     [Required(ErrorMessage = "Vui lòng nhập số hóa đơn")]
     public int? SoHoaDon { get; set; }
     [DataType(DataType.Date)]
-    public DateTime? NgayNhap { get; set; } = DateTime.Now.Date;
+    public DateTime? NgayNhap { get; set; }
+
     public int? TongTien { get; set; }
+
     public virtual DonViNhapHang? MaDonViNhapNavigation { get; set; }
 
     public virtual List<NhapHangCt>? NhapHangCts { get; } = new List<NhapHangCt>();

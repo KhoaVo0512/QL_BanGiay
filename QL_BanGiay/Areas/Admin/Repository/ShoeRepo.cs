@@ -119,7 +119,8 @@ namespace QL_BanGiay.Areas.Admin.Repository
                 AnhDd = item.anhNenUrl,
                 TrangThai = true,
                 NgayCn = DateTime.Now,
-                MaNhaSanXuat = item.MaNhaSanXuat
+                MaNhaSanXuat = item.MaNhaSanXuat,
+                NoiBat = false
             };
             newShoe.AnhGiays = new List<AnhGiay>();
             foreach(var file in item.Images)
@@ -321,7 +322,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
         public bool IsNameShoeNoExists(string nameshoe)
         {
-            var ct = _context.Giays.Where(s=>s.TenGiay.ToLower() == nameshoe.ToLower()).Count();
+            var index = nameshoe.LastIndexOf("-");
+            int  length = nameshoe.Length;
+            var magiay = nameshoe.Substring(index + 1, length - index - 1);
+            var ct = _context.Giays.Where(s=>s.MaGiay.ToLower() == magiay.ToLower()).Count();
             if (ct > 0)
             {
                 return true;
@@ -332,7 +336,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
 
         public Giay GetItemProductDetails(string nameshoe)
         {
-            var item = _context.Giays.Where(s => s.TenGiay.ToLower() == nameshoe.ToLower()).Include(s=>s.AnhGiays).FirstOrDefault();
+            var index = nameshoe.LastIndexOf("-");
+            int length = nameshoe.Length;
+            var magiay = nameshoe.Substring(index + 1, length - index - 1);
+            var item = _context.Giays.Where(s => s.MaGiay.ToLower() == magiay.ToLower()).Include(s=>s.AnhGiays).FirstOrDefault();
             return item;
 
         }

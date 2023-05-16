@@ -30,13 +30,14 @@ namespace QL_BanGiay.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IAddress _AddressRepo;
         private readonly IOrder _OrderRepo;
+        private readonly IComment _CommentRepo;
         private static CheckOutModel? _model;
         private static CheckOutUserModel? _modelUser;
         private string _note;
 
-        public HomeController(ILogger<HomeController> logger, IShoe shoe, ISize sizeRepo, IAccount account, 
+        public HomeController(ILogger<HomeController> logger, IShoe shoe, ISize sizeRepo, IAccount account,
             ICheckout checkoutRepo, IToastNotification toastNotification, IAddress addressRepo, IUser userRepo
-            ,IOrder order)
+            , IOrder order, IComment comment)
         {
             _logger = logger;
             _ShoeRepo = shoe;
@@ -47,14 +48,15 @@ namespace QL_BanGiay.Controllers
             _AddressRepo = addressRepo;
             _UserRepo = userRepo;
             _OrderRepo = order;
+            _CommentRepo = comment;
         }
 
         public IActionResult Index()
         {
-            ViewBag.ItemsVans = _ShoeRepo.GetItemsVans().OrderByDescending(s=>s.NgayCn).Take(12);
-            ViewBag.ItemsConverse = _ShoeRepo.GetItemsConverse().OrderByDescending(s => s.NgayCn).Take(12);
-            ViewBag.ItemsAdidas = _ShoeRepo.GetItemsAdidas().OrderByDescending(s => s.NgayCn).Take(12);
-            ViewBag.ItemsNike = _ShoeRepo.GetItemsNike().OrderByDescending(s => s.NgayCn).Take(12);
+            ViewBag.ItemsVans = _ShoeRepo.GetItemsVans().OrderByDescending(s => s.NoiBat).Take(12);
+            ViewBag.ItemsConverse = _ShoeRepo.GetItemsConverse().OrderByDescending(s => s.NoiBat).Take(12);
+            ViewBag.ItemsAdidas = _ShoeRepo.GetItemsAdidas().OrderByDescending(s => s.NoiBat).Take(12);
+            ViewBag.ItemsNike = _ShoeRepo.GetItemsNike().OrderByDescending(s => s.NoiBat).Take(12);
             return View();
         }
 
@@ -67,6 +69,22 @@ namespace QL_BanGiay.Controllers
             {
                 var item = _ShoeRepo.GetItemProductDetails(url);
                 ViewBag.SizeList = GetSizes(item.MaGiay);
+                ViewBag.Stars = _CommentRepo.getStars(item.MaGiay);
+                ViewBag.StarsCount = _CommentRepo.getCommentLength(item.MaGiay);
+                ViewBag.ListComment = _CommentRepo.GetComment(item.MaGiay);
+                ViewBag.Pecent5Stars = _CommentRepo.getPercent5Star(item.MaGiay);
+                ViewBag.Pecent4Stars = _CommentRepo.getPercent4Star(item.MaGiay);
+                ViewBag.Pecent3Stars = _CommentRepo.getPercent3Star(item.MaGiay);
+                ViewBag.Pecent2Stars = _CommentRepo.getPercent2Star(item.MaGiay);
+                if (_CommentRepo.getPercent5Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent4Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent3Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent2Star(item.MaGiay) == 0)
+                {
+                    ViewBag.Pecent1Stars = 0;
+                }
+                else
+                    ViewBag.Pecent1Stars = 100 - ViewBag.Pecent5Stars - ViewBag.Pecent4Stars - ViewBag.Pecent3Stars - ViewBag.Pecent2Stars;
                 return View(item);
             }
             else
@@ -80,7 +98,7 @@ namespace QL_BanGiay.Controllers
         }
         [Route("/home/cartdetails")]
         [HttpGet]
-        public IActionResult CartDetails(string idSanPham, int SoLuong, string SizeGiay, int idSize) 
+        public IActionResult CartDetails(string idSanPham, int SoLuong, string SizeGiay, int idSize)
         {
             var item = _ShoeRepo.GetItemCart(idSanPham);
             ViewBag.SoLuong = SoLuong;
@@ -132,6 +150,19 @@ namespace QL_BanGiay.Controllers
             HttpContext.Session.SetString("IdNguoiDung", bln);
             return Json(new { isValid = true, id = bln });
         }
+        [Route("/home/comment")]
+        [HttpGet]
+        public JsonResult Comment(string maGiay, int stars, string comment, string name)
+        {
+            bool blt = _CommentRepo.CreateComment(maGiay, stars, comment, name);
+            if (blt)
+            {
+                TempData["Message"] = "Cảm ơn bạn đã đánh giá cho sản phẩm chúng tôi";
+                return Json("success");
+            }
+            else
+                return Json("error");
+        }
         [Route("/home/getjsondata/{id}/{vnpay}")]
         [HttpPost]
         public JsonResult GetJsonData([FromBody] ProductModel[] Stock, string id, string vnpay)
@@ -139,7 +170,7 @@ namespace QL_BanGiay.Controllers
             DonDat item = _CheckoutRepo.CreateCheckout(Stock, id);
             if (item != null)
             {
-                
+
                 if (vnpay == "0")
                 {
                     TempData["Message"] = "Đơn hàng của bạn đã đặt thành công. Vui lòng kiểm tra mail để biết thêm chi tiết.";
@@ -147,10 +178,11 @@ namespace QL_BanGiay.Controllers
                     var sendMail = _OrderRepo.GetMail(item.MaDonDat);
                     SendMail(sendMail);
                     return Json("Success");
-                }else
+                }
+                else
                 {
                     HttpContext.Session.SetString("IdDonDat", item.MaDonDat);
-                    return Json(new {total = item.Total});
+                    return Json(new { total = item.Total });
                 }
             }
             else
@@ -259,7 +291,8 @@ namespace QL_BanGiay.Controllers
                             item = _UserRepo.GetUser(sId);
                             TempData["Message"] = "Có lỗi xảy ra trong quá trình xử lý hóa đơn thanh toán VNPay vui lòng thử lại";
                             return View("Checkout", item);
-                        }else
+                        }
+                        else
                         {
                             TempData["Message"] = "Có lỗi xảy ra trong quá trình xử lý hóa đơn thanh toán VNPay vui lòng thử lại";
                             return View("Checkout", _model);
@@ -309,7 +342,7 @@ namespace QL_BanGiay.Controllers
         }
         [Route("search")]
         [HttpGet]
-        public IActionResult Search(string sortExpression = "",string SearchText="", int pg = 1, int pageSize = 12)
+        public IActionResult Search(string sortExpression = "", string SearchText = "", int pg = 1, int pageSize = 12)
         {
             SortModel sortModel = new SortModel();
             sortModel.AddColumn("NameShoe");
@@ -317,7 +350,7 @@ namespace QL_BanGiay.Controllers
             ViewData["sortModel"] = sortModel;
             ViewBag.SearchText = SearchText;
             PaginatedList<Giay> items = _ShoeRepo.GetItems(sortModel.SortedProperty, sortModel.SortedOrder, SearchText, pg, pageSize);
-            var pager = new PagerModel( items.TotalRecords,pg, pageSize);
+            var pager = new PagerModel(items.TotalRecords, pg, pageSize);
             pager.Action = "Search";
             this.ViewBag.Pager = pager;
             TempData["CurrentPage"] = pg;
@@ -326,7 +359,7 @@ namespace QL_BanGiay.Controllers
         private void SendMail(EmailModel model)
         {
             CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
-           
+
             string FilePath = Directory.GetCurrentDirectory() + "\\template\\send2.html";
             using (StreamReader SourceReader = System.IO.File.OpenText(FilePath))
             {
@@ -352,12 +385,12 @@ namespace QL_BanGiay.Controllers
                 contentCustomer = contentCustomer.Replace("{{Phone}}", model.Sdt);
                 contentCustomer = contentCustomer.Replace("{{Email}}", model.Email);
                 contentCustomer = contentCustomer.Replace("{{DiaChiNhanHang}}", model.DiaChi);
-                contentCustomer = contentCustomer.Replace("{{ThanhTien}}", String.Format(elGR, "{0:0,0}",thanhtien));
+                contentCustomer = contentCustomer.Replace("{{ThanhTien}}", String.Format(elGR, "{0:0,0}", thanhtien));
                 contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(elGR, "{0:0,0}", tongtien));
                 bool btl = SendMails.SendMail("BanGiay", "Đơn hàng #" + model.MaHoaDon, contentCustomer, model.Email);
             }
 
         }
-        
+
     }
 }

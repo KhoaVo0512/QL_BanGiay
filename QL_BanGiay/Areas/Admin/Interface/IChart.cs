@@ -11,6 +11,7 @@ namespace QL_BanGiay.Areas.Admin.Interface
         List<SplineChartData> ExpenseSummary();
         double? TotalAdidas();
         double? Total();
+        void NoiBat();
         IQueryable<QuantityModel> ListQuantityInCome();
         IQueryable<QuantityModel> ListQuantityWareHouse();
     }

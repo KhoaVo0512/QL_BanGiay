@@ -30,9 +30,20 @@ var localAdapter = {
         //        newCart.push(item);
         //    }
         //});
+        var grandTotal = 0;
         localAdapter.saveCart(newCart);
         $(".row_" + id + "-" + size).remove();
-        document.getElementById("cartCount").textContent = storage.getCart().length;
+        for (var i = 0; i < newCart.length; i++) {
+            grandTotal += newCart[i].total;
+        }   
+        var Subtotal = document.getElementById('Subtotal');
+        var GrandTotal = document.getElementById('GrandTotal');
+        if (Subtotal != null && GrandTotal != null) {
+            GrandTotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            Subtotal.innerHTML = grandTotal.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+            document.getElementById("cartCount").textContent = newCart.length;
+        }
+      
         toastr.success("Cập nhật giỏ hàng thành công");
         var item = storage.getCart();
         if (item.length != 0) {

@@ -35,8 +35,6 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             ViewBag.CountUser = _UserRepo.GetUserCount();
             CultureInfo elGR = CultureInfo.CreateSpecificCulture("el-GR");
             ViewBag.TotalIncomeSevenDay = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeSevenDay());
-            //var Balance = _OrderRepo.GetTotalInCome() - _PurchaseOrderRepo.GetTotalExprense();
-            //ViewBag.Balance = String.Format(elGR, "{0:0,0}", Balance);
             var Quarter = _OrderRepo.GetQuarter();
             var EndDate = DateTime.Now;
             ViewBag.TotalIncomeOneDay = String.Format(elGR, "{0:0,0}", _OrderRepo.GetTotalInComeOneDay());
@@ -47,7 +45,9 @@ namespace QL_BanGiay.Areas.Admin.Controllers
             var totalConverse = _ChartRepo.TotalConverse();
             var totalAdidas = _ChartRepo.TotalAdidas();
             var totalVans = _ChartRepo.TotalVans();
-            ViewBag.ListQuantity = _ChartRepo.ListQuantityInCome().OrderByDescending(S=>S.SoLuong).Take(7);
+            var items = _ChartRepo.ListQuantityInCome().OrderByDescending(S => S.SoLuong).Take(7);
+            ViewBag.ListQuantity = items;
+            _ChartRepo.NoiBat();
             ViewBag.ListQuantityWareHouse = _ChartRepo.ListQuantityWareHouse().OrderBy(s => s.SoLuong);
             ViewBag.Count = _ChartRepo.ListQuantityWareHouse().Count();
             var totalNike = _OrderRepo.GetTotalInComeSevenDay() - (totalConverse + totalAdidas + totalVans);

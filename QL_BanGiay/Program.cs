@@ -43,6 +43,7 @@ builder.Services.AddScoped<IAdidas, AdidasRepo>();
 builder.Services.AddScoped<IConverse, ConverseRepo>();
 builder.Services.AddScoped<INike, NikeRepo>();
 builder.Services.AddScoped<IVans, VansRepo>();
+builder.Services.AddScoped<IComment, CommentRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 

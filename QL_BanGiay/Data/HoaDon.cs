@@ -12,10 +12,9 @@ public partial class HoaDon
 
     public double? TongTien { get; set; }
 
-    public string? IdVNPay { get; set; }
+    public string? IdVnpay { get; set; }
 
     public DateTime? NgayLapDh { get; set; }
-
 
     public DateTime? NgayGiaoHd { get; set; }
 

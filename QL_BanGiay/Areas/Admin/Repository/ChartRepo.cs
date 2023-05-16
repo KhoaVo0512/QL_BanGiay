@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Utilities;
 using QL_BanGiay.Areas.Admin.Interface;
 using QL_BanGiay.Areas.Admin.Models;
 using QL_BanGiay.Data;
@@ -93,10 +94,10 @@ namespace QL_BanGiay.Areas.Admin.Repository
             DateTime StartDate = DateTime.Today.AddDays(-6);
             DateTime EndDate = DateTime.Now;
             var quantityIncome = new List<KhoGiay>();
-            var group = from p in _context.HoaDonCts.Include(s=>s.MaSizeNavigation).Include(s=>s.MaGiayNavigation)
+            var group = from p in _context.HoaDonCts.Include(s => s.MaSizeNavigation).Include(s => s.MaGiayNavigation)
                         where p.MaHdNavigation.NgayGiaoHd >= StartDate && p.MaHdNavigation.NgayGiaoHd <= EndDate
-                        group p by new { MaGiay = p.MaGiay, MaSize = p.MaSize , TenSize = p.MaSizeNavigation.TenSize, TenGiay = p.MaGiayNavigation.TenGiay} into g
-                        select new QuantityModel { MaGiay = g.Key.MaGiay,TenSize = g.Key.TenSize,TenGiay=g.Key.TenGiay, MaSize = (int)g.Key.MaSize, SoLuong = g.Sum(x => x.SoLuong) };
+                        group p by new { MaGiay = p.MaGiay, TenGiay = p.MaGiayNavigation.TenGiay } into g
+                        select new QuantityModel { MaGiay = g.Key.MaGiay, TenGiay = g.Key.TenGiay, SoLuong = g.Sum(x => x.SoLuong) };
             return group;
         }
 
@@ -109,6 +110,41 @@ namespace QL_BanGiay.Areas.Admin.Repository
                         select new QuantityModel { MaGiay = g.Key.MaGiay, TenSize = g.Key.TenSize, TenGiay = g.Key.TenGiay, MaSize = (int)g.Key.MaSize, SoLuong = g.Sum(x => x.SoLuong) };
             var item = (IEnumerable)group;
             return group;
+        }
+
+        public void NoiBat()
+        {
+            DateTime StartDate = DateTime.Today.AddDays(-6);
+            DateTime EndDate = DateTime.Now;
+            List<string> list2 = new List<string>();
+            var group = from p in _context.HoaDonCts.Include(s => s.MaSizeNavigation).Include(s => s.MaGiayNavigation)
+                        where p.MaHdNavigation.NgayGiaoHd >= StartDate && p.MaHdNavigation.NgayGiaoHd <= EndDate
+                        group p by new { MaGiay = p.MaGiay, TenGiay = p.MaGiayNavigation.TenGiay } into g
+                        select new QuantityModel { MaGiay = g.Key.MaGiay, TenGiay = g.Key.TenGiay, SoLuong = g.Sum(x => x.SoLuong) };
+            var items = group.OrderByDescending(s => s.SoLuong).Take(7);
+            foreach(var item in items)
+            {
+                list2.Add(item.MaGiay);
+            }
+            var giays = _context.Giays.ToList();
+            var products = new List<Giay>();
+            foreach (var list in list2)
+            {
+                var giay = giays.Find(s => s.MaGiay == list);
+                if (giay != null)
+                {
+                    giay.NoiBat = true;
+                    _context.Giays.Update(giay);
+                    _context.SaveChanges();
+                    giays.Remove(giay);
+                }
+            }
+            foreach(var item in giays) 
+            {
+                item.NoiBat = false;
+                _context.Giays.Update(item);
+                _context.SaveChanges();
+            }
         }
     }
 }
