@@ -205,7 +205,7 @@ img {
     .card {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-gap: 1.5rem;
+        grid-gap: 4rem;
     }
 
     .card-wrapper {

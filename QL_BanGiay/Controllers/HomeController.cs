@@ -83,8 +83,15 @@ namespace QL_BanGiay.Controllers
                 {
                     ViewBag.Pecent1Stars = 0;
                 }
-                else
-                    ViewBag.Pecent1Stars = 100 - ViewBag.Pecent5Stars - ViewBag.Pecent4Stars - ViewBag.Pecent3Stars - ViewBag.Pecent2Stars;
+                else if (_CommentRepo.getPercent5Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent4Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent3Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent2Star(item.MaGiay) == 0 &&
+                    _CommentRepo.getPercent1Star(item.MaGiay) != 0)
+                    {
+                        ViewBag.Pecent1Stars = 100;
+                    }
+                ViewBag.Pecent1Stars = 100 - ViewBag.Pecent5Stars - ViewBag.Pecent4Stars - ViewBag.Pecent3Stars - ViewBag.Pecent2Stars;
                 return View(item);
             }
             else

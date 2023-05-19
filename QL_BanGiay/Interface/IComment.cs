@@ -12,6 +12,7 @@ namespace QL_BanGiay.Interface
         int getPercent4Star(string shoeId);
         int getPercent3Star(string shoeId);
         int getPercent2Star(string shoeId);
+        int getPercent1Star(string shoeId);
 
     }
 }

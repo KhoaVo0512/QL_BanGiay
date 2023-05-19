@@ -44,6 +44,20 @@ namespace QL_BanGiay.Repository
             return length;
         }
 
+        public int getPercent1Star(string shoeId)
+        {
+            var star = _context.DanhGia.Where(s => s.MaGiay == shoeId && s.Sao == 1).Count();
+            var count = getCommentLength(shoeId);
+            float pecent;
+            if (star > 0)
+            {
+                pecent = ((float)star / count) * 100;
+                return (int)pecent;
+            }
+            else
+                return 0;
+        }
+
         public int getPercent2Star(string shoeId)
         {
             var star = _context.DanhGia.Where(s=>s.MaGiay == shoeId && s.Sao == 2).Count();
