@@ -25,7 +25,7 @@ jobs:
         run: dotnet tool install -g dotnet-ef
 
       - name: dotnet bundle migration
-        run: dotnet ef migrations bundle --runtime linux-x64 -p QL_BanGiay.csproj -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet ef migrations bundle --runtime linux-x64 -p QL_BanGiay/QL_BanGiay.csproj -o ${{env.DOTNET_ROOT}}/myapp/migrate
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
