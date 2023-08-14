@@ -1,5 +1,6 @@
 global using CodesByAniz.Tools;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using NToastNotify;
 using QL_BanGiay.Areas.Admin.Interface;
