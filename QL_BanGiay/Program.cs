@@ -46,9 +46,13 @@ builder.Services.AddScoped<IVans, VansRepo>();
 builder.Services.AddScoped<IComment, CommentRepo>();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
-
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+options.Configuration = builder.Configuration["AZURE_REDIS_CONNECTIONSTRING"];
+options.InstanceName = "SampleInstance";
+});
 builder.Services.AddDbContext<QlyBanGiayContext>(
-    option => option.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
+    option => option.UseSqlServer(builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => 
 { 
     options.LoginPath = "/account/login";
