@@ -47,5 +47,5 @@
       <HintPath>..\..\..\..\..\..\CKFinder.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 </Project>
